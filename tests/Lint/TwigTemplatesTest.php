@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class TwigTemplatesTest extends TestCase
 {
-    private const THEME_ROOT = __DIR__ . '/../..';
+    private const string THEME_ROOT = __DIR__ . '/../..';
 
     /**
      * @param string $templatePath Chemin relatif depuis la racine du thème

@@ -22,7 +22,7 @@ final class ThemeRenderTest extends WebTestCase
      */
     public function testHomepageRendersWithTheme(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/');
 
@@ -40,7 +40,7 @@ final class ThemeRenderTest extends WebTestCase
     {
         // Ce test nécessite une configuration de thème désactivé
         // Pour l'instant, on vérifie simplement que la page se rend
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/');
 

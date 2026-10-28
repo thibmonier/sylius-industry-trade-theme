@@ -18,7 +18,6 @@ return RectorConfig::configure()
         SetList::DEAD_CODE,
         SetList::EARLY_RETURN,
         SetList::TYPE_DECLARATION,
-        PHPUnitSetList::PHPUNIT_100,
     ])
     ->withSkip([
         // Ajoutez ici les règles à ignorer si nécessaire
