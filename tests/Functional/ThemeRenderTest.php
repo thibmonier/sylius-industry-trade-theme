@@ -35,7 +35,7 @@ final class ThemeRenderTest extends WebTestCase
 
         $this->assertNotNull($channel, 'Un canal doit exister dans l\'application de test');
 
-        $channel->setThemeName('industrie-negoce');
+        $channel->setThemeName('tmonier/sylius-industry-trade-theme');
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $container->get('doctrine.orm.entity_manager');
@@ -97,14 +97,14 @@ final class ThemeRenderTest extends WebTestCase
 
         $this->assertNotNull($channel, 'Un canal doit exister dans l\'application de test');
 
-        $channel->setThemeName('industrie-negoce');
+        $channel->setThemeName('tmonier/sylius-industry-trade-theme');
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
         // Faire une requête vers la route de test qui rend les composants
-        $client->request('GET', '/en_US/_test/components');
+        $client->request('GET', '/_test/components');
 
         $this->assertResponseIsSuccessful();
         $content = $client->getResponse()
