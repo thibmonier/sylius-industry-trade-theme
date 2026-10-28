@@ -1,0 +1,69 @@
+// Thème Industrie & Négoce — jetons de design (palette B2B)
+// Tous les contrastes respectent WCAG AAA (≥ 7:1 pour le texte, ≥ 3:1 pour les éléments d'interface).
+// Les paires texte/fond sont listées et mesurées dans tests/Unit/Theme/ThemeColorTokensTest.php.
+
+// Palette de base (mode clair)
+$industry-white: #ffffff;
+$industry-navy: #1f3a5f;          // sur blanc 11,1:1, blanc sur navy 11,1:1
+$industry-navy-dark: #162a45;
+$industry-accent: #8a3800;        // le brun du logo : sur blanc 7,9:1, blanc dessus 7,9:1, sur surface 7,3:1
+$industry-accent-dark: #6b2b00;   // blanc dessus 10,7:1 (état pressé)
+$industry-accent-subtle: #fbf1ea; // fond teinté derrière les icônes accent (accent dessus 7,1:1)
+$industry-surface: #f3f5f8;
+$industry-surface-strong: #e9ecef;
+$industry-border: #cfd6df;        // décoration uniquement : les limites de contrôles utilisent $industry-muted
+$industry-muted: #3f4753;         // texte secondaire : sur blanc 9,4:1, sur surface 8,6:1
+$industry-success: #0f5a36;       // en stock : sur blanc 8,3:1
+$industry-warning: #774000;       // sur commande : sur blanc 8,3:1
+$industry-danger: #962130;        // blanc dessus 8,2:1
+$industry-black: #000000;         // préférence à contraste élevé uniquement
+
+// Palette éditoriale (mode clair, page d'accueil)
+$industry-ink: #1b2533;           // texte courant de l'accueil : sur paper 14,3:1
+$industry-paper: #faf6ef;         // fond de page de l'accueil : navy dessus 10,7:1, accent 7,4:1, muted 8,7:1
+$industry-sand: #efe4d2;          // sections teintées : navy dessus 9,1:1, muted 7,5:1
+$industry-sand-line: #e2d4bc;     // décoration uniquement : lignes fines sur paper et sand
+$industry-sand-text: #4a2a0e;     // texte de l'avis démo : sur sand 10,3:1
+$industry-accent-on-sand: #7a3200; // l'accent assombri où il se trouve sur sand : 7,3:1
+$industry-accent-bright: #b04a17; // l'orange de la maquette : titres de 24 px et plus seulement (5,1:1 sur paper), jamais texte courant
+$industry-teal: #0e5a5e;          // blanc dessus 8:1, sur paper 7,4:1
+$industry-gold: #f2b544;          // sur fonds sombres uniquement : sur night 9,4:1 ; texte sombre dessus 9,4:1
+$industry-night: #141b26;         // sections sombres et barre démo : blanc dessus 17,3:1
+$industry-night-raised: #1b2433;  // cartes sur night
+$industry-night-text: #c9c3b8;    // texte secondaire sur night : 9,9:1, sur raised 8,9:1
+$industry-night-line: #8b96a8;    // limite de contrôles sur night : 5,8:1 (3:1 requis)
+
+// Triplets RGB pour les variables CSS Bootstrap `--bs-*-rgb` et les ombres translucides
+$industry-navy-rgb: 31, 58, 95;
+$industry-accent-rgb: 138, 56, 0;
+$industry-muted-rgb: 63, 71, 83;
+$industry-danger-rgb: 150, 33, 48;
+$industry-ink-rgb: 27, 37, 51;
+$industry-night-rgb: 20, 27, 38;
+
+// Typographie
+$industry-font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$industry-font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+
+// Espacements (multiplies de 0,25rem = 4px)
+$industry-spacing-xs: 0.25rem;   // 4px
+$industry-spacing-sm: 0.5rem;    // 8px
+$industry-spacing-md: 1rem;      // 16px
+$industry-spacing-lg: 1.5rem;    // 24px
+$industry-spacing-xl: 2rem;      // 32px
+$industry-spacing-2xl: 3rem;     // 48px
+
+// Rayons de bordure
+$industry-border-radius-sm: 0.25rem;  // 4px
+$industry-border-radius-md: 0.375rem; // 6px
+$industry-border-radius-lg: 0.5rem;   // 8px
+
+// Ombres
+$industry-shadow-sm: 0 0.125rem 0.25rem rgba($industry-navy-rgb, 0.075);
+$industry-shadow-md: 0 0.25rem 0.5rem rgba($industry-navy-rgb, 0.1);
+$industry-shadow-lg: 0 0.5rem 1rem rgba($industry-navy-rgb, 0.15);
+
+// Transitions
+$industry-transition-base: all 0.2s ease-in-out;
+$industry-transition-fast: all 0.1s ease-in-out;
+$industry-transition-slow: all 0.3s ease-in-out;

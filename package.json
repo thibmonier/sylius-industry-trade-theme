@@ -1,0 +1,45 @@
+{
+  "name": "@tmonier/sylius-industry-trade-theme",
+  "version": "1.0.0",
+  "description": "Thème Industrie & Négoce pour Sylius — haute densité d'information, mode sombre AAA, saisie rapide",
+  "private": true,
+  "scripts": {
+    "build": "encore production",
+    "dev": "encore dev",
+    "watch": "encore dev --watch"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@babel/plugin-proposal-class-properties": "^7.18.0",
+    "@babel/preset-env": "^7.25.0",
+    "@hotwired/stimulus": "^3.2.0",
+    "@symfony/stimulus-bridge": "^3.2.0",
+    "@symfony/webpack-encore": "^4.7.0",
+    "babel-loader": "^9.2.0",
+    "core-js": "^3.38.0",
+    "sass": "^1.79.0",
+    "sass-loader": "^16.0.0",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.0"
+  },
+  "dependencies": {},
+  "keywords": [
+    "sylius",
+    "theme",
+    "b2b",
+    "industry",
+    "trade",
+    "ecommerce"
+  ],
+  "author": {
+    "name": "Thibaut Monier",
+    "email": "thibaut.monier@gmail.com",
+    "url": "https://www.linkedin.com/in/thibautmonier/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thibmonier/sylius-industry-trade-theme.git"
+  },
+  "homepage": "https://github.com/thibmonier/sylius-industry-trade-theme"
+}

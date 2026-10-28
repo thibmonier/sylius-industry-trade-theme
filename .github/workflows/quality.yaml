@@ -1,0 +1,162 @@
+name: Quality and smoke tests
+
+on:
+    push:
+        branches-ignore:
+            - 'dependabot/**'
+        paths-ignore:
+            - "*.md"
+    pull_request:
+        paths-ignore:
+            - "*.md"
+    workflow_dispatch: ~
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+# No default token permission: every job asks for what it needs (US-209).
+permissions: {}
+
+jobs:
+    installation-test:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+
+        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}"
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ["8.3", "8.5"]
+                sylius: ["~2.2.0", "~2.3.0"]
+                node: ["22.x"]
+
+                # Sylius 2.3 needs PHP ^8.3
+                exclude:
+                    - sylius: "~2.3.0"
+                      php: "8.2"
+
+        steps:
+            -
+                name: Checkout theme repository
+                uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+                with:
+                    persist-credentials: false
+                    path: theme
+
+            -
+                name: Setup PHP
+                uses: shivammathur/setup-php@2e947f1f6932d141d076ca441d0e1e881775e95b # v2.31.0
+                with:
+                    php-version: "${{ matrix.php }}"
+                    coverage: none
+
+            -
+                name: Setup Node
+                uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+                with:
+                    node-version: "${{ matrix.node }}"
+
+            -
+                name: Create test Sylius project
+                run: |
+                    composer create-project sylius/sylius-standard:${{ matrix.sylius }} sylius-test --no-interaction --no-scripts
+                    cd sylius-test
+                    composer config repositories.theme path ../theme
+                    composer require "tmonier/sylius-industry-trade-theme:*@dev" --no-interaction
+
+            -
+                name: Install theme assets
+                run: |
+                    cd sylius-test
+                    npm install --prefix ../theme
+                    npm run build --prefix ../theme
+                    php bin/console sylius:theme:assets:install
+
+            -
+                name: Verify theme installation
+                run: |
+                    cd sylius-test
+                    test -d public/bundles/tmoniersyliusindustrytradetheme || { echo "Theme assets not installed"; exit 1; }
+                    test -f ../theme/public/build/theme.css || { echo "Theme CSS not built"; exit 1; }
+                    echo "Theme installation successful"
+
+    quality-checks:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+
+        name: "Quality checks (PHPStan, ECS, Rector)"
+
+        steps:
+            -
+                name: Checkout
+                uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+                with:
+                    persist-credentials: false
+
+            -
+                name: Setup PHP
+                uses: shivammathur/setup-php@2e947f1f6932d141d076ca441d0e1e881775e95b # v2.31.0
+                with:
+                    php-version: "8.3"
+                    coverage: none
+
+            -
+                name: Install dependencies
+                run: composer install --no-interaction --no-progress
+
+            -
+                name: Audit PHP dependencies
+                run: composer audit --abandoned=report
+
+            -
+                name: Run PHPStan
+                run: |
+                    if [ -d src ] && [ "$(find src -name '*.php' | wc -l)" -gt 0 ]; then
+                        php -d memory_limit=2G vendor/bin/phpstan analyse --no-progress
+                    else
+                        echo "No PHP source files, skipping PHPStan"
+                    fi
+
+            -
+                name: Check coding standard
+                run: |
+                    if [ -d src ] && [ "$(find src -name '*.php' | wc -l)" -gt 0 ]; then
+                        vendor/bin/ecs check
+                    else
+                        echo "No PHP source files, skipping ECS"
+                    fi
+
+            -
+                name: Run Rector in dry-run
+                run: |
+                    if [ -d src ] && [ "$(find src -name '*.php' | wc -l)" -gt 0 ]; then
+                        vendor/bin/rector process --dry-run
+                    else
+                        echo "No PHP source files, skipping Rector"
+                    fi
+
+            -
+                name: Validate composer.json
+                run: composer validate --ansi --strict
+
+    # Static audit of the workflows themselves (US-209). Version and image are pinned, no network.
+    zizmor:
+        name: Workflow audit (zizmor)
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        timeout-minutes: 10
+        env:
+            ZIZMOR_IMAGE: ghcr.io/zizmorcore/zizmor:1.31.1@sha256:42d409dbb851d4c5d35a058cf042b828bea1e3f2884378c526eb0974780e18d9
+        steps:
+            - name: Checkout
+              uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+              with:
+                  persist-credentials: false
+
+            - name: zizmor (offline)
+              run: docker run --rm -v "$PWD:/work" -w /work "$ZIZMOR_IMAGE" --offline .github
