@@ -21,7 +21,7 @@
         {% hook 'head' with { _prefixes: prefixes } %}
     </head>
 
-    <body data-theme="industry-trade">
+    <body>
         {% block body %}
             <div class="{% apply escape %}{% hook '#body_classes' with { _prefixes: prefixes } %}{% endapply %}">
                 {# Lien d'évitement pour l'accessibilité #}
