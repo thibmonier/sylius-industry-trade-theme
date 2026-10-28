@@ -107,7 +107,8 @@ final class ThemeRenderTest extends WebTestCase
         $client->request('GET', '/en_US/_test/components');
 
         $this->assertResponseIsSuccessful();
-        $content = $client->getResponse()->getContent();
+        $content = $client->getResponse()
+            ->getContent();
         assert(is_string($content));
 
         // Vérifier que les classes du thème sont présentes
