@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tmonier\SyliusIndustryTradeTheme\Tests\Functional;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Repository\ChannelRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -28,8 +28,8 @@ final class ThemeRenderTest extends WebTestCase
         $container = self::getContainer();
 
         // Récupérer le canal par défaut et activer le thème
-        /** @var ChannelRepositoryInterface $channelRepository */
         $channelRepository = $container->get('sylius.repository.channel');
+        assert(method_exists($channelRepository, 'findOneBy'));
         /** @var ChannelInterface|null $channel */
         $channel = $channelRepository->findOneBy([]);
 
@@ -37,6 +37,7 @@ final class ThemeRenderTest extends WebTestCase
 
         $channel->setThemeName('industrie-negoce');
 
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
@@ -58,8 +59,8 @@ final class ThemeRenderTest extends WebTestCase
         $container = self::getContainer();
 
         // Récupérer le canal et désactiver le thème
-        /** @var ChannelRepositoryInterface $channelRepository */
         $channelRepository = $container->get('sylius.repository.channel');
+        assert(method_exists($channelRepository, 'findOneBy'));
         /** @var ChannelInterface|null $channel */
         $channel = $channelRepository->findOneBy([]);
 
@@ -67,6 +68,7 @@ final class ThemeRenderTest extends WebTestCase
 
         $channel->setThemeName(null);
 
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
@@ -88,8 +90,8 @@ final class ThemeRenderTest extends WebTestCase
         $container = self::getContainer();
 
         // Activer le thème
-        /** @var ChannelRepositoryInterface $channelRepository */
         $channelRepository = $container->get('sylius.repository.channel');
+        assert(method_exists($channelRepository, 'findOneBy'));
         /** @var ChannelInterface|null $channel */
         $channel = $channelRepository->findOneBy([]);
 
@@ -97,6 +99,7 @@ final class ThemeRenderTest extends WebTestCase
 
         $channel->setThemeName('industrie-negoce');
 
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
