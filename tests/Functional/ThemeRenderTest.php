@@ -41,7 +41,7 @@ final class ThemeRenderTest extends WebTestCase
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
-        $client->request('GET', '/');
+        $client->request('GET', '/en_US/');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('[data-theme="industry-trade"]');
@@ -72,7 +72,7 @@ final class ThemeRenderTest extends WebTestCase
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
-        $client->request('GET', '/');
+        $client->request('GET', '/en_US/');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorNotExists('[data-theme="industry-trade"]');
@@ -108,9 +108,9 @@ final class ThemeRenderTest extends WebTestCase
         $twig = $container->get('twig');
 
         $template = <<<'TWIG'
-{% import 'components/buttons.html.twig' as buttons %}
-{% import 'components/tables.html.twig' as tables %}
-{% import 'components/forms.html.twig' as forms %}
+{% import '@industrie-negoce/components/buttons.html.twig' as buttons %}
+{% import '@industrie-negoce/components/tables.html.twig' as tables %}
+{% import '@industrie-negoce/components/forms.html.twig' as forms %}
 
 {{ buttons.primary('Bouton test') }}
 {{ tables.header([{label: 'Colonne 1'}]) }}
