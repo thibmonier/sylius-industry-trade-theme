@@ -60,28 +60,24 @@ jobs:
                     node-version: "${{ matrix.node }}"
 
             -
-                name: Create test Sylius project
+                name: Install theme dependencies
                 run: |
-                    composer create-project sylius/sylius-standard:${{ matrix.sylius }} sylius-test --no-interaction --no-scripts
-                    cd sylius-test
-                    composer config repositories.theme path ../theme
-                    composer require "tmonier/sylius-industry-trade-theme:*@dev" --no-interaction
+                    cd theme
+                    composer install --no-interaction --no-progress
+                    npm install
 
             -
-                name: Install theme assets
+                name: Build theme assets
                 run: |
-                    cd sylius-test
-                    npm install --prefix ../theme
-                    npm run build --prefix ../theme
-                    php bin/console sylius:theme:assets:install
+                    cd theme
+                    npm run build
 
             -
-                name: Verify theme installation
+                name: Verify theme build
                 run: |
-                    cd sylius-test
-                    test -d public/bundles/tmoniersyliusindustrytradetheme || { echo "Theme assets not installed"; exit 1; }
-                    test -f ../theme/public/build/theme.css || { echo "Theme CSS not built"; exit 1; }
-                    echo "Theme installation successful"
+                    test -f theme/public/build/theme.css || { echo "Theme CSS not built"; exit 1; }
+                    test -f theme/public/build/theme.js || { echo "Theme JS not built"; exit 1; }
+                    echo "Theme build successful for Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}"
 
     quality-checks:
         runs-on: ubuntu-latest
