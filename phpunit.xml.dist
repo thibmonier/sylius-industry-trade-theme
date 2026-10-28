@@ -20,6 +20,10 @@
             <directory>tests/Lint</directory>
         </testsuite>
 
+        <testsuite name="functional">
+            <directory>tests/Functional</directory>
+        </testsuite>
+
         <testsuite name="non-unit">
             <directory>tests/Integration</directory>
         </testsuite>

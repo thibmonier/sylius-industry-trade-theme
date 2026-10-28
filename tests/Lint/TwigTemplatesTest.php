@@ -35,5 +35,8 @@ final class TwigTemplatesTest extends TestCase
         yield 'en-tête' => ['templates/bundles/SyliusShopBundle/shared/layout/base/header/content.html.twig'];
         yield 'pied de page' => ['templates/bundles/SyliusShopBundle/shared/layout/base/footer/content.html.twig'];
         yield 'messages flash' => ['templates/bundles/SyliusShopBundle/shared/flashes.html.twig'];
+        yield 'composant boutons' => ['templates/components/buttons.html.twig'];
+        yield 'composant tableaux' => ['templates/components/tables.html.twig'];
+        yield 'composant champs' => ['templates/components/forms.html.twig'];
     }
 }
