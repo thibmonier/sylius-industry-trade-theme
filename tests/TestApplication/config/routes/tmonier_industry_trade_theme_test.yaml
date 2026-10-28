@@ -1,0 +1,5 @@
+tmonier_industry_trade_theme_test_components:
+    path: /_test/components
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: '@theme/test/components.html.twig'

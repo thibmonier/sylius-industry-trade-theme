@@ -103,26 +103,16 @@ final class ThemeRenderTest extends WebTestCase
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
-        // Rendre un gabarit de test qui utilise les composants
-        /** @var \Twig\Environment $twig */
-        $twig = $container->get('twig');
+        // Faire une requête vers la route de test qui rend les composants
+        $client->request('GET', '/en_US/_test/components');
 
-        $template = <<<'TWIG'
-{% import '@industrie-negoce/components/buttons.html.twig' as buttons %}
-{% import '@industrie-negoce/components/tables.html.twig' as tables %}
-{% import '@industrie-negoce/components/forms.html.twig' as forms %}
-
-{{ buttons.primary('Bouton test') }}
-{{ tables.header([{label: 'Colonne 1'}]) }}
-{{ forms.text('test_field', 'Champ test') }}
-TWIG;
-
-        $rendered = $twig->createTemplate($template)
-            ->render([]);
+        $this->assertResponseIsSuccessful();
+        $content = $client->getResponse()->getContent();
+        assert(is_string($content));
 
         // Vérifier que les classes du thème sont présentes
-        $this->assertStringContainsString('industry-btn-primary', $rendered);
-        $this->assertStringContainsString('industry-table-header', $rendered);
-        $this->assertStringContainsString('industry-form-control', $rendered);
+        $this->assertStringContainsString('industry-btn-primary', $content);
+        $this->assertStringContainsString('industry-table-header', $content);
+        $this->assertStringContainsString('industry-form-control', $content);
     }
 }
