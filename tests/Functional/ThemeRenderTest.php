@@ -117,7 +117,8 @@ final class ThemeRenderTest extends WebTestCase
 {{ forms.text('test_field', 'Champ test') }}
 TWIG;
 
-        $rendered = $twig->createTemplate($template)->render([]);
+        $rendered = $twig->createTemplate($template)
+            ->render([]);
 
         // Vérifier que les classes du thème sont présentes
         $this->assertStringContainsString('industry-btn-primary', $rendered);
