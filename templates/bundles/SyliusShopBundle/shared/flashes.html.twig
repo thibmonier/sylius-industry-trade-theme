@@ -1,0 +1,9 @@
+{# Thème Industrie & Négoce — messages flash #}
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+            {{ message|trans }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'close'|trans({}, 'shop') }}"></button>
+        </div>
+    {% endfor %}
+{% endfor %}

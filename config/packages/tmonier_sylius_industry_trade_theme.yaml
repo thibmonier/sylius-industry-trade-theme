@@ -1,0 +1,17 @@
+# Configuration du thème Industrie & Négoce
+# Ce fichier est copié par la recette Flex dans config/packages/ de l'application.
+# Il enregistre les Twig hooks du thème.
+
+sylius_twig_hooks:
+    hooks:
+        # En-tête personnalisé (exemple)
+        'sylius_shop.base.header':
+            industry_theme_header:
+                template: '@SyliusShop/shared/layout/base/header/content.html.twig'
+                priority: 100
+
+        # Pied de page personnalisé (exemple)
+        'sylius_shop.base.footer':
+            industry_theme_footer:
+                template: '@SyliusShop/shared/layout/base/footer/content.html.twig'
+                priority: 100

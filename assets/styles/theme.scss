@@ -1,0 +1,166 @@
+// Thème Industrie & Négoce pour Sylius
+// Chargé par-dessus la feuille de style officielle du shop Sylius, il surcharge les variables CSS Bootstrap 5
+// et quelques composants. Rien du thème officiel n'est réécrit.
+
+@use 'variables' as *;
+
+// Variables CSS Bootstrap (racine)
+:root {
+    // Couleurs primaires
+    --bs-primary: #{$industry-navy};
+    --bs-primary-rgb: #{$industry-navy-rgb};
+    --bs-primary-text-emphasis: #{$industry-navy};
+
+    // Accent personnalisé (non Bootstrap)
+    --industry-accent: #{$industry-accent};
+    --industry-accent-rgb: #{$industry-accent-rgb};
+
+    // Liens : navy par défaut, brun du logo au survol (changement visible de couleur, pas seulement de nuance)
+    --bs-link-color: #{$industry-navy};
+    --bs-link-color-rgb: #{$industry-navy-rgb};
+    --bs-link-hover-color: var(--industry-accent);
+    --bs-link-hover-color-rgb: var(--industry-accent-rgb);
+
+    // Texte grisé (.text-muted, .text-body-secondary, fil d'Ariane, indices de formulaire) et identifiants en <code> restent à 7:1
+    --bs-secondary-color: #{$industry-muted};
+    --bs-secondary-color-rgb: #{$industry-muted-rgb};
+    --bs-tertiary-color: #{$industry-muted};
+    --bs-tertiary-color-rgb: #{$industry-muted-rgb};
+    --bs-secondary: #{$industry-muted};
+    --bs-secondary-rgb: #{$industry-muted-rgb};
+
+    // Danger
+    --bs-danger: #{$industry-danger};
+    --bs-danger-rgb: #{$industry-danger-rgb};
+
+    // Couleur de code
+    --bs-code-color: var(--industry-accent);
+
+    // Rayon de bordure
+    --bs-border-radius: #{$industry-border-radius-sm};
+
+    // Police
+    --bs-font-sans-serif: #{$industry-font-family-sans};
+    --bs-font-monospace: #{$industry-font-family-mono};
+}
+
+// Pills actives (périodes, chiffres et tris du tableau de bord d'achat) : le thème officiel dessine blanc sur menthe (2,5:1)
+.nav-pills {
+    --bs-nav-pills-link-active-color: #{$industry-white};
+    --bs-nav-pills-link-active-bg: #{$industry-navy};
+}
+
+// Boutons primaires : le thème officiel dessine des boutons menthe avec texte noir (--bs-btn-*-color: #000)
+// Chaque couleur de texte est définie ici, sinon le texte devient noir sur navy au survol.
+// Survol = brun du logo, texte blanc (7:1).
+.btn-primary {
+    --bs-btn-color: #{$industry-white};
+    --bs-btn-bg: #{$industry-navy};
+    --bs-btn-border-color: #{$industry-navy};
+    --bs-btn-hover-color: #{$industry-white};
+    --bs-btn-hover-bg: #{$industry-accent};
+    --bs-btn-hover-border-color: #{$industry-accent};
+    --bs-btn-focus-shadow-rgb: #{$industry-accent-rgb};
+    --bs-btn-active-color: #{$industry-white};
+    --bs-btn-active-bg: #{$industry-accent-dark};
+    --bs-btn-active-border-color: #{$industry-accent-dark};
+    --bs-btn-disabled-color: #{$industry-white};
+    --bs-btn-disabled-bg: #{$industry-navy};
+    --bs-btn-disabled-border-color: #{$industry-navy};
+}
+
+// Boutons outline primaires
+.btn-outline-primary {
+    --bs-btn-color: #{$industry-navy};
+    --bs-btn-border-color: #{$industry-navy};
+    --bs-btn-hover-color: #{$industry-white};
+    --bs-btn-hover-bg: #{$industry-navy};
+    --bs-btn-hover-border-color: #{$industry-navy};
+    --bs-btn-focus-shadow-rgb: #{$industry-navy-rgb};
+    --bs-btn-active-color: #{$industry-white};
+    --bs-btn-active-bg: #{$industry-navy-dark};
+    --bs-btn-active-border-color: #{$industry-navy-dark};
+}
+
+// Actions favorites et secondaires : le cœur les dessine en gris Bootstrap (4,7:1) ; texte et limite à 7:1 ici
+.btn-outline-secondary {
+    --bs-btn-color: #{$industry-muted};
+    --bs-btn-border-color: #{$industry-muted};
+    --bs-btn-hover-color: #{$industry-white};
+    --bs-btn-hover-bg: #{$industry-muted};
+    --bs-btn-hover-border-color: #{$industry-muted};
+    --bs-btn-focus-shadow-rgb: #{$industry-muted-rgb};
+    --bs-btn-active-color: #{$industry-white};
+    --bs-btn-active-bg: #{$industry-muted};
+    --bs-btn-active-border-color: #{$industry-muted};
+}
+
+// Pagination : texte navy sur blanc, page courante blanc sur navy (la menthe du cœur donnait 2,1:1)
+.pagination {
+    --bs-pagination-color: #{$industry-navy};
+    --bs-pagination-bg: #{$industry-white};
+    --bs-pagination-border-color: #{$industry-muted};
+    --bs-pagination-hover-color: #{$industry-white};
+    --bs-pagination-hover-bg: #{$industry-navy};
+    --bs-pagination-hover-border-color: #{$industry-navy};
+    --bs-pagination-focus-color: #{$industry-white};
+    --bs-pagination-focus-bg: #{$industry-navy};
+    --bs-pagination-focus-box-shadow: none;
+    --bs-pagination-active-color: #{$industry-white};
+    --bs-pagination-active-bg: #{$industry-navy};
+    --bs-pagination-active-border-color: #{$industry-navy};
+}
+
+// Alertes
+.alert {
+    &-primary {
+        --bs-alert-color: #{$industry-navy};
+        --bs-alert-bg: #{$industry-accent-subtle};
+        --bs-alert-border-color: #{$industry-accent};
+    }
+
+    &-success {
+        --bs-alert-color: #{$industry-success};
+        --bs-alert-bg: #e8f5ef;
+        --bs-alert-border-color: #{$industry-success};
+    }
+
+    &-warning {
+        --bs-alert-color: #{$industry-warning};
+        --bs-alert-bg: #fef3e8;
+        --bs-alert-border-color: #{$industry-warning};
+    }
+
+    &-danger {
+        --bs-alert-color: #{$industry-danger};
+        --bs-alert-bg: #fce8eb;
+        --bs-alert-border-color: #{$industry-danger};
+    }
+}
+
+// Formulaires
+.form-control,
+.form-select {
+    &:focus {
+        border-color: #{$industry-accent};
+        box-shadow: 0 0 0 0.25rem rgba($industry-accent-rgb, 0.25);
+    }
+}
+
+// Cartes
+.card {
+    border-color: #{$industry-border};
+
+    &-header {
+        background-color: #{$industry-surface};
+        border-bottom-color: #{$industry-border};
+    }
+}
+
+// Tables
+.table {
+    --bs-table-color: #{$industry-navy};
+    --bs-table-border-color: #{$industry-border};
+    --bs-table-striped-bg: #{$industry-surface};
+    --bs-table-hover-bg: #{$industry-surface-strong};
+}
