@@ -79,6 +79,10 @@ jobs:
                 run: vendor/bin/phpunit --colors=always --testsuite=unit
 
             -
+                name: Run functional tests
+                run: vendor/bin/phpunit --colors=always --testsuite=functional
+
+            -
                 name: Validate composer.json
                 run: composer validate --ansi --strict
 
