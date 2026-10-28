@@ -1,0 +1,66 @@
+{#
+    Composant boutons — Thème Industrie & Négoce
+
+    Macros pour boutons avec jetons de design du thème.
+    Toutes les paires de couleurs respectent WCAG AAA (≥ 7:1).
+#}
+
+{#
+    Bouton primaire (navy)
+    Texte blanc sur fond navy (11,1:1)
+
+    @param string label Libellé du bouton
+    @param string|null url URL de destination (null pour un bouton de type button)
+    @param string|null type Type de bouton (submit, button, reset)
+#}
+{% macro primary(label, url = null, type = 'button') %}
+    {% if url is not null %}
+        <a href="{{ url }}" class="btn btn-primary industry-btn-primary">
+            {{ label }}
+        </a>
+    {% else %}
+        <button type="{{ type }}" class="btn btn-primary industry-btn-primary">
+            {{ label }}
+        </button>
+    {% endif %}
+{% endmacro %}
+
+{#
+    Bouton secondaire (accent)
+    Texte blanc sur fond accent (7,9:1)
+
+    @param string label Libellé du bouton
+    @param string|null url URL de destination
+    @param string|null type Type de bouton
+#}
+{% macro secondary(label, url = null, type = 'button') %}
+    {% if url is not null %}
+        <a href="{{ url }}" class="btn btn-secondary industry-btn-secondary">
+            {{ label }}
+        </a>
+    {% else %}
+        <button type="{{ type }}" class="btn btn-secondary industry-btn-secondary">
+            {{ label }}
+        </button>
+    {% endif %}
+{% endmacro %}
+
+{#
+    Bouton de danger (danger)
+    Texte blanc sur fond danger (8,2:1)
+
+    @param string label Libellé du bouton
+    @param string|null url URL de destination
+    @param string|null type Type de bouton
+#}
+{% macro danger(label, url = null, type = 'button') %}
+    {% if url is not null %}
+        <a href="{{ url }}" class="btn btn-danger industry-btn-danger">
+            {{ label }}
+        </a>
+    {% else %}
+        <button type="{{ type }}" class="btn btn-danger industry-btn-danger">
+            {{ label }}
+        </button>
+    {% endif %}
+{% endmacro %}

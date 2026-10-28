@@ -1,0 +1,59 @@
+{#
+    Composant tableaux — Thème Industrie & Négoce
+
+    Macros pour tableaux avec jetons de design du thème.
+    Utilise les couleurs surface, border et muted pour les en-têtes et lignes.
+#}
+
+{#
+    En-tête de tableau
+    Fond surface (#f3f5f8), texte navy (#1f3a5f)
+
+    @param array headers Liste des en-têtes (chaque entrée : { label: string, sortable: bool|null })
+#}
+{% macro header(headers) %}
+    <thead class="industry-table-header">
+        <tr>
+            {% for header in headers %}
+                <th scope="col" class="{% if header.sortable|default(false) %}sortable{% endif %}">
+                    {{ header.label }}
+                    {% if header.sortable|default(false) %}
+                        <span class="sort-indicator" aria-hidden="true"></span>
+                    {% endif %}
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+{% endmacro %}
+
+{#
+    Ligne de tableau
+    Fond blanc, bordure border (#cfd6df)
+
+    @param array cells Liste des cellules (chaque entrée : string ou { content: string, header: string|null })
+#}
+{% macro row(cells) %}
+    <tr class="industry-table-row">
+        {% for cell in cells %}
+            <td {% if cell.header|default(null) %}data-header="{{ cell.header }}"{% endif %}>
+                {{ cell.content|default(cell) }}
+            </td>
+        {% endfor %}
+    </tr>
+{% endmacro %}
+
+{#
+    Pied de tableau (optionnel)
+    Même style que l'en-tête
+
+    @param array footers Liste des cellules de pied
+#}
+{% macro footer(footers) %}
+    <tfoot class="industry-table-footer">
+        <tr>
+            {% for footer in footers %}
+                <td>{{ footer }}</td>
+            {% endfor %}
+        </tr>
+    </tfoot>
+{% endmacro %}

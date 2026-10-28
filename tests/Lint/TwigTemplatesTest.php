@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class TwigTemplatesTest extends TestCase
 {
-    private const THEME_ROOT = __DIR__ . '/../..';
+    private const string THEME_ROOT = __DIR__ . '/../..';
 
     /**
      * @param string $templatePath Chemin relatif depuis la racine du thème
@@ -35,5 +35,8 @@ final class TwigTemplatesTest extends TestCase
         yield 'en-tête' => ['templates/bundles/SyliusShopBundle/shared/layout/base/header/content.html.twig'];
         yield 'pied de page' => ['templates/bundles/SyliusShopBundle/shared/layout/base/footer/content.html.twig'];
         yield 'messages flash' => ['templates/bundles/SyliusShopBundle/shared/flashes.html.twig'];
+        yield 'composant boutons' => ['templates/components/buttons.html.twig'];
+        yield 'composant tableaux' => ['templates/components/tables.html.twig'];
+        yield 'composant champs' => ['templates/components/forms.html.twig'];
     }
 }

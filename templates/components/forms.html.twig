@@ -1,0 +1,135 @@
+{#
+    Composant champs de formulaire — Thème Industrie & Négoce
+
+    Macros pour champs de formulaire avec jetons de design du thème.
+    Contrastes AAA pour les labels (muted sur blanc : 9,4:1) et bordures.
+#}
+
+{#
+    Champ texte (input text)
+    Bordure muted (#3f4753), label muted sur blanc
+
+    @param string name Nom du champ
+    @param string label Libellé du champ
+    @param string|null value Valeur actuelle
+    @param bool required Champ obligatoire
+    @param string|null placeholder Texte d'aide
+#}
+{% macro text(name, label, value = null, required = false, placeholder = null) %}
+    <div class="form-group industry-form-group">
+        <label for="{{ name }}" class="form-label industry-form-label{% if required %} required{% endif %}">
+            {{ label }}
+            {% if required %}<span class="required-mark" aria-label="{{ 'required'|trans }}">*</span>{% endif %}
+        </label>
+        <input
+            type="text"
+            id="{{ name }}"
+            name="{{ name }}"
+            class="form-control industry-form-control"
+            {% if value is not null %}value="{{ value }}"{% endif %}
+            {% if required %}required{% endif %}
+            {% if placeholder is not null %}placeholder="{{ placeholder }}"{% endif %}
+        />
+    </div>
+{% endmacro %}
+
+{#
+    Champ textarea
+    Même style que le champ texte
+
+    @param string name Nom du champ
+    @param string label Libellé du champ
+    @param string|null value Valeur actuelle
+    @param bool required Champ obligatoire
+    @param int rows Nombre de lignes
+#}
+{% macro textarea(name, label, value = null, required = false, rows = 4) %}
+    <div class="form-group industry-form-group">
+        <label for="{{ name }}" class="form-label industry-form-label{% if required %} required{% endif %}">
+            {{ label }}
+            {% if required %}<span class="required-mark" aria-label="{{ 'required'|trans }}">*</span>{% endif %}
+        </label>
+        <textarea
+            id="{{ name }}"
+            name="{{ name }}"
+            class="form-control industry-form-control"
+            rows="{{ rows }}"
+            {% if required %}required{% endif %}
+        >{% if value is not null %}{{ value }}{% endif %}</textarea>
+    </div>
+{% endmacro %}
+
+{#
+    Champ select
+    Même style que les autres champs
+
+    @param string name Nom du champ
+    @param string label Libellé du champ
+    @param array options Liste des options (chaque entrée : { value: string, label: string, selected: bool|null })
+    @param bool required Champ obligatoire
+#}
+{% macro select(name, label, options, required = false) %}
+    <div class="form-group industry-form-group">
+        <label for="{{ name }}" class="form-label industry-form-label{% if required %} required{% endif %}">
+            {{ label }}
+            {% if required %}<span class="required-mark" aria-label="{{ 'required'|trans }}">*</span>{% endif %}
+        </label>
+        <select id="{{ name }}" name="{{ name }}" class="form-select industry-form-select" {% if required %}required{% endif %}>
+            {% for option in options %}
+                <option value="{{ option.value }}" {% if option.selected|default(false) %}selected{% endif %}>
+                    {{ option.label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro %}
+
+{#
+    Checkbox
+    Bordure et focus muted
+
+    @param string name Nom du champ
+    @param string label Libellé du champ
+    @param bool checked Coché par défaut
+    @param string|null value Valeur du champ
+#}
+{% macro checkbox(name, label, checked = false, value = '1') %}
+    <div class="form-check industry-form-check">
+        <input
+            type="checkbox"
+            id="{{ name }}"
+            name="{{ name }}"
+            value="{{ value }}"
+            class="form-check-input industry-form-check-input"
+            {% if checked %}checked{% endif %}
+        />
+        <label for="{{ name }}" class="form-check-label industry-form-check-label">
+            {{ label }}
+        </label>
+    </div>
+{% endmacro %}
+
+{#
+    Bouton radio
+    Même style que checkbox
+
+    @param string name Nom du groupe de radios
+    @param string value Valeur de ce radio
+    @param string label Libellé de ce radio
+    @param bool checked Coché par défaut
+#}
+{% macro radio(name, value, label, checked = false) %}
+    <div class="form-check industry-form-check">
+        <input
+            type="radio"
+            id="{{ name }}_{{ value }}"
+            name="{{ name }}"
+            value="{{ value }}"
+            class="form-check-input industry-form-check-input"
+            {% if checked %}checked{% endif %}
+        />
+        <label for="{{ name }}_{{ value }}" class="form-check-label industry-form-check-label">
+            {{ label }}
+        </label>
+    </div>
+{% endmacro %}

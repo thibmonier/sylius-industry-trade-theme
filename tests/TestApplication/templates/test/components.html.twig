@@ -1,0 +1,16 @@
+{% import 'components/buttons.html.twig' as buttons %}
+{% import 'components/tables.html.twig' as tables %}
+{% import 'components/forms.html.twig' as forms %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Components</title>
+</head>
+<body>
+{{ buttons.primary('Bouton test') }}
+{{ tables.header([{label: 'Colonne 1'}]) }}
+{{ forms.text('test_field', 'Champ test') }}
+</body>
+</html>

@@ -1,0 +1,6 @@
+sylius_theme:
+    sources:
+        filesystem:
+            directories:
+                - '%kernel.project_dir%/../../..'
+            scan_depth: 0
