@@ -18,7 +18,7 @@
     "babel-loader": "^9.2.0",
     "core-js": "^3.38.0",
     "sass": "^1.79.0",
-    "sass-loader": "^14.0.0",
+    "sass-loader": "^17.0.1",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.0"
   },
