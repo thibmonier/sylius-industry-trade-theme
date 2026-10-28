@@ -19,8 +19,16 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
-        "symplify/easy-coding-standard": "^12.0",
-        "rector/rector": "^1.0"
+        "phpunit/phpunit": "^10.5",
+        "rector/rector": "^1.0",
+        "sylius-labs/coding-standard": "^4.4",
+        "sylius/test-application": "^2.0.0@alpha",
+        "symfony/browser-kit": "^7.4 || ^8.0",
+        "symfony/debug-bundle": "^7.4 || ^8.0",
+        "symfony/dotenv": "^7.4 || ^8.0",
+        "symfony/intl": "^7.4 || ^8.0",
+        "symfony/web-profiler-bundle": "^7.4 || ^8.0",
+        "symfony/webpack-encore-bundle": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -37,6 +45,15 @@
             "title": "Industrie & Négoce",
             "description": "Thème B2B optimisé pour l'industrie et le négoce — haute densité d'information, contrastes AAA, saisie rapide"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false,
+            "phpstan/extension-installer": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
