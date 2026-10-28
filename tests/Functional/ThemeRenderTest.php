@@ -27,6 +27,12 @@ final class ThemeRenderTest extends WebTestCase
         $client = self::createClient();
         $container = self::getContainer();
 
+        // Vérifier que le thème est découvert par le ThemeBundle
+        $themeRepository = $container->get('sylius.repository.theme');
+        assert(method_exists($themeRepository, 'findOneByName'));
+        $theme = $themeRepository->findOneByName('tmonier/sylius-industry-trade-theme');
+        $this->assertNotNull($theme, 'Le thème tmonier/sylius-industry-trade-theme doit être découvert');
+
         // Récupérer le canal par défaut et activer le thème
         $channelRepository = $container->get('sylius.repository.channel');
         assert(method_exists($channelRepository, 'findOneBy'));
@@ -88,6 +94,12 @@ final class ThemeRenderTest extends WebTestCase
     {
         $client = self::createClient();
         $container = self::getContainer();
+
+        // Vérifier que le thème est découvert par le ThemeBundle
+        $themeRepository = $container->get('sylius.repository.theme');
+        assert(method_exists($themeRepository, 'findOneByName'));
+        $theme = $themeRepository->findOneByName('tmonier/sylius-industry-trade-theme');
+        $this->assertNotNull($theme, 'Le thème tmonier/sylius-industry-trade-theme doit être découvert');
 
         // Activer le thème
         $channelRepository = $container->get('sylius.repository.channel');

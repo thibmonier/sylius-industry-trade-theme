@@ -1,0 +1,6 @@
+sylius_theme:
+    sources:
+        filesystem:
+            directories:
+                - '/Users/tmonier/Projects/sylius_plugins/sylius-industry-trade-theme'
+            scan_depth: 0
