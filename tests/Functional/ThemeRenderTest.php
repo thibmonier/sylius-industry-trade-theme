@@ -88,9 +88,9 @@ final class ThemeRenderTest extends WebTestCase
         $container = self::getContainer();
 
         // Activer le thème
-        /** @var \Sylius\Component\Core\Repository\ChannelRepositoryInterface $channelRepository */
+        /** @var ChannelRepositoryInterface $channelRepository */
         $channelRepository = $container->get('sylius.repository.channel');
-        /** @var \Sylius\Component\Core\Model\ChannelInterface|null $channel */
+        /** @var ChannelInterface|null $channel */
         $channel = $channelRepository->findOneBy([]);
 
         $this->assertNotNull($channel, 'Un canal doit exister dans l\'application de test');
@@ -100,19 +100,25 @@ final class ThemeRenderTest extends WebTestCase
         $entityManager = $container->get('doctrine.orm.entity_manager');
         $entityManager->flush();
 
-        // Rendre une page qui utilise les composants
-        // Note : ce test vérifie que le thème est actif et que les classes des
-        // composants seraient disponibles. Dans une vraie application, les composants
-        // sont importés via {% import %} et utilisés dans les gabarits.
-        $client->request('GET', '/');
+        // Rendre un gabarit de test qui utilise les composants
+        /** @var \Twig\Environment $twig */
+        $twig = $container->get('twig');
 
-        $this->assertResponseIsSuccessful();
+        $template = <<<'TWIG'
+{% import 'components/buttons.html.twig' as buttons %}
+{% import 'components/tables.html.twig' as tables %}
+{% import 'components/forms.html.twig' as forms %}
 
-        // Vérifier que le thème est actif (les composants sont définis dans le thème)
-        $this->assertSelectorExists('[data-theme="industry-trade"]');
+{{ buttons.primary('Bouton test') }}
+{{ tables.header([{label: 'Colonne 1'}]) }}
+{{ forms.text('test_field', 'Champ test') }}
+TWIG;
 
-        // Note : les classes des composants (industry-btn-primary, industry-table-header, etc.)
-        // ne sont visibles que si un gabarit les utilise. Ce test vérifie que le thème
-        // est actif, ce qui permet l'utilisation des composants.
+        $rendered = $twig->createTemplate($template)->render([]);
+
+        // Vérifier que les classes du thème sont présentes
+        $this->assertStringContainsString('industry-btn-primary', $rendered);
+        $this->assertStringContainsString('industry-table-header', $rendered);
+        $this->assertStringContainsString('industry-form-control', $rendered);
     }
 }
