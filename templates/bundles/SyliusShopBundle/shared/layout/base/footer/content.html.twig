@@ -1,0 +1,32 @@
+{# Thème Industrie & Négoce — pied de page #}
+<div class="bg-light border-top py-4">
+    <div class="container">
+        <div class="row">
+            {# Colonne 1 : Informations #}
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h5 class="fw-bold">{{ sylius.channel.name }}</h5>
+                <p class="text-muted small">
+                    {{ 'footer.tagline'|trans({}, 'shop') }}
+                </p>
+            </div>
+
+            {# Colonne 2 : Liens utiles #}
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h6 class="fw-bold">{{ 'footer.useful_links'|trans({}, 'shop') }}</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="{{ path('sylius_shop_contact_request') }}" class="text-decoration-none">{{ 'footer.contact'|trans({}, 'shop') }}</a></li>
+                    <li><a href="#" class="text-decoration-none">{{ 'footer.terms'|trans({}, 'shop') }}</a></li>
+                    <li><a href="#" class="text-decoration-none">{{ 'footer.privacy'|trans({}, 'shop') }}</a></li>
+                </ul>
+            </div>
+
+            {# Colonne 3 : Informations légales #}
+            <div class="col-md-4">
+                <h6 class="fw-bold">{{ 'footer.legal'|trans({}, 'shop') }}</h6>
+                <p class="text-muted small mb-0">
+                    &copy; {{ 'now'|date('Y') }} {{ sylius.channel.name }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

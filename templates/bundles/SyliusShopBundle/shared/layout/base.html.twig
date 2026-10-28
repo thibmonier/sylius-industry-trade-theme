@@ -1,0 +1,55 @@
+{# Thème Industrie & Négoce — layout de base #}
+{% import "@SyliusUi/macro/rtl.html.twig" as rtl %}
+
+{% set generic_hook = 'sylius_shop.base' %}
+{% set prefixes = prefixes|default([])|merge([generic_hook]) %}
+
+<!DOCTYPE html>
+
+<html lang="{{ app.request.locale|slice(0, 2) }}" {{ rtl.default(sylius.localeCode) }}>
+    <head>
+        {% block metatags %}
+            {% hook '#metatags' with { _prefixes: prefixes } %}
+        {% endblock %}
+
+        <title>{% block title %}{{ sylius.channel.name }}{% endblock %}</title>
+
+        {% block stylesheets %}
+            {% hook '#stylesheets' with { _prefixes: prefixes } %}
+        {% endblock %}
+
+        {% hook 'head' with { _prefixes: prefixes } %}
+    </head>
+
+    <body>
+        {% block body %}
+            <div class="{% apply escape %}{% hook '#body_classes' with { _prefixes: prefixes } %}{% endapply %}">
+                {# Lien d'évitement pour l'accessibilité #}
+                <a href="#main-content" class="visually-hidden-focusable position-fixed top-0 start-0 m-2 px-3 py-2 bg-white text-dark border border-dark rounded" style="z-index: 2000">
+                    {{ 'skip_link'|trans({}, 'shop_layout') }}
+                </a>
+
+                {% block header %}
+                    <header>
+                        {% hook 'header' with { _prefixes: prefixes } %}
+                    </header>
+                {% endblock %}
+
+                <main id="main-content" tabindex="-1">
+                    {% block content %}{% endblock %}
+                </main>
+
+                {% block footer %}
+                    <footer class="mt-auto">
+                        {% hook 'footer' with { _prefixes: prefixes } %}
+                    </footer>
+                {% endblock %}
+            </div>
+            {% hook 'offcanvas' with { _prefixes: prefixes } %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% hook '#javascripts' with { _prefixes: prefixes } %}
+        {% endblock %}
+    </body>
+</html>

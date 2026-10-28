@@ -1,0 +1,30 @@
+{# Thème Industrie & Négoce — en-tête #}
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        {# Logo #}
+        <a class="navbar-brand" href="{{ path('sylius_shop_homepage') }}">
+            <strong>{{ sylius.channel.name }}</strong>
+        </a>
+
+        {# Bouton hamburger mobile #}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="{{ 'toggle_navigation'|trans({}, 'shop_layout') }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        {# Menu principal #}
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {# Taxonomie principale #}
+                {% hook 'taxon_menu' %}
+            </ul>
+
+            <div class="d-flex align-items-center gap-3">
+                {# Panier #}
+                {% hook 'cart' %}
+
+                {# Sécurité (connexion/compte) #}
+                {% hook 'security' %}
+            </div>
+        </div>
+    </div>
+</nav>
