@@ -23,10 +23,7 @@ final class TwigTemplatesTest extends TestCase
     {
         $fullPath = self::THEME_ROOT . '/' . $templatePath;
 
-        $this->assertFileExists(
-            $fullPath,
-            sprintf('Le gabarit %s doit exister', $templatePath)
-        );
+        $this->assertFileExists($fullPath, sprintf('Le gabarit %s doit exister', $templatePath));
     }
 
     /**

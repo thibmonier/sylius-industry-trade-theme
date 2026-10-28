@@ -26,8 +26,8 @@ final class ColorContrastTest extends TestCase
                 $foreground,
                 $background,
                 $ratio,
-                $minimumRatio
-            )
+                $minimumRatio,
+            ),
         );
     }
 
