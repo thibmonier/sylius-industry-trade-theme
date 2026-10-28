@@ -59,9 +59,9 @@ $industry-border-radius-md: 0.375rem; // 6px
 $industry-border-radius-lg: 0.5rem;   // 8px
 
 // Ombres
-$industry-shadow-sm: 0 0.125rem 0.25rem rgba($industry-navy-rgb, 0.075);
-$industry-shadow-md: 0 0.25rem 0.5rem rgba($industry-navy-rgb, 0.1);
-$industry-shadow-lg: 0 0.5rem 1rem rgba($industry-navy-rgb, 0.15);
+$industry-shadow-sm: 0 0.125rem 0.25rem rgba($industry-navy, 0.075);
+$industry-shadow-md: 0 0.25rem 0.5rem rgba($industry-navy, 0.1);
+$industry-shadow-lg: 0 0.5rem 1rem rgba($industry-navy, 0.15);
 
 // Transitions
 $industry-transition-base: all 0.2s ease-in-out;
