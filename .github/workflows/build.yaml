@@ -79,14 +79,6 @@ jobs:
                 run: vendor/bin/phpunit --colors=always --testsuite=unit
 
             -
-                name: Debug - sylius_theme config
-                run: vendor/bin/console debug:config sylius_theme
-
-            -
-                name: Debug - Theme list
-                run: vendor/bin/console sylius:theme:list
-
-            -
                 name: Run functional tests
                 run: vendor/bin/phpunit --colors=always --testsuite=functional
 
