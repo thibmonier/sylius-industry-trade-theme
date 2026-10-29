@@ -6,7 +6,7 @@ B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: h
 
 ## Features
 
-- **Design tokens**: color palette with WCAG AAA contrasts (≥ 7:1), overridable via SCSS variables
+- **Design tokens**: color palette with WCAG AAA contrasts (≥ 7:1), overridable via CSS custom properties
 - **Common components**: header, footer, buttons, tables, forms, messages
 - **Compatibility**: Sylius 2.2 and 2.3, PHP 8.3+
 - **Assets**: Webpack Encore
@@ -38,24 +38,24 @@ npm run build
 
 ### Theme activation
 
-The theme is activated by setting the `theme_name` of a Sylius channel. See the [official documentation](https://docs.sylius.com/en/latest/book/themes/index.html) for theme context customization.
+The theme is activated by setting the `theme_name` of a Sylius channel. See the [official documentation](https://old-docs.sylius.com/en/latest/book/themes/index.html) for theme context customization.
 
 ## Usage
 
 ### Customize design tokens
 
-Color, typography and spacing tokens are defined in `assets/styles/_variables.scss`. To override them:
+The theme defines CSS custom properties on `:root` (colors, spacing, fonts). To override them, add your own values in your application stylesheet:
 
-1. Create your own SCSS file in your application
-2. Redefine variables before importing the theme:
-
-```scss
-// config/packages/assets/styles/custom-theme.scss
-$industry-navy: #your-color;
-$industry-accent: #your-accent;
-
-@use '~tmonier/sylius-industry-trade-theme/assets/styles/theme.scss';
+```css
+:root {
+    --bs-primary: #your-navy;
+    --industry-accent: #your-accent;
+    --bs-link-color: #your-link-color;
+    --bs-link-hover-color: #your-hover-color;
+}
 ```
+
+See `assets/styles/theme.scss` for the complete list of available custom properties.
 
 ### Override components
 

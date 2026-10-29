@@ -6,7 +6,7 @@ Thème B2B pour [Sylius](https://sylius.com) 2 optimisé pour l'industrie et le 
 
 ## Caractéristiques
 
-- **Jetons de design** : palette de couleurs avec contrastes WCAG AAA (≥ 7:1), surchargeables via variables SCSS
+- **Jetons de design** : palette de couleurs avec contrastes WCAG AAA (≥ 7:1), surchargeables via propriétés CSS personnalisées
 - **Composants communs** : en-tête, pied de page, boutons, tableaux, formulaires, messages
 - **Compatibilité** : Sylius 2.2 et 2.3, PHP 8.3+
 - **Assets** : Webpack Encore
@@ -38,24 +38,24 @@ npm run build
 
 ### Activation du thème
 
-Le thème est activé en définissant le `theme_name` d'un canal Sylius. Consultez la [documentation officielle](https://docs.sylius.com/en/latest/book/themes/index.html) pour la personnalisation du contexte de thème.
+Le thème est activé en définissant le `theme_name` d'un canal Sylius. Consultez la [documentation officielle](https://old-docs.sylius.com/en/latest/book/themes/index.html) pour la personnalisation du contexte de thème.
 
 ## Usage
 
 ### Personnalisation des jetons de design
 
-Les jetons de couleur, typographie et espacements sont définis dans `assets/styles/_variables.scss`. Pour les surcharger :
+Le thème définit des propriétés CSS personnalisées sur `:root` (couleurs, espacements, polices). Pour les surcharger, ajoutez vos propres valeurs dans la feuille de style de votre application :
 
-1. Créez votre propre fichier SCSS dans votre application
-2. Redéfinissez les variables avant d'importer le thème :
-
-```scss
-// config/packages/assets/styles/custom-theme.scss
-$industry-navy: #your-color;
-$industry-accent: #your-accent;
-
-@use '~tmonier/sylius-industry-trade-theme/assets/styles/theme.scss';
+```css
+:root {
+    --bs-primary: #your-navy;
+    --industry-accent: #your-accent;
+    --bs-link-color: #your-link-color;
+    --bs-link-hover-color: #your-hover-color;
+}
 ```
+
+Voir `assets/styles/theme.scss` pour la liste complète des propriétés personnalisées disponibles.
 
 ### Surcharge des composants
 
