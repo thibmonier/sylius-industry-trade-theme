@@ -1,14 +1,22 @@
-# Thème Industrie & Négoce pour Sylius
+# Sylius Industry & Trade Theme
 
-Thème B2B pour Sylius 2 optimisé pour l'industrie et le négoce : haute densité d'information, contrastes AAA, saisie rapide.
+> Français : [README.fr.md](README.fr.md) <!-- vitrine:lang -->
 
-## Caractéristiques
+B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: high information density, AAA contrasts, fast input.
 
-- **Jetons de design** : palette de couleurs avec contrastes WCAG AAA (≥ 7:1), surchargeables via variables SCSS
-- **Composants communs** : en-tête, pied de page, boutons, tableaux, formulaires, messages
-- **Compatibilité** : Sylius 2.2 et 2.3, PHP 8.3+
-- **Assets** : Webpack Encore, Stimulus controllers
-- **Installation** : recette Flex pour configuration automatique
+## Features
+
+- **Design tokens**: color palette with WCAG AAA contrasts (≥ 7:1), overridable via SCSS variables
+- **Common components**: header, footer, buttons, tables, forms, messages
+- **Compatibility**: Sylius 2.2 and 2.3, PHP 8.3+
+- **Assets**: Webpack Encore, Stimulus controllers
+- **Installation**: Flex recipe for automatic configuration
+
+## Prerequisites
+
+- PHP 8.3 or higher
+- Sylius 2.2.9 or 2.3+
+- Sylius Theme Bundle ^2.4
 
 ## Installation
 
@@ -16,27 +24,27 @@ Thème B2B pour Sylius 2 optimisé pour l'industrie et le négoce : haute densit
 composer require tmonier/sylius-industry-trade-theme
 ```
 
-La recette Flex copie automatiquement la configuration des Twig hooks dans `config/packages/`.
+The Flex recipe automatically copies the Twig hooks configuration to `config/packages/`.
 
-### Installation des assets
+### Install assets
 
 ```bash
 php bin/console sylius:theme:assets:install
 npm run build
 ```
 
-### Activation du thème
+### Theme activation
 
-Le thème est activé automatiquement via le ThemeBundle de Sylius. Consultez la [documentation officielle](https://docs.sylius.com/en/latest/book/themes/index.html) pour personnaliser le contexte de thème.
+The theme is activated by setting the `theme_name` of a Sylius channel. See the [official documentation](https://docs.sylius.com/en/latest/book/themes/index.html) for theme context customization.
 
-## Utilisation
+## Usage
 
-### Personnalisation des jetons de design
+### Customize design tokens
 
-Les jetons de couleur, typographie et espacements sont définis dans `assets/styles/_variables.scss`. Pour les surcharger :
+Color, typography and spacing tokens are defined in `assets/styles/_variables.scss`. To override them:
 
-1. Créez votre propre fichier SCSS dans votre application
-2. Redéfinissez les variables avant d'importer le thème :
+1. Create your own SCSS file in your application
+2. Redefine variables before importing the theme:
 
 ```scss
 // config/packages/assets/styles/custom-theme.scss
@@ -46,34 +54,25 @@ $industry-accent: #your-accent;
 @use '~tmonier/sylius-industry-trade-theme/assets/styles/theme.scss';
 ```
 
-### Surcharge des composants
+### Override components
 
-Les gabarits Twig peuvent être surchargés dans `templates/bundles/SyliusShopBundle/` de votre application. L'ordre de priorité est :
+Twig templates can be overridden in `templates/bundles/SyliusShopBundle/` of your application. The priority order is:
 
-1. Application : `templates/bundles/SyliusShopBundle/`
-2. Thème : `vendor/tmonier/sylius-industry-trade-theme/templates/`
-3. Bundle Sylius : `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
+1. Application: `templates/bundles/SyliusShopBundle/`
+2. Theme: `vendor/tmonier/sylius-industry-trade-theme/templates/`
+3. Sylius Bundle: `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
 
-## Démo
+<!-- vitrine:demo-b2b:start -->
+## B2B demo
 
-Voir le thème en action sur la [démo B2B Sylius](https://sylius-b2b.thibaut-monier.fr).
+This plugin is used in the [Sylius B2B demo](https://github.com/thibmonier/sylius-b2b-demo): a Sylius 2.3 shop with fictitious sample data where the B2B plugins work together. The source code, setup and fixtures of the demo are in that repository.
 
-## Auteur
+- Online demo: [sylius-b2b.thibaut-monier.fr](https://sylius-b2b.thibaut-monier.fr)
+- Author: [Thibaut Monier](https://www.linkedin.com/in/thibautmonier/)
 
-**Thibaut Monier**  
-Delivery Manager / CTO · Expert Sylius & Symfony
+The demo is an example, not a production setup.
+<!-- vitrine:demo-b2b:end -->
 
-- [Profil LinkedIn](https://www.linkedin.com/in/thibautmonier/)
-- [Démo](https://sylius-b2b.thibaut-monier.fr)
+## License
 
-## Licence
-
-MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-## Contributions
-
-Les contributions sont les bienvenues ! Ouvrez une issue ou une pull request sur GitHub.
-
-## Support
-
-Pour toute question ou demande de support, ouvrez une issue sur [GitHub](https://github.com/thibmonier/sylius-industry-trade-theme/issues).
+MIT
