@@ -38,7 +38,7 @@ npm run build
 
 ### Activation du thème
 
-Le thème est activé en définissant le `theme_name` d'un canal Sylius. Consultez la [documentation officielle](https://old-docs.sylius.com/en/latest/book/themes/index.html) pour la personnalisation du contexte de thème.
+Le thème est activé en définissant le `theme_name` d'un canal Sylius.
 
 ## Usage
 
