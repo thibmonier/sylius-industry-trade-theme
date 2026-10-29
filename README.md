@@ -2,15 +2,14 @@
 
 > Français : [README.fr.md](README.fr.md) <!-- vitrine:lang -->
 
-B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: high information density, AAA contrasts, fast input.
+B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: high information density, AAA contrasts.
 
 ## Features
 
 - **Design tokens**: color palette with WCAG AAA contrasts (≥ 7:1), overridable via SCSS variables
 - **Common components**: header, footer, buttons, tables, forms, messages
 - **Compatibility**: Sylius 2.2 and 2.3, PHP 8.3+
-- **Assets**: Webpack Encore, Stimulus controllers
-- **Installation**: Flex recipe for automatic configuration
+- **Assets**: Webpack Encore
 
 ## Prerequisites
 
@@ -24,7 +23,11 @@ B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: h
 composer require tmonier/sylius-industry-trade-theme
 ```
 
-The Flex recipe automatically copies the Twig hooks configuration to `config/packages/`.
+Copy the Twig hooks configuration to your application:
+
+```bash
+cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_industry_trade_theme.yaml config/packages/
+```
 
 ### Install assets
 
