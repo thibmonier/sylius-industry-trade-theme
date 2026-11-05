@@ -1,0 +1,21 @@
+{#
+    Page de contenu (vitrine) du thème : à étendre depuis l'application.
+
+        {% extends '@TmonierSyliusIndustryTradeTheme/content/page.html.twig' %}
+        {% block page_title %}Mon titre{% endblock %}
+        {% block page_body %}...{% endblock %}
+
+    Titres, listes et tableaux prennent le style du thème ; pour les tableaux, utiliser les macros de components/tables.html.twig.
+#}
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}{% block page_title %}{% endblock %} | {{ sylius.channel.name }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-4 mb-5">
+        <article class="industry-content">
+            <h1 class="industry-content__title">{{ block('page_title') }}</h1>
+            {% block page_body %}{% endblock %}
+        </article>
+    </div>
+{% endblock %}

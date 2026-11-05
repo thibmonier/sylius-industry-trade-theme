@@ -8,6 +8,7 @@ B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: h
 
 - **Design tokens**: color palette with WCAG AAA contrasts (≥ 7:1), overridable via CSS custom properties
 - **Common components**: header, footer, buttons, tables, forms, messages
+- **Cart, account and content pages**: dense cart (reference, editable quantity, prices excl. tax), themed account navigation (plugin entries included only when the plugin is installed), content page layout `@TmonierSyliusIndustryTradeTheme/content/page.html.twig`
 - **Compatibility**: Sylius 2.2 and 2.3, PHP 8.3+
 - **Assets**: Webpack Encore
 
@@ -27,7 +28,10 @@ Copy the Twig hooks configuration to your application:
 
 ```bash
 cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_industry_trade_theme.yaml config/packages/
+cp -r vendor/tmonier/sylius-industry-trade-theme/config/twig_hooks config/
 ```
+
+The cart, account and content-page hook templates live in the Twig namespace `@TmonierSyliusIndustryTradeTheme` (registered by `twig.paths` in the copied config), which Twig resolves on every channel; each one renders the Sylius core template unless the theme is active on the current channel, so a channel without the theme keeps the standard pages. The hooks live in `config/twig_hooks/cart_account.yaml`, imported by the main file. They only change templates of existing hookables, so pages of other plugins keep working; the quick order link of an empty cart appears only when the quick-order plugin is installed.
 
 ### Install assets
 
@@ -82,7 +86,15 @@ Catalogue pages (rendered with Bootstrap and the theme stylesheet; the shop head
 - **Product list**: one row per product with reference, designation, stock and price excl. VAT; below 768 px each row becomes a card. A product without image shows a placeholder.
 - **Product page**: product and variant references, availability, technical sheet (product attributes) and a Documents list for attributes whose text value is a link to a pdf, dwg, step, zip, doc or xls file. Blocks from plugins (for example tier pricing) are left to the plugins and simply absent when the plugin is not installed.
 - Texts are in the `industry_trade` translation domain (`translations/`, English and French).
-- Implemented as theme template overrides (`templates/bundles/SyliusShopBundle/`), which only apply to channels using the theme: Twig hooks are global and would break channels without the theme.
+- Implemented as theme template overrides (`templates/bundles/SyliusShopBundle/`), which only apply to channels using the theme. A hook pointing to a new template would be global and would break channels without the theme, hence the guarded `@TmonierSyliusIndustryTradeTheme` templates of the cart and account pages.
+
+| Cart (12 lines) | Empty cart |
+|---|---|
+| ![Dense cart](docs/cart.png) | ![Empty cart](docs/cart-empty.png) |
+
+| Account navigation | Content page |
+|---|---|
+| ![Account](docs/account.png) | ![Content page](docs/content-page.png) |
 
 <!-- vitrine:demo-b2b:start -->
 ## B2B demo

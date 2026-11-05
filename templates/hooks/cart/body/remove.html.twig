@@ -1,0 +1,19 @@
+{% if sylius.channel.themeName != industry_theme_name %}
+    {% include '@SyliusShop/cart/index/content/form/sections/general/items/body/remove.html.twig' %}
+{% else %}
+{% set item = hookable_metadata.context.item %}
+
+<td>
+    <button
+        class="btn btn-sm btn-transparent px-2"
+        type="button"
+        aria-label="{{ 'industry_theme.cart.remove'|trans({'%name%': item.productName}, 'industry_theme') }}"
+        data-action="live#action:prevent"
+        data-live-action-param="removeItem"
+        data-live-index-param="{{ hookable_metadata.context.index }}"
+        {{ sylius_test_html_attribute('remove-cart-item') }}
+    >
+        {{ ux_icon('tabler:x', {class: 'icon icon-sm', 'aria-hidden': 'true'}) }}
+    </button>
+</td>
+{% endif %}

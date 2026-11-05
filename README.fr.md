@@ -8,6 +8,7 @@ Thème B2B pour [Sylius](https://sylius.com) 2 optimisé pour l'industrie et le 
 
 - **Jetons de design** : palette de couleurs avec contrastes WCAG AAA (≥ 7:1), surchargeables via propriétés CSS personnalisées
 - **Composants communs** : en-tête, pied de page, boutons, tableaux, formulaires, messages
+- **Panier, compte et pages de contenu** : panier dense (référence, quantité modifiable, prix HT), navigation du compte au style du thème (entrées des plugins seulement si le plugin est installé), gabarit de page de contenu `@TmonierSyliusIndustryTradeTheme/content/page.html.twig`
 - **Compatibilité** : Sylius 2.2 et 2.3, PHP 8.3+
 - **Assets** : Webpack Encore
 
@@ -27,7 +28,10 @@ Copier la configuration des Twig hooks dans votre application :
 
 ```bash
 cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_industry_trade_theme.yaml config/packages/
+cp -r vendor/tmonier/sylius-industry-trade-theme/config/twig_hooks config/
 ```
+
+Les gabarits des hooks du panier, du compte et des pages de contenu sont dans le namespace Twig `@TmonierSyliusIndustryTradeTheme` (déclaré par `twig.paths` dans la config copiée), résolu sur tous les canaux ; chacun rend le gabarit du cœur tant que le thème n'est pas actif sur le canal courant, donc un canal sans thème garde les pages standard. Les hooks sont dans `config/twig_hooks/cart_account.yaml`, importé par le fichier principal. Ils ne changent que le gabarit de hookables existants : les pages des autres plugins continuent de fonctionner ; le lien vers la saisie rapide d'un panier vide n'apparaît que si le plugin quick-order est installé.
 
 ### Installation des assets
 
@@ -82,7 +86,15 @@ Pages du catalogue (rendues avec Bootstrap et la feuille de style du thème ; l'
 - **Liste des produits** : une ligne par produit avec référence, désignation, stock et prix HT ; sous 768 px chaque ligne devient une carte. Un produit sans image affiche un visuel de substitution.
 - **Fiche produit** : références produit et variante, disponibilité, fiche technique (attributs du produit) et liste de documents pour les attributs dont la valeur texte est un lien vers un fichier pdf, dwg, step, zip, doc ou xls. Les blocs des plugins (par exemple les prix dégressifs) restent ceux des plugins et sont absents si le plugin n'est pas installé.
 - Textes dans le domaine de traduction `industry_trade` (`translations/`, anglais et français).
-- Réalisé par surcharge de gabarits (`templates/bundles/SyliusShopBundle/`), qui ne s'appliquent qu'aux canaux utilisant le thème : les Twig hooks sont globaux et casseraient les canaux sans le thème.
+- Réalisé par surcharge de gabarits (`templates/bundles/SyliusShopBundle/`), qui ne s'appliquent qu'aux canaux utilisant le thème. Un hook qui viserait un nouveau gabarit serait global et casserait les canaux sans le thème, d'où les gabarits gardés `@TmonierSyliusIndustryTradeTheme` du panier et du compte.
+
+| Panier (12 lignes) | Panier vide |
+|---|---|
+| ![Panier dense](docs/cart.png) | ![Panier vide](docs/cart-empty.png) |
+
+| Navigation du compte | Page de contenu |
+|---|---|
+| ![Compte](docs/account.png) | ![Page de contenu](docs/content-page.png) |
 
 <!-- vitrine:demo-b2b:start -->
 ## Démo B2B
