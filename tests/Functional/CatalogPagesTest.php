@@ -138,6 +138,21 @@ final class CatalogPagesTest extends CatalogWebTestCase
         $this->assertSelectorNotExists('[data-industry="home-aisles"]');
     }
 
+    public function testPagesRenderWithStandardSyliusWhenThemeIsInactive(): void
+    {
+        $taxon = $this->createTaxon('Plain');
+        $product = $this->createProduct('PLAIN01', 'Plain product', $taxon);
+        $this->channel->setThemeName(null);
+        $this->em->flush();
+
+        foreach (['/' . self::LOCALE . '/', $this->listUrl($taxon), $this->showUrl($product)] as $url) {
+            $this->client->request('GET', $url);
+            $this->assertResponseIsSuccessful($url);
+            $this->assertSelectorNotExists('[data-industry]');
+            $this->assertSelectorNotExists('[data-theme="industry-trade"]');
+        }
+    }
+
     private function addTextAttribute(ProductInterface $product, string $code, string $name, string $value): void
     {
         $container = self::getContainer();
