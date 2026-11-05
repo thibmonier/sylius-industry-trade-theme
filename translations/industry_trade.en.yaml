@@ -13,6 +13,8 @@ industry_trade:
         stock: 'Stock'
         price: 'Price excl. VAT'
         excl_vat: 'excl. VAT'
+        actions: 'Actions'
+        price_hidden: 'Price not displayed'
         no_image: 'No image available'
     stock:
         available: 'Available'

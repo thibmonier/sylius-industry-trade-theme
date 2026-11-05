@@ -1,6 +1,3 @@
-{% if sylius.channel.themeName != industry_theme_name %}
-    {% include '@SyliusShop/cart/index/content/form.html.twig' %}
-{% else %}
 {# Rendered with \Sylius\Bundle\ShopBundle\Twig\Component\Cart\FormComponent #}
 {#
     Même formulaire que le cœur ; seul l'état vide change : un message et un lien. Le lien vers la saisie rapide est fourni
@@ -31,4 +28,3 @@
         {{ form_end(form, {render_rest: hookable.configuration.render_rest|default(false)}) }}
     {% endif %}
 </div>
-{% endif %}

@@ -6,7 +6,7 @@
 {% set resources = hookable_metadata.context.resources %}
 
 {% if resources.data|length > 0 %}
-    <div class="industry-product-list" data-industry="product-list" {{ sylius_test_html_attribute('products') }}>
+    <div class="industry-product-list overflow-x-auto" data-industry="product-list" {{ sylius_test_html_attribute('products') }}>
         <table class="table industry-product-table">
             <caption class="visually-hidden">{{ 'industry_trade.list.caption'|trans({}, 'industry_trade') }}</caption>
             {{ tables.header([
@@ -15,6 +15,7 @@
                 {label: 'industry_trade.list.designation'|trans({}, 'industry_trade')},
                 {label: 'industry_trade.list.stock'|trans({}, 'industry_trade')},
                 {label: 'industry_trade.list.price'|trans({}, 'industry_trade')},
+                {label: 'industry_trade.list.actions'|trans({}, 'industry_trade')},
             ]) }}
             <tbody>
                 {% for product in resources.data %}
@@ -41,14 +42,12 @@
                                 {% include 'industry_trade/_stock.html.twig' with {variant: variant} only %}
                             {% endif %}
                         </td>
-                        <td class="industry-product-table__price" data-label="{{ 'industry_trade.list.price'|trans({}, 'industry_trade') }}">
-                            {% if variant is null %}
-                                <span data-industry="price">–</span>
-                            {% else %}
-                                <span data-industry="price" {{ sylius_test_html_attribute('product-price') }}>{{ money.calculatePrice(variant) }}</span>
-                                <span class="industry-excl-vat">{{ 'industry_trade.list.excl_vat'|trans({}, 'industry_trade') }}</span>
-                            {% endif %}
-                        </td>
+                        {% if variant is null %}
+                            <td class="industry-product-table__price" data-label="{{ 'industry_trade.list.price'|trans({}, 'industry_trade') }}"><span data-industry="price-hidden">–</span></td>
+                            <td class="industry-product-table__actions" data-label="{{ 'industry_trade.list.actions'|trans({}, 'industry_trade') }}"></td>
+                        {% else %}
+                            {{ component('sylius_shop:product:card', { product: product, template: '@TmonierSyliusIndustryTradeTheme/product/row_cells.html.twig', hookableMetadata: hookable_metadata }) }}
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

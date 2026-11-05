@@ -22,6 +22,29 @@ final class CatalogStylesTest extends TestCase
         }
     }
 
+    public function testTokensAndComponentsAreScopedToTheActiveTheme(): void
+    {
+        $theme = (string) file_get_contents(self::STYLES . '/theme.scss');
+
+        $this->assertStringNotContainsString(':root', $theme);
+        $this->assertStringContainsString("[data-theme='industry-trade'] {", $theme);
+        $this->assertDoesNotMatchRegularExpression(
+            '/^(?:\.|:|body|html)[^\n]*\{/m',
+            preg_replace('/\n\[data-theme=.*\z/s', '', $theme) ?? '',
+            'une règle globale est déclarée hors du sélecteur du thème',
+        );
+    }
+
+    public function testSuccessTokenOfTheThemeIsTheAAAGreenAndItsRgbTripletMatches(): void
+    {
+        $variables = (string) file_get_contents(self::STYLES . '/_variables.scss');
+        $theme = (string) file_get_contents(self::STYLES . '/theme.scss');
+
+        $this->assertMatchesRegularExpression('/\$industry-success: #0f5a36;/', $variables);
+        $this->assertStringContainsString('$industry-success-rgb: 15, 90, 54;', $variables);
+        $this->assertStringContainsString('--bs-success-rgb: #{$industry-success-rgb};', $theme);
+    }
+
     public function testListFoldsIntoCardsBelow768PixelsWithoutHorizontalScroll(): void
     {
         $list = (string) file_get_contents(self::STYLES . '/pages/_product-list.scss');

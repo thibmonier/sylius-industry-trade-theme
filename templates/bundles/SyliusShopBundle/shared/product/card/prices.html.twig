@@ -1,0 +1,10 @@
+{# Thème Industrie & Négoce — comme le cœur, sauf dans une ligne de la liste dense (drapeau industry_row) : le prix a sa propre colonne. #}
+{% if not hookable_metadata.context.industry_row|default(false) %}
+{% set product = hookable_metadata.context.product %}
+
+<div>
+    {% if not product.enabledVariants.empty() %}
+        {% hook 'prices' %}
+    {% endif %}
+</div>
+{% endif %}

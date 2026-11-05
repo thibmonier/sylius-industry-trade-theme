@@ -1,4 +1,4 @@
-{# Thème Industrie & Négoce — layout de base #}
+{# Thème Industrie & Négoce — layout de base : celui du cœur (mêmes blocs, mêmes hooks, même attribut data-route), avec le lien d'évitement, les repères header/main/footer et data-theme sur le body (portée des jetons CSS). #}
 {% import "@SyliusUi/macro/rtl.html.twig" as rtl %}
 
 {% set generic_hook = 'sylius_shop.base' %}
@@ -21,7 +21,7 @@
         {% hook 'head' with { _prefixes: prefixes } %}
     </head>
 
-    <body data-theme="industry-trade">
+    <body data-theme="industry-trade" data-route="{{ app.request.attributes.get('_route') }}">
         {% block body %}
             <div class="{% apply escape %}{% hook '#body_classes' with { _prefixes: prefixes } %}{% endapply %}">
                 {# Lien d'évitement pour l'accessibilité #}

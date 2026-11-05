@@ -1,5 +1,0 @@
-{% if sylius.channel.themeName != industry_theme_name %}
-    {% include '@SyliusShop/cart/index/content/form/sections/general/items/head/unit_price.html.twig' %}
-{% else %}
-<th scope="col" class="text-end text-nowrap">{{ 'industry_theme.cart.unit_price'|trans({}, 'industry_theme') }}</th>
-{% endif %}

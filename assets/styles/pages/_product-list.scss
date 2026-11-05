@@ -25,6 +25,10 @@
         }
     }
 
+    &__actions {
+        white-space: nowrap;
+    }
+
     &__price {
         white-space: nowrap;
         font-variant-numeric: tabular-nums;
@@ -108,6 +112,11 @@
 
         &__image::before {
             content: none !important;
+        }
+
+        // Pas de ligne vide quand aucun hookable n'ajoute d'action
+        &__actions:empty {
+            display: none;
         }
     }
 }

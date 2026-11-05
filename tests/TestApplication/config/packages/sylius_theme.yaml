@@ -1,4 +1,6 @@
 imports:
+    # Réglages de l'application hôte simulée (US-228), importés AVANT les hooks du thème : comme une application dont le fichier se charge avant celui du thème.
+    - { resource: 'a_host_app.yaml' }
     # Hooks de l'US-224 (panier, compte, pages de contenu), chargés comme le ferait l'application hôte.
     - { resource: '../../../../config/twig_hooks/cart_account.yaml' }
 
@@ -18,3 +20,8 @@ services:
         arguments: ['@request_stack']
         tags:
             - { name: kernel.event_listener, event: sylius.menu.shop.account }
+
+    Tmonier\SyliusIndustryTradeTheme\Tests\Stub\HidePricesVoter:
+        arguments: ['@request_stack']
+        tags:
+            - { name: security.voter }

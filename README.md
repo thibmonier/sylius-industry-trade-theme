@@ -24,34 +24,55 @@ B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: h
 composer require tmonier/sylius-industry-trade-theme
 ```
 
-Copy the Twig hooks configuration to your application:
+Copy the configuration to your application:
 
 ```bash
 cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_industry_trade_theme.yaml config/packages/
 cp -r vendor/tmonier/sylius-industry-trade-theme/config/twig_hooks config/
 ```
 
-The cart, account and content-page hook templates live in the Twig namespace `@TmonierSyliusIndustryTradeTheme` (registered by `twig.paths` in the copied config), which Twig resolves on every channel; each one renders the Sylius core template unless the theme is active on the current channel, so a channel without the theme keeps the standard pages. The hooks live in `config/twig_hooks/cart_account.yaml`, imported by the main file. They only change templates of existing hookables, so pages of other plugins keep working; the quick order link of an empty cart appears only when the quick-order plugin is installed.
+What the configuration does, and what it never does:
 
-### Install assets
+- It registers the Twig namespace `@TmonierSyliusIndustryTradeTheme` (`twig.paths`), resolved on every channel, for the templates the theme adds: the cart "Reference" column, the account navigation items and the content page layout.
+- It adds two hookables, `industry_reference`, to the cart head and body (priority 350). They render nothing unless the theme is active on the current channel.
+- It does **not** replace any hookable of Sylius or of your application. The themed pages (header, footer, flash messages, cart, account, product list, search field) are template overrides under `templates/bundles/SyliusShopBundle/`, which Sylius applies only to channels using the theme. The hookables you added to `sylius_shop.base.header.content`, `sylius_shop.base.footer.content` or the product list keep rendering, and your own settings on the cart hookables `items`, `coupon`, `summary`, `form` and `account` (template, props, priority) stay yours, on themed and non-themed channels alike.
+- The quick order link of an empty cart appears only when the quick-order plugin is installed.
 
-```bash
-php bin/console sylius:theme:assets:install
-npm run build
+### Install the styles and assets
+
+The package ships SCSS sources, not compiled assets. Import them in the Encore entry of your application, **after** the Sylius shop styles (Sass loader enabled, as in a standard Sylius application):
+
+```scss
+// assets/shop/entrypoint.scss (or the stylesheet imported by your shop entry)
+@use '../../vendor/tmonier/sylius-industry-trade-theme/assets/styles/theme';
 ```
+
+then build as usual (`npm run build`). All the rules of the theme are scoped to `[data-theme="industry-trade"]`, an attribute the theme layout sets on `<body>`: on a channel without the theme, or elsewhere in your application, no token and no component changes.
 
 ### Theme activation
 
-The theme is activated by setting the `theme_name` of a Sylius channel.
+Sylius must find the theme: its filesystem source scans the directories of `sylius_theme.sources.filesystem.directories` (`composer.json` files, `scan_depth` levels deep), for example
+
+```yaml
+sylius_theme:
+    sources:
+        filesystem:
+            scan_depth: 1
+            directories:
+                - '%kernel.project_dir%/themes'
+                - '%kernel.project_dir%/vendor/tmonier'
+```
+
+Then set the `theme_name` of a Sylius channel to `tmonier/sylius-industry-trade-theme`.
 
 ## Usage
 
 ### Customize design tokens
 
-The theme defines CSS custom properties on `:root` (colors, spacing, fonts). To override them, add your own values in your application stylesheet:
+The theme defines its CSS custom properties on `[data-theme="industry-trade"]` (colors, spacing, fonts), not on `:root`, so they cannot collide with the variables of your application. To override them, use the same selector, loaded after the theme stylesheet:
 
 ```css
-:root {
+[data-theme="industry-trade"] {
     --bs-primary: #your-navy;
     --industry-accent: #your-accent;
     --bs-link-color: #your-link-color;
@@ -63,11 +84,31 @@ See `assets/styles/theme.scss` for the complete list of available custom propert
 
 ### Override components
 
-Twig templates can be overridden in `templates/bundles/SyliusShopBundle/` of your application. The priority order is:
+On a channel that uses the theme, a template of the theme **wins over** the same template in `templates/bundles/` of your application. The lookup order, for a themed channel, is:
 
-1. Application: `templates/bundles/SyliusShopBundle/`
-2. Theme: `vendor/tmonier/sylius-industry-trade-theme/templates/`
-3. Sylius Bundle: `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
+1. the active theme, then its parent themes (`parents` in the theme configuration): `vendor/tmonier/sylius-industry-trade-theme/templates/bundles/<Bundle>/...`;
+2. your application: `templates/bundles/<Bundle>/...`;
+3. the Sylius bundle: `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/templates/...`.
+
+(This is how `sylius/theme-bundle` resolves a template: `NamespacedTemplateLocator` looks in the theme first, `ThemeHierarchyProvider` adds the parents.) A channel without the theme only sees levels 2 and 3.
+
+To change a template the theme overrides, do not copy it into `templates/bundles/`: it would be ignored on themed channels. Create a theme of your own that declares this one as its parent, put your template in it, and set the channel to your theme:
+
+```json
+{
+    "name": "acme/shop-theme",
+    "extra": {
+        "sylius-theme": {
+            "title": "Acme",
+            "parents": ["tmonier/sylius-industry-trade-theme"]
+        }
+    }
+}
+```
+
+with `templates/bundles/SyliusShopBundle/...` next to that `composer.json` (in the `themes/` directory of your application by default). The two hookables of the "Reference" column compare the channel theme with `industry_theme_name`: if you use a child theme, redefine that Twig global to the name of your theme (`twig.globals.industry_theme_name`).
+
+Hookables and their props stay the way to change what the theme does not override: add or configure them in your own `sylius_twig_hooks` file.
 
 ### Reviewing template drift
 
@@ -95,10 +136,10 @@ Catalogue pages (rendered with Bootstrap and the theme stylesheet; the shop head
 ## Catalogue pages
 
 - **Home**: title, lead text and one link per child of the channel's menu taxon (hidden when the channel has none).
-- **Product list**: one row per product with reference, designation, stock and price excl. VAT; below 768 px each row becomes a card. A product without image shows a placeholder.
+- **Product list**: one row per product with reference, designation, stock, price excl. VAT and an actions cell. The price cell renders the core card hook `sylius_shop.shared.product.card.prices` and the actions cell the hookables of `sylius_shop.shared.product.card` (favourites, add to cart, quote... added by your application or plugins), so a price hidden by your application stays hidden. The exact stock is always shown; below 768 px each row becomes a card. A product without image shows a placeholder.
 - **Product page**: product and variant references, availability, technical sheet (product attributes) and a Documents list for attributes whose text value is a link to a pdf, dwg, step, zip, doc or xls file. Blocks from plugins (for example tier pricing) are left to the plugins and simply absent when the plugin is not installed.
 - Texts are in the `industry_trade` translation domain (`translations/`, English and French).
-- Implemented as theme template overrides (`templates/bundles/SyliusShopBundle/`), which only apply to channels using the theme. A hook pointing to a new template would be global and would break channels without the theme, hence the guarded `@TmonierSyliusIndustryTradeTheme` templates of the cart and account pages.
+- Implemented as theme template overrides (`templates/bundles/SyliusShopBundle/`), which only apply to channels using the theme and leave the hook configuration of your application alone. The only global additions are the two "Reference" hookables, guarded in their templates.
 
 | Cart (12 lines) | Empty cart |
 |---|---|

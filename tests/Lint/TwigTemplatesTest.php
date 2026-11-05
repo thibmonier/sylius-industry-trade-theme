@@ -32,9 +32,11 @@ final class TwigTemplatesTest extends TestCase
     public static function requiredTemplatesProvider(): iterable
     {
         yield 'layout de base' => ['templates/bundles/SyliusShopBundle/shared/layout/base.html.twig'];
-        yield 'en-tête' => ['templates/bundles/SyliusShopBundle/shared/layout/base/header/content.html.twig'];
-        yield 'pied de page' => ['templates/bundles/SyliusShopBundle/shared/layout/base/footer/content.html.twig'];
-        yield 'messages flash' => ['templates/bundles/SyliusShopBundle/shared/flashes.html.twig'];
+        yield 'filtre de recherche' => ['templates/bundles/SyliusShopBundle/grid/filter/string.html.twig'];
+        yield 'panier : formulaire' => ['templates/bundles/SyliusShopBundle/cart/index/content/form.html.twig'];
+        yield 'compte : navigation' => [
+            'templates/bundles/SyliusShopBundle/account/common/content/menu/account.html.twig',
+        ];
         yield 'composant boutons' => ['templates/components/buttons.html.twig'];
         yield 'composant tableaux' => ['templates/components/tables.html.twig'];
         yield 'composant champs' => ['templates/components/forms.html.twig'];

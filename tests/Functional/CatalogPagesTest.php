@@ -55,7 +55,7 @@ final class CatalogPagesTest extends CatalogWebTestCase
         $this->assertResponseIsSuccessful();
         $cells = $this->client->getCrawler()
             ->filter('tr[data-industry="product-row"] > td, tr[data-industry="product-row"] > th');
-        $this->assertCount(5, $cells);
+        $this->assertCount(6, $cells);
         foreach ($cells->each(static fn($cell): ?string => $cell->attr('data-label')) as $label) {
             $this->assertNotSame('', trim((string) $label));
         }
@@ -136,6 +136,18 @@ final class CatalogPagesTest extends CatalogWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('[data-industry="home-hero"]');
         $this->assertSelectorNotExists('[data-industry="home-aisles"]');
+    }
+
+    public function testSearchFieldOfTheListHasAnAccessibleName(): void
+    {
+        $taxon = $this->createTaxon('Fasteners');
+        $this->createProduct('SRCH01', 'Hex bolt', $taxon);
+        $this->em->flush();
+
+        $this->client->request('GET', $this->listUrl($taxon));
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('input[name="criteria[search][value]"][aria-label="Search"]');
     }
 
     public function testPagesRenderWithStandardSyliusWhenThemeIsInactive(): void

@@ -1,0 +1,19 @@
+{#
+    Cellules prix et action d'une ligne de la liste dense, rendues avec le composant carte du cœur (sylius_shop:product:card)
+    pour disposer de `variant` et `applied_promotions`. Les hookables de la carte restent ceux de l'application et des plugins :
+    - prix : hook `sylius_shop.shared.product.card.prices` (prix du cœur, promotions, masquage par l'application) ;
+    - action : hook `sylius_shop.shared.product.card`, dont les gabarits `details` et `prices` du cœur ne rendent rien dans
+      une ligne (drapeau `industry_row`), il reste les hookables ajoutés par l'application et les plugins (favoris, panier, devis...).
+#}
+{% set card_prefixes = hookable_metadata.prefixes|default([])|merge(['sylius_shop.shared.product']) %}
+{% set prices %}{% if not product.enabledVariants.empty() %}{% hook 'prices' with {_prefixes: ['sylius_shop.shared.product.card'], product, variant, applied_promotions} %}{% endif %}{% endset %}
+{% set actions %}{% hook 'card' with {_prefixes: card_prefixes, product, variant, applied_promotions, industry_row: true} %}{% endset %}
+<td class="industry-product-table__price" data-label="{{ 'industry_trade.list.price'|trans({}, 'industry_trade') }}">
+    {% if prices|striptags|trim is empty %}
+        <span data-industry="price-hidden" class="visually-hidden">{{ 'industry_trade.list.price_hidden'|trans({}, 'industry_trade') }}</span>
+    {% else %}
+        <span data-industry="price">{{ prices|raw }}</span>
+        <span class="industry-excl-vat">{{ 'industry_trade.list.excl_vat'|trans({}, 'industry_trade') }}</span>
+    {% endif %}
+</td>
+<td class="industry-product-table__actions" data-label="{{ 'industry_trade.list.actions'|trans({}, 'industry_trade') }}">{{ actions|trim|raw }}</td>
