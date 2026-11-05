@@ -1,0 +1,27 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block root %}
+    <nav aria-labelledby="industry-account-nav-title">
+        <p class="industry-account-nav__title" id="industry-account-nav-title">{{ item.label|trans }}</p>
+        {{ block('list') }}
+    </nav>
+{% endblock %}
+
+{% block list %}
+    <ul class="industry-account-nav__list">
+        {% for item in item.children %}
+            {{ block('item') }}
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block item %}
+    <li>
+        <a class="industry-account-nav__link" href="{{ item.uri }}"{% if matcher.isCurrent(item) %} aria-current="page"{% endif %}>
+            {%- if item.labelAttributes.icon is defined %}
+                {{ ux_icon(item.labelAttributes.icon, {'class': 'icon', 'aria-hidden': 'true'}) }}
+            {%- endif %}
+            <span>{{ item.label|trans }}</span>
+        </a>
+    </li>
+{% endblock %}

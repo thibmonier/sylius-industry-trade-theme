@@ -1,0 +1,65 @@
+# Thème Industrie & Négoce : panier, compte et pages de contenu (US-224).
+# Hooks uniquement, aucun gabarit du cœur n'est copié : chaque hookable garde son nom et ne change que de gabarit.
+# Nom du thème, déclaré une seule fois : les gabarits de templates/hooks/ le comparent au thème du canal courant
+# et délèguent au gabarit du cœur quand il diffère (canal sans le thème).
+twig:
+    globals:
+        industry_theme_name: 'tmonier/sylius-industry-trade-theme'
+
+sylius_twig_hooks:
+    hooks:
+        # Panier : le formulaire garde son composant et change de gabarit (état vide).
+        'sylius_shop.cart.index.content':
+            form:
+                props:
+                    template: '@TmonierSyliusIndustryTradeTheme/cart/form.html.twig'
+
+        # Panier : tableau dense (classe du thème, légende pour les lecteurs d'écran).
+        'sylius_shop.cart.index.content.form.sections.general#left':
+            items:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/items.html.twig'
+            coupon:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/coupon.html.twig'
+
+        'sylius_shop.cart.index.content.form.sections.general#right':
+            summary:
+                props:
+                    template: '@TmonierSyliusIndustryTradeTheme/cart/summary.html.twig'
+
+        # Colonne « Référence » avant le produit, prix et totaux libellés hors taxe.
+        'sylius_shop.cart.index.content.form.sections.general.items.head':
+            industry_reference:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/head/reference.html.twig'
+                priority: 350
+            unit_price:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/head/unit_price.html.twig'
+            total:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/head/total.html.twig'
+
+        # Corps des lignes : mêmes cellules que le cœur, avec un nom accessible pour le retrait et la quantité.
+        'sylius_shop.cart.index.content.form.sections.general.items.body':
+            industry_reference:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/body/reference.html.twig'
+                priority: 350
+            remove:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/body/remove.html.twig'
+            unit_price:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/body/unit_price.html.twig'
+            quantity:
+                template: '@TmonierSyliusIndustryTradeTheme/cart/body/quantity.html.twig'
+
+        # Compte : la navigation reprend le style du thème. Elle affiche le menu `sylius.menu.shop.account` tel quel,
+        # donc les entrées ajoutées par des plugins (entreprise, saisie rapide, approbations...) y figurent seulement
+        # si le plugin est installé.
+        'sylius_shop.account.common.index.content.menu':
+            account:
+                template: '@TmonierSyliusIndustryTradeTheme/account/menu.html.twig'
+        'sylius_shop.account.common.show.content.menu':
+            account:
+                template: '@TmonierSyliusIndustryTradeTheme/account/menu.html.twig'
+        'sylius_shop.account.common.create.content.menu':
+            account:
+                template: '@TmonierSyliusIndustryTradeTheme/account/menu.html.twig'
+        'sylius_shop.account.common.update.content.menu':
+            account:
+                template: '@TmonierSyliusIndustryTradeTheme/account/menu.html.twig'

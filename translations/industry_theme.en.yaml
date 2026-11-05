@@ -1,0 +1,14 @@
+industry_theme:
+    cart:
+        caption: Cart lines
+        reference: Reference
+        unit_price: Unit price excl. tax
+        total: Total excl. tax
+        remove: "Remove %name%"
+        quantity: "Quantity of %name%"
+        coupon_label: "Coupon code"
+        coupon_remove: "Remove the coupon"
+        empty:
+            catalogue: Add products from the catalogue to start your order.
+            catalogue_link: Browse the catalogue
+            quick_order: Type or paste references with the quick order below.

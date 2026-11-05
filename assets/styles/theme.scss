@@ -8,6 +8,10 @@
 @use 'pages/home';
 @use 'pages/product-list';
 @use 'pages/product-show';
+// Pages (US-224)
+@use 'pages/cart';
+@use 'pages/account';
+@use 'pages/content';
 
 // Variables CSS Bootstrap (racine)
 :root {

@@ -1,0 +1,12 @@
+{% if sylius.channel.themeName != industry_theme_name %}
+    {% include '@SyliusShop/cart/index/content/form/sections/general/items/body/quantity.html.twig' %}
+{% else %}
+{% set form = hookable_metadata.context.form %}
+{% set item = hookable_metadata.context.item %}
+{% set quantity_attributes = {'aria-label': 'industry_theme.cart.quantity'|trans({'%name%': item.productName}, 'industry_theme')} %}
+
+<td>
+    {{ form_widget(form.quantity, sylius_test_form_attribute('cart-item-quantity')|sylius_merge_recursive({attr: quantity_attributes})) }}
+    {{ form_errors(form.quantity) }}
+</td>
+{% endif %}

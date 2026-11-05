@@ -1,0 +1,69 @@
+// Panier dense (US-224) : lignes serrées, référence en police à chasse fixe, montants alignés à droite.
+@use '../variables' as *;
+
+.industry-cart {
+    // Le tableau défile dans son conteneur : le document ne défile jamais horizontalement.
+    max-width: 100%;
+}
+
+.industry-cart-table {
+    --bs-table-bg: #{$industry-white};
+
+    th {
+        color: $industry-navy;
+        background: $industry-surface;
+        font-size: 0.875rem;
+        font-weight: 600;
+        white-space: normal;
+    }
+
+    td,
+    th {
+        padding: $industry-spacing-xs;
+    }
+
+    // Quantité : champ étroit, cible tactile de 44 px.
+    input[type='number'] {
+        min-width: 4rem;
+        min-height: 44px;
+        text-align: end;
+    }
+
+    .btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    // Vignette réduite : la ligne reste basse et le total visible sans défiler.
+    img {
+        max-width: 3rem;
+        height: auto;
+    }
+}
+
+.industry-cart-reference {
+    max-width: 6.5rem;
+}
+
+.industry-cart-reference code {
+    color: $industry-navy;
+    font-family: $industry-font-family-mono;
+    font-size: 0.8125rem;
+    overflow-wrap: anywhere;
+}
+
+.industry-cart-empty {
+    padding: $industry-spacing-xl;
+    color: $industry-navy;
+    background: $industry-surface;
+    border: 1px solid $industry-border;
+    border-radius: $industry-border-radius-lg;
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .btn {
+        min-height: 44px;
+    }
+}
