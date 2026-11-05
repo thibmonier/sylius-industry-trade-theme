@@ -181,6 +181,32 @@ final class CartAccountPagesTest extends WebTestCase
         $this->assertSelectorNotExists('.industry-cart-table');
     }
 
+    public function testCartHookableSettingsOfTheApplicationAreKeptOnAChannelWithoutTheTheme(): void
+    {
+        $client = $this->clientWithCart(2, null);
+
+        $client->request('GET', '/en_US/cart/');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('[data-host-app="coupon"]');
+        $this->assertSelectorExists('[data-host-app="summary"]');
+        $this->assertSelectorNotExists('.industry-cart-summary');
+        $this->assertSelectorNotExists('input[aria-label="Coupon code"]');
+    }
+
+    public function testCartHookableSettingsOfTheApplicationAreKeptOnAThemedChannel(): void
+    {
+        $client = $this->clientWithCart(2);
+
+        $client->request('GET', '/en_US/cart/');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('[data-host-app="coupon"]');
+        $this->assertSelectorExists('[data-host-app="summary"]');
+        $this->assertSelectorExists('.industry-cart-summary h2');
+        $this->assertSelectorExists('input[data-test-cart-promotion-coupon-input][aria-label="Coupon code"]');
+    }
+
     public function testEmptyCartRendersTheStandardPageOnAChannelWithoutTheTheme(): void
     {
         $client = $this->clientWithTheme(null);

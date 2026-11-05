@@ -1,0 +1,33 @@
+# Application hôte simulée (US-228) : réglages d'une application qui utilise déjà ses propres hookables.
+# Le nom du fichier le fait charger avant `sylius_theme.yaml`, donc avant l'import des hooks du thème : un thème qui
+# réécrit ces clés l'emporte sur l'application, ce que les tests de HostAppCompatibilityTest interdisent.
+sylius_twig_hooks:
+    hooks:
+        # Hookables ajoutés par l'application aux conteneurs que le thème habille.
+        'sylius_shop.base.header.content':
+            host_app_marker:
+                template: 'test/host_app_marker.html.twig'
+                priority: 500
+                configuration:
+                    marker: header
+        'sylius_shop.base.footer.content':
+            host_app_marker:
+                template: 'test/host_app_marker.html.twig'
+                priority: 500
+                configuration:
+                    marker: footer
+        'sylius_shop.product.index.content.body.main':
+            host_app_marker:
+                template: 'test/host_app_marker.html.twig'
+                priority: 500
+                configuration:
+                    marker: product-list
+
+        # Réglages de l'application sur des hookables du panier : ils doivent survivre à l'import du thème.
+        'sylius_shop.cart.index.content.form.sections.general#left':
+            coupon:
+                template: 'test/host_app_coupon.html.twig'
+        'sylius_shop.cart.index.content.form.sections.general#right':
+            summary:
+                props:
+                    template: 'test/host_app_summary.html.twig'
