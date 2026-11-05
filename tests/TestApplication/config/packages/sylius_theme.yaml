@@ -1,6 +1,16 @@
+imports:
+    # Hooks de l'US-224 (panier, compte, pages de contenu), chargés comme le ferait l'application hôte.
+    - { resource: '../../../../config/twig_hooks/cart_account.yaml' }
+
 sylius_theme:
     sources:
         filesystem:
             directories:
                 - '%kernel.project_dir%/../../..'
             scan_depth: 0
+
+services:
+    Tmonier\SyliusIndustryTradeTheme\Tests\Stub\CompanyMenuEntryListener:
+        arguments: ['@request_stack']
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.shop.account }

@@ -8,6 +8,7 @@ B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: h
 
 - **Design tokens**: color palette with WCAG AAA contrasts (≥ 7:1), overridable via CSS custom properties
 - **Common components**: header, footer, buttons, tables, forms, messages
+- **Cart, account and content pages**: dense cart (reference, editable quantity, prices excl. tax), themed account navigation (plugin entries included only when the plugin is installed), content page layout `@SyliusShop/industry_theme/content/page.html.twig`
 - **Compatibility**: Sylius 2.2 and 2.3, PHP 8.3+
 - **Assets**: Webpack Encore
 
@@ -27,7 +28,10 @@ Copy the Twig hooks configuration to your application:
 
 ```bash
 cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_industry_trade_theme.yaml config/packages/
+cp -r vendor/tmonier/sylius-industry-trade-theme/config/twig_hooks config/
 ```
+
+The cart, account and content-page hooks live in `config/twig_hooks/cart_account.yaml`, imported by the main file. They only change templates of existing hookables, so pages of other plugins keep working; the quick order link of an empty cart appears only when the quick-order plugin is installed.
 
 ### Install assets
 
@@ -64,6 +68,16 @@ Twig templates can be overridden in `templates/bundles/SyliusShopBundle/` of you
 1. Application: `templates/bundles/SyliusShopBundle/`
 2. Theme: `vendor/tmonier/sylius-industry-trade-theme/templates/`
 3. Sylius Bundle: `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
+
+## Screenshots
+
+| Cart (12 lines) | Empty cart |
+|---|---|
+| ![Dense cart](docs/cart.png) | ![Empty cart](docs/cart-empty.png) |
+
+| Account navigation | Content page |
+|---|---|
+| ![Account](docs/account.png) | ![Content page](docs/content-page.png) |
 
 <!-- vitrine:demo-b2b:start -->
 ## B2B demo

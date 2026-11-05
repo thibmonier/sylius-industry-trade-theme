@@ -8,6 +8,7 @@ Thème B2B pour [Sylius](https://sylius.com) 2 optimisé pour l'industrie et le 
 
 - **Jetons de design** : palette de couleurs avec contrastes WCAG AAA (≥ 7:1), surchargeables via propriétés CSS personnalisées
 - **Composants communs** : en-tête, pied de page, boutons, tableaux, formulaires, messages
+- **Panier, compte et pages de contenu** : panier dense (référence, quantité modifiable, prix HT), navigation du compte au style du thème (entrées des plugins seulement si le plugin est installé), gabarit de page de contenu `@SyliusShop/industry_theme/content/page.html.twig`
 - **Compatibilité** : Sylius 2.2 et 2.3, PHP 8.3+
 - **Assets** : Webpack Encore
 
@@ -27,7 +28,10 @@ Copier la configuration des Twig hooks dans votre application :
 
 ```bash
 cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_industry_trade_theme.yaml config/packages/
+cp -r vendor/tmonier/sylius-industry-trade-theme/config/twig_hooks config/
 ```
+
+Les hooks du panier, du compte et des pages de contenu sont dans `config/twig_hooks/cart_account.yaml`, importé par le fichier principal. Ils ne changent que le gabarit de hookables existants : les pages des autres plugins continuent de fonctionner ; le lien vers la saisie rapide d'un panier vide n'apparaît que si le plugin quick-order est installé.
 
 ### Installation des assets
 
@@ -64,6 +68,16 @@ Les gabarits Twig peuvent être surchargés dans `templates/bundles/SyliusShopBu
 1. Application : `templates/bundles/SyliusShopBundle/`
 2. Thème : `vendor/tmonier/sylius-industry-trade-theme/templates/`
 3. Bundle Sylius : `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
+
+## Captures
+
+| Panier (12 lignes) | Panier vide |
+|---|---|
+| ![Panier dense](docs/cart.png) | ![Panier vide](docs/cart-empty.png) |
+
+| Navigation du compte | Page de contenu |
+|---|---|
+| ![Compte](docs/account.png) | ![Page de contenu](docs/content-page.png) |
 
 <!-- vitrine:demo-b2b:start -->
 ## Démo B2B

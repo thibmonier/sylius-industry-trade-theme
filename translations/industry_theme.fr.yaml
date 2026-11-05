@@ -1,0 +1,14 @@
+industry_theme:
+    cart:
+        caption: Lignes du panier
+        reference: Référence
+        unit_price: Prix unitaire HT
+        total: Total HT
+        remove: "Retirer %name%"
+        quantity: "Quantité de %name%"
+        coupon_label: "Code promo"
+        coupon_remove: "Retirer le code promo"
+        empty:
+            catalogue: Ajoutez des produits depuis le catalogue pour commencer votre commande.
+            catalogue_link: Parcourir le catalogue
+            quick_order: Saisissez ou collez des références avec la saisie rapide ci-dessous.

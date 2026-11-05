@@ -1,0 +1,47 @@
+// Navigation du compte (US-224) : liste verticale, entrée courante en navy plein (blanc dessus 11,1:1).
+@use '../variables' as *;
+
+.industry-account-nav {
+    &__title {
+        margin-bottom: $industry-spacing-md;
+        color: $industry-navy;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: $industry-spacing-xs;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        gap: $industry-spacing-sm;
+        min-height: 44px;
+        padding: $industry-spacing-xs $industry-spacing-md;
+        color: $industry-navy;
+        text-decoration: none;
+        border-radius: $industry-border-radius-md;
+
+        &:hover,
+        &:focus-visible {
+            color: $industry-navy;
+            background: $industry-surface-strong;
+        }
+
+        &:focus-visible {
+            outline: 3px solid $industry-accent;
+            outline-offset: 2px;
+        }
+
+        &[aria-current='page'] {
+            color: $industry-white;
+            background: $industry-navy;
+        }
+    }
+}

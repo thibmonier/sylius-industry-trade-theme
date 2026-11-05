@@ -2,6 +2,10 @@
 # Ce fichier est copié par la recette Flex dans config/packages/ de l'application.
 # Il enregistre les Twig hooks du thème.
 
+# Panier, compte et pages de contenu (US-224) : copier aussi config/twig_hooks/ dans l'application.
+imports:
+    - { resource: '../twig_hooks/cart_account.yaml' }
+
 sylius_twig_hooks:
     hooks:
         # En-tête personnalisé (exemple)

@@ -1,0 +1,60 @@
+// Pages de contenu (vitrine, US-224) : largeur de lecture, titres, listes et tableaux du thème.
+@use '../variables' as *;
+
+.industry-content {
+    max-width: 60rem;
+    color: $industry-navy;
+    overflow-wrap: anywhere;
+
+    &__title {
+        margin-bottom: $industry-spacing-lg;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    h2 {
+        margin-top: $industry-spacing-xl;
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        margin-top: $industry-spacing-lg;
+        font-size: 1.25rem;
+    }
+
+    p,
+    li {
+        line-height: 1.6;
+    }
+
+    ul,
+    ol {
+        padding-left: $industry-spacing-lg;
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: $industry-spacing-lg;
+        border-collapse: collapse;
+    }
+
+    .industry-table-header th {
+        color: $industry-navy;
+        background: $industry-surface;
+        text-align: start;
+    }
+
+    th,
+    td {
+        padding: $industry-spacing-sm;
+        border-bottom: 1px solid $industry-border;
+    }
+
+    @media (max-width: 575.98px) {
+        // Un tableau large défile dans son bloc, jamais dans la page.
+        table {
+            display: block;
+            overflow-x: auto;
+        }
+    }
+}

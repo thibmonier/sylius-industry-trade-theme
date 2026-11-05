@@ -1,0 +1,7 @@
+{# Panier dense : une ligne par article, référence, quantité modifiable, prix et total hors taxe. #}
+<div class="table-responsive industry-cart">
+    <table class="table table-sm align-middle industry-cart-table" {{ sylius_test_html_attribute('cart-items') }}>
+        <caption class="visually-hidden">{{ 'industry_theme.cart.caption'|trans({}, 'industry_theme') }}</caption>
+        {% hook 'items' %}
+    </table>
+</div>

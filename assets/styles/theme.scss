@@ -4,6 +4,11 @@
 
 @use 'variables' as *;
 
+// Pages (US-224)
+@use 'pages/cart';
+@use 'pages/account';
+@use 'pages/content';
+
 // Variables CSS Bootstrap (racine)
 :root {
     // Couleurs primaires

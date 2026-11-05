@@ -1,0 +1,30 @@
+{# Rendered with \Sylius\Bundle\ShopBundle\Twig\Component\Cart\FormComponent #}
+{#
+    Même formulaire que le cœur ; seul l'état vide change : un message et un lien. Le lien vers la saisie rapide est fourni
+    par le plugin quick-order lui-même (son hookable est affiché sous le formulaire, panier vide compris) ; sans le plugin,
+    le lien mène au catalogue.
+#}
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
+<div {{ attributes }}>
+    {% if resource.empty %}
+        {% set quick_order %}{% include '@TmonierSyliusQuickOrderPlugin/shop/cart/quick_order_link.html.twig' ignore missing %}{% endset %}
+        <section class="industry-cart-empty" aria-labelledby="industry-cart-empty-title" {{ sylius_test_html_attribute('industry-cart-empty') }}>
+            <h2 id="industry-cart-empty-title">{{ 'sylius.ui.your_cart_is_empty'|trans }}</h2>
+            {% if quick_order|trim is empty %}
+                <p>{{ 'industry_theme.cart.empty.catalogue'|trans({}, 'industry_theme') }}</p>
+                <a class="btn btn-primary" href="{{ path('sylius_shop_homepage') }}" {{ sylius_test_html_attribute('industry-cart-empty-catalogue') }}>{{ 'industry_theme.cart.empty.catalogue_link'|trans({}, 'industry_theme') }}</a>
+            {% else %}
+                <p {{ sylius_test_html_attribute('industry-cart-empty-quick-order') }}>{{ 'industry_theme.cart.empty.quick_order'|trans({}, 'industry_theme') }}</p>
+            {% endif %}
+        </section>
+    {% else %}
+        {{ form_start(form, {'action': path('sylius_shop_cart_checkout'), 'attr': {'novalidate': 'novalidate', 'id': form.vars.id}}) }}
+        <input type="hidden" name="_method" value="PATCH"/>
+        {{ form_errors(form) }}
+
+        {% hook 'form' with { form } %}
+
+        {{ form_end(form, {render_rest: hookable.configuration.render_rest|default(false)}) }}
+    {% endif %}
+</div>
