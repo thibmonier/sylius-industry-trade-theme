@@ -20,3 +20,8 @@ services:
         arguments: ['@request_stack']
         tags:
             - { name: kernel.event_listener, event: sylius.menu.shop.account }
+
+    Tmonier\SyliusIndustryTradeTheme\Tests\Stub\HidePricesVoter:
+        arguments: ['@request_stack']
+        tags:
+            - { name: security.voter }

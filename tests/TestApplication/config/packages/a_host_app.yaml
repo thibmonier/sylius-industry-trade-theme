@@ -31,3 +31,14 @@ sylius_twig_hooks:
             summary:
                 props:
                     template: 'test/host_app_summary.html.twig'
+
+        # Liste produits : l'application masque les prix (règle d'accès) et ajoute une action à la carte produit.
+        'sylius_shop.shared.product.card.prices':
+            catalog_promotions:
+                condition: "@=is_granted('HOST_APP_SEE_PRICES')"
+            price:
+                condition: "@=is_granted('HOST_APP_SEE_PRICES')"
+        'sylius_shop.shared.product.card':
+            host_app_add_to_cart:
+                template: 'test/host_app_add_to_cart.html.twig'
+                priority: -5

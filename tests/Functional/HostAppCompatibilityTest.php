@@ -63,6 +63,59 @@ final class HostAppCompatibilityTest extends CatalogWebTestCase
         $this->assertSelectorExists('body[data-theme="industry-trade"][data-route="sylius_shop_homepage"]');
     }
 
+    public function testPriceHiddenByTheApplicationStaysHiddenInTheDenseList(): void
+    {
+        $taxon = $this->createTaxon('Fasteners');
+        $this->createProduct('HIDE01', 'Hex bolt', $taxon, 1250);
+        $this->em->flush();
+
+        $this->client->request('GET', $this->listUrl($taxon) . '?hide_prices=1');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('tr[data-industry="product-row"]');
+        $this->assertSelectorNotExists('[data-industry="price"]');
+        $this->assertStringNotContainsString('12.50', (string) $this->client->getResponse()->getContent());
+        $this->assertSelectorNotExists('.industry-excl-vat');
+    }
+
+    public function testPriceIsShownInTheDenseListWhenTheApplicationAllowsIt(): void
+    {
+        $taxon = $this->createTaxon('Fasteners');
+        $this->createProduct('SHOW01', 'Hex bolt', $taxon, 1250);
+        $this->em->flush();
+
+        $this->client->request('GET', $this->listUrl($taxon));
+
+        $this->assertSelectorTextContains('[data-industry="price"]', '12.50');
+        $this->assertSelectorExists('.industry-excl-vat');
+    }
+
+    public function testActionHookablesOfTheProductCardAreRenderedOncePerRowWithoutDuplicatingTheCoreCard(): void
+    {
+        $taxon = $this->createTaxon('Fasteners');
+        $this->createProduct('ACT01', 'Hex bolt', $taxon);
+        $this->createProduct('ACT02', 'Hex nut', $taxon);
+        $this->em->flush();
+
+        $this->client->request('GET', $this->listUrl($taxon));
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorCount(2, 'tr[data-industry="product-row"] td [data-host-app="add-to-cart"]');
+        $this->assertSelectorCount(2, 'tr[data-industry="product-row"] [data-test-product-name]');
+        $this->assertSelectorCount(2, 'tr[data-industry="product-row"] [data-test-product-price]');
+    }
+
+    public function testListWrapperScrollsOnItsOwnWhenTheThemeStylesAreNotLoaded(): void
+    {
+        $taxon = $this->createTaxon('Fasteners');
+        $this->createProduct('WRAP01', 'Hex bolt', $taxon);
+        $this->em->flush();
+
+        $this->client->request('GET', $this->listUrl($taxon));
+
+        $this->assertSelectorExists('.industry-product-list.overflow-x-auto');
+    }
+
     public function testFlashMessagesAreTranslatedWithTheFlashesDomainOnAThemedChannel(): void
     {
         $factory = self::getContainer()->get('session.factory');
