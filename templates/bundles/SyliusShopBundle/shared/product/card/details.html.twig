@@ -1,0 +1,8 @@
+{# Thème Industrie & Négoce — comme le cœur, sauf dans une ligne de la liste dense (drapeau industry_row) : le nom et l'image y ont leurs propres colonnes. #}
+{% if not hookable_metadata.context.industry_row|default(false) %}
+{% set product = hookable_metadata.context.product %}
+
+<a class="link-reset" href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" {{ sylius_test_html_attribute('product-content') }}>
+    {% hook 'details' %}
+</a>
+{% endif %}

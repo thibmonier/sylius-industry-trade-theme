@@ -55,7 +55,7 @@ final class CatalogPagesTest extends CatalogWebTestCase
         $this->assertResponseIsSuccessful();
         $cells = $this->client->getCrawler()
             ->filter('tr[data-industry="product-row"] > td, tr[data-industry="product-row"] > th');
-        $this->assertCount(5, $cells);
+        $this->assertCount(6, $cells);
         foreach ($cells->each(static fn($cell): ?string => $cell->attr('data-label')) as $label) {
             $this->assertNotSame('', trim((string) $label));
         }

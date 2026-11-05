@@ -23,11 +23,12 @@ final class HidePricesVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return self::ATTRIBUTE === $attribute;
+        return $attribute === self::ATTRIBUTE;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        return ! $this->requestStack->getCurrentRequest()?->query->has('hide_prices');
+        return ! $this->requestStack->getCurrentRequest()?->query
+            ->has('hide_prices');
     }
 }

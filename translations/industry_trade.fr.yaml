@@ -13,6 +13,8 @@ industry_trade:
         stock: 'Stock'
         price: 'Prix HT'
         excl_vat: 'HT'
+        actions: 'Actions'
+        price_hidden: 'Prix non affiché'
         no_image: 'Aucune image disponible'
     stock:
         available: 'Disponible'

@@ -136,7 +136,7 @@ Pages du catalogue (rendues avec Bootstrap et la feuille de style du thème ; l'
 ## Pages du catalogue
 
 - **Accueil** : titre, accroche et un lien par enfant du taxon de menu du canal (masqué si le canal n'en a pas).
-- **Liste des produits** : une ligne par produit avec référence, désignation, stock et prix HT ; sous 768 px chaque ligne devient une carte. Un produit sans image affiche un visuel de substitution.
+- **Liste des produits** : une ligne par produit avec référence, désignation, stock, prix HT et une cellule d'actions. La cellule prix rend le hook du cœur `sylius_shop.shared.product.card.prices` et la cellule d'actions les hookables de `sylius_shop.shared.product.card` (favoris, panier, devis... ajoutés par votre application ou vos plugins) : un prix masqué par votre application reste masqué. Le stock exact est toujours affiché ; sous 768 px chaque ligne devient une carte. Un produit sans image affiche un visuel de substitution.
 - **Fiche produit** : références produit et variante, disponibilité, fiche technique (attributs du produit) et liste de documents pour les attributs dont la valeur texte est un lien vers un fichier pdf, dwg, step, zip, doc ou xls. Les blocs des plugins (par exemple les prix dégressifs) restent ceux des plugins et sont absents si le plugin n'est pas installé.
 - Textes dans le domaine de traduction `industry_trade` (`translations/`, anglais et français).
 - Réalisé par surcharge de gabarits (`templates/bundles/SyliusShopBundle/`), qui ne s'appliquent qu'aux canaux utilisant le thème et ne touchent pas à la configuration des hooks de votre application. Les seuls ajouts globaux sont les deux hookables « Référence », gardés dans leurs gabarits.

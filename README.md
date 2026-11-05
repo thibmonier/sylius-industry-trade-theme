@@ -136,7 +136,7 @@ Catalogue pages (rendered with Bootstrap and the theme stylesheet; the shop head
 ## Catalogue pages
 
 - **Home**: title, lead text and one link per child of the channel's menu taxon (hidden when the channel has none).
-- **Product list**: one row per product with reference, designation, stock and price excl. VAT; below 768 px each row becomes a card. A product without image shows a placeholder.
+- **Product list**: one row per product with reference, designation, stock, price excl. VAT and an actions cell. The price cell renders the core card hook `sylius_shop.shared.product.card.prices` and the actions cell the hookables of `sylius_shop.shared.product.card` (favourites, add to cart, quote... added by your application or plugins), so a price hidden by your application stays hidden. The exact stock is always shown; below 768 px each row becomes a card. A product without image shows a placeholder.
 - **Product page**: product and variant references, availability, technical sheet (product attributes) and a Documents list for attributes whose text value is a link to a pdf, dwg, step, zip, doc or xls file. Blocks from plugins (for example tier pricing) are left to the plugins and simply absent when the plugin is not installed.
 - Texts are in the `industry_trade` translation domain (`translations/`, English and French).
 - Implemented as theme template overrides (`templates/bundles/SyliusShopBundle/`), which only apply to channels using the theme and leave the hook configuration of your application alone. The only global additions are the two "Reference" hookables, guarded in their templates.
