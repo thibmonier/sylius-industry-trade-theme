@@ -1,0 +1,69 @@
+@use '../variables' as *;
+
+// Accueil : titre, rayons, repères
+.industry-home-hero {
+    background: $industry-paper;
+    color: $industry-ink;
+    padding: $industry-spacing-2xl 0;
+    margin-bottom: $industry-spacing-xl;
+
+    &__title {
+        color: $industry-navy;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        margin-bottom: $industry-spacing-md;
+    }
+
+    &__lead {
+        max-width: 42rem;
+        font-size: 1.125rem;
+    }
+
+    &__subtitle {
+        font-size: 1rem;
+        color: $industry-muted;
+        margin-top: $industry-spacing-lg;
+    }
+}
+
+.industry-home-aisles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $industry-spacing-sm;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    &__link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
+        padding: 0 $industry-spacing-md;
+        background: $industry-white;
+        border: 1px solid $industry-muted;
+        border-radius: $industry-border-radius-md;
+        color: $industry-navy;
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover,
+        &:focus-visible {
+            background: $industry-navy;
+            color: $industry-white;
+        }
+
+        &:focus-visible {
+            outline: 3px solid $industry-accent;
+            outline-offset: 2px;
+        }
+    }
+}
+
+.industry-home-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $industry-spacing-md $industry-spacing-xl;
+    list-style: none;
+    padding: 0;
+    margin: $industry-spacing-lg 0 0;
+    color: $industry-muted;
+}

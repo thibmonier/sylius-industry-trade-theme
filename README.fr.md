@@ -71,6 +71,23 @@ Les gabarits Twig peuvent être surchargés dans `templates/bundles/SyliusShopBu
 
 ## Captures
 
+Pages du catalogue (rendues avec Bootstrap et la feuille de style du thème ; l'en-tête et le pied de page sont montrés sans la feuille de style complète de Sylius).
+
+| Page | Capture |
+|------|---------|
+| Accueil (titre, rayons du taxon de menu du canal) | ![Accueil](docs/home.png) |
+| Liste dense (référence, désignation, stock, prix HT) | ![Liste des produits](docs/product-list.png) |
+| Liste sous 768 px (cartes, sans défilement horizontal) | ![Liste à 375 px](docs/product-list-375.png) |
+| Fiche produit (références, fiche technique, documents, disponibilité) | ![Fiche produit](docs/product-show.png) |
+
+## Pages du catalogue
+
+- **Accueil** : titre, accroche et un lien par enfant du taxon de menu du canal (masqué si le canal n'en a pas).
+- **Liste des produits** : une ligne par produit avec référence, désignation, stock et prix HT ; sous 768 px chaque ligne devient une carte. Un produit sans image affiche un visuel de substitution.
+- **Fiche produit** : références produit et variante, disponibilité, fiche technique (attributs du produit) et liste de documents pour les attributs dont la valeur texte est un lien vers un fichier pdf, dwg, step, zip, doc ou xls. Les blocs des plugins (par exemple les prix dégressifs) restent ceux des plugins et sont absents si le plugin n'est pas installé.
+- Textes dans le domaine de traduction `industry_trade` (`translations/`, anglais et français).
+- Réalisé par surcharge de gabarits (`templates/bundles/SyliusShopBundle/`), qui ne s'appliquent qu'aux canaux utilisant le thème. Un hook qui viserait un nouveau gabarit serait global et casserait les canaux sans le thème, d'où les gabarits gardés `@TmonierSyliusIndustryTradeTheme` du panier et du compte.
+
 | Panier (12 lignes) | Panier vide |
 |---|---|
 | ![Panier dense](docs/cart.png) | ![Panier vide](docs/cart-empty.png) |

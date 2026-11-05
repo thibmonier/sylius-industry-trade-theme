@@ -1,0 +1,27 @@
+{# Thème Industrie & Négoce — accueil : titre, accroche, accès par rayon #}
+{% set menu_taxon = sylius.channel.menuTaxon %}
+<section class="industry-home-hero" aria-labelledby="industry-home-title" data-industry="home-hero">
+    <div class="container">
+        <h1 id="industry-home-title" class="industry-home-hero__title">{{ sylius.channel.name }}</h1>
+        <p class="industry-home-hero__lead">{{ 'industry_trade.home.lead'|trans({}, 'industry_trade') }}</p>
+
+        {% if menu_taxon is not null and menu_taxon.enabledChildren|length > 0 %}
+            <nav aria-labelledby="industry-home-aisles" data-industry="home-aisles">
+                <h2 id="industry-home-aisles" class="industry-home-hero__subtitle">{{ 'industry_trade.home.aisles'|trans({}, 'industry_trade') }}</h2>
+                <ul class="industry-home-aisles">
+                    {% for taxon in menu_taxon.enabledChildren %}
+                        <li>
+                            <a class="industry-home-aisles__link" href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': taxon.translation.locale}) }}">{{ taxon.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+
+        <ul class="industry-home-points" data-industry="home-points">
+            <li>{{ 'industry_trade.home.point_reference'|trans({}, 'industry_trade') }}</li>
+            <li>{{ 'industry_trade.home.point_dense'|trans({}, 'industry_trade') }}</li>
+            <li>{{ 'industry_trade.home.point_excl_vat'|trans({}, 'industry_trade') }}</li>
+        </ul>
+    </div>
+</section>
