@@ -4,6 +4,11 @@
 
 @use 'variables' as *;
 
+// Pages du catalogue (US-223)
+@use 'pages/home';
+@use 'pages/product-list';
+@use 'pages/product-show';
+
 // Variables CSS Bootstrap (racine)
 :root {
     // Couleurs primaires

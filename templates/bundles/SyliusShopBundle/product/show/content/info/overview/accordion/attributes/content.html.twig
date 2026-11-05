@@ -1,0 +1,48 @@
+{# Thème Industrie & Négoce — fiche technique et documents.
+   Un attribut dont la valeur est un lien http(s) ou un chemin vers un fichier (pdf, dwg, step, zip, doc, xls) est un document. #}
+{% set product = hookable_metadata.context.product %}
+{% set configuration = hookable_metadata.context.configuration %}
+{% set attribute_values = product.getAttributesByLocale(configuration.request.locale, configuration.request.defaultLocale, sylius_base_locale)|sylius_sort_by('attribute.position') %}
+{% set documents = [] %}
+{% set specs = [] %}
+{% for attribute_value in attribute_values %}
+    {% if attribute_value.type == 'text' and attribute_value.value is not empty and attribute_value.value matches '#^(https?://|/)\\S+\\.(pdf|dwg|step|stp|zip|docx?|xlsx?)(\\?\\S*)?$#i' %}
+        {% set documents = documents|merge([attribute_value]) %}
+    {% else %}
+        {% set specs = specs|merge([attribute_value]) %}
+    {% endif %}
+{% endfor %}
+
+{% embed '@SyliusShop/shared/accordion/accordion_item_content.html.twig' with { accordion_item_id: 'attributes', expanded: true } %}
+    {% block accordion_item_content %}
+        {% if specs|length > 0 %}
+            <table class="table table-lg table-list industry-spec-table" data-industry="technical-sheet" {{ sylius_test_html_attribute('product-attributes') }}>
+                <tbody>
+                    {% for attribute_value in specs %}
+                        <tr>
+                            <th scope="row" {{ sylius_test_html_attribute('product-attribute-name', attribute_value.name) }}>{{ attribute_value.name }}</th>
+                            <td {{ sylius_test_html_attribute('product-attribute-value', attribute_value.name) }}>
+                                {% include [
+                                    '@SyliusAttribute/Types/'~attribute_value.type~'.html.twig',
+                                    '@SyliusAttribute/Types/default.html.twig'
+                                ] with {
+                                    'attribute': attribute_value,
+                                    'locale': configuration.request.locale,
+                                    'fallbackLocale': configuration.request.defaultLocale
+                                } %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if documents|length > 0 %}
+            <h3 class="h6 mt-3" id="industry-documents-title">{{ 'industry_trade.show.documents'|trans({}, 'industry_trade') }}</h3>
+            <ul class="industry-documents" aria-labelledby="industry-documents-title" data-industry="documents">
+                {% for document in documents %}
+                    <li><a href="{{ document.value }}" rel="noopener">{{ document.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endblock %}
+{% endembed %}
