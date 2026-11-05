@@ -33,11 +33,16 @@ sylius_twig_hooks:
                     template: 'test/host_app_summary.html.twig'
 
         # Liste produits : l'application masque les prix (règle d'accès) et ajoute une action à la carte produit.
+        # Pas de `condition` (absente de sylius/twig-hooks en Sylius 2.2) : les hookables du cœur sont désactivés et remplacés
+        # par un hookable d'application dont le gabarit teste l'accès.
         'sylius_shop.shared.product.card.prices':
             catalog_promotions:
-                condition: "@=is_granted('HOST_APP_SEE_PRICES')"
+                enabled: false
             price:
-                condition: "@=is_granted('HOST_APP_SEE_PRICES')"
+                enabled: false
+            host_app_price:
+                template: 'test/host_app_price.html.twig'
+                priority: 0
         'sylius_shop.shared.product.card':
             host_app_add_to_cart:
                 template: 'test/host_app_add_to_cart.html.twig'
