@@ -208,7 +208,7 @@ final class CartAccountPagesTest extends WebTestCase
     {
         $client = $this->clientWithTheme(null);
 
-        $client->request('GET', '/_test/content-page');
+        $client->request('GET', '/_test/content-page-plain');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('article.industry-content h1', 'Conditions de livraison');

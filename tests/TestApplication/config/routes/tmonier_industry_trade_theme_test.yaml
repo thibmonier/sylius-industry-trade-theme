@@ -9,3 +9,9 @@ tmonier_industry_trade_theme_test_content_page:
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults:
         template: 'test/content_page.html.twig'
+
+tmonier_industry_trade_theme_test_content_page_plain:
+    path: /_test/content-page-plain
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: 'test/content_page_plain.html.twig'
