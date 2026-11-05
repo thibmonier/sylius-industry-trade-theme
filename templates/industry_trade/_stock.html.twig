@@ -1,0 +1,8 @@
+{# Disponibilité d'une variante : en stock (avec quantité si suivie), sur commande ou en rupture #}
+{% if not variant.tracked %}
+    <span class="industry-stock industry-stock--in" data-industry="stock">{{ 'industry_trade.stock.available'|trans({}, 'industry_trade') }}</span>
+{% elseif variant.inStock %}
+    <span class="industry-stock industry-stock--in" data-industry="stock">{{ 'industry_trade.stock.in_stock'|trans({'%count%': variant.onHand - variant.onHold}, 'industry_trade') }}</span>
+{% else %}
+    <span class="industry-stock industry-stock--out" data-industry="stock">{{ 'industry_trade.stock.out'|trans({}, 'industry_trade') }}</span>
+{% endif %}

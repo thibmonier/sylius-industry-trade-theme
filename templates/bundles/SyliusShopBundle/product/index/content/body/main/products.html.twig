@@ -1,0 +1,59 @@
+{# Thème Industrie & Négoce — liste dense : référence, désignation, stock et prix HT sur une ligne ; en cartes sous 768 px #}
+{% import '@SyliusShop/shared/messages.html.twig' as messages %}
+{% import '@SyliusShop/shared/macro/money.html.twig' as money %}
+{% import 'components/tables.html.twig' as tables %}
+
+{% set resources = hookable_metadata.context.resources %}
+
+{% if resources.data|length > 0 %}
+    <div class="industry-product-list" data-industry="product-list" {{ sylius_test_html_attribute('products') }}>
+        <table class="table industry-product-table">
+            <caption class="visually-hidden">{{ 'industry_trade.list.caption'|trans({}, 'industry_trade') }}</caption>
+            {{ tables.header([
+                {label: 'industry_trade.list.image'|trans({}, 'industry_trade')},
+                {label: 'industry_trade.list.reference'|trans({}, 'industry_trade')},
+                {label: 'industry_trade.list.designation'|trans({}, 'industry_trade')},
+                {label: 'industry_trade.list.stock'|trans({}, 'industry_trade')},
+                {label: 'industry_trade.list.price'|trans({}, 'industry_trade')},
+            ]) }}
+            <tbody>
+                {% for product in resources.data %}
+                    {% set variant = product.enabledVariants.first|default(null) %}
+                    {% set image = product.imagesByType('thumbnail').first|default(product.images.first|default(null)) %}
+                    <tr data-industry="product-row" {{ sylius_test_html_attribute('product', product.code) }}>
+                        <td class="industry-product-table__image" data-label="{{ 'industry_trade.list.image'|trans({}, 'industry_trade') }}">
+                            {% if image is not null and image %}
+                                <img src="{{ image.path|imagine_filter('sylius_shop_product_small_thumbnail') }}" alt="" width="64" height="64" loading="lazy">
+                            {% else %}
+                                <span class="industry-thumb-placeholder" data-industry="image-placeholder" role="img" aria-label="{{ 'industry_trade.list.no_image'|trans({}, 'industry_trade') }}"></span>
+                            {% endif %}
+                        </td>
+                        <td class="industry-product-table__reference" data-label="{{ 'industry_trade.list.reference'|trans({}, 'industry_trade') }}">
+                            <code data-industry="reference">{{ variant is not null ? variant.code : product.code }}</code>
+                        </td>
+                        <th scope="row" class="industry-product-table__name" data-label="{{ 'industry_trade.list.designation'|trans({}, 'industry_trade') }}">
+                            <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" {{ sylius_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a>
+                        </th>
+                        <td class="industry-product-table__stock" data-label="{{ 'industry_trade.list.stock'|trans({}, 'industry_trade') }}">
+                            {% if variant is null %}
+                                <span class="industry-stock industry-stock--out" data-industry="stock">{{ 'sylius.ui.unavailable'|trans }}</span>
+                            {% else %}
+                                {% include 'industry_trade/_stock.html.twig' with {variant: variant} only %}
+                            {% endif %}
+                        </td>
+                        <td class="industry-product-table__price" data-label="{{ 'industry_trade.list.price'|trans({}, 'industry_trade') }}">
+                            {% if variant is null %}
+                                <span data-industry="price">–</span>
+                            {% else %}
+                                <span data-industry="price" {{ sylius_test_html_attribute('product-price') }}>{{ money.calculatePrice(variant) }}</span>
+                                <span class="industry-excl-vat">{{ 'industry_trade.list.excl_vat'|trans({}, 'industry_trade') }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    {{ messages.info('sylius.ui.no_results_to_display') }}
+{% endif %}

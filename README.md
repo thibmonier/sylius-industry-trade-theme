@@ -65,6 +65,25 @@ Twig templates can be overridden in `templates/bundles/SyliusShopBundle/` of you
 2. Theme: `vendor/tmonier/sylius-industry-trade-theme/templates/`
 3. Sylius Bundle: `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
 
+## Screenshots
+
+Catalogue pages (rendered with Bootstrap and the theme stylesheet; the shop header and footer are shown without the full Sylius stylesheet).
+
+| Page | Capture |
+|------|---------|
+| Home (hero, aisles of the channel menu taxon) | ![Home](docs/home.png) |
+| Dense product list (reference, designation, stock, price excl. VAT) | ![Product list](docs/product-list.png) |
+| Product list below 768 px (cards, no horizontal scroll) | ![Product list at 375 px](docs/product-list-375.png) |
+| Product page (references, technical sheet, documents, availability) | ![Product page](docs/product-show.png) |
+
+## Catalogue pages
+
+- **Home**: title, lead text and one link per child of the channel's menu taxon (hidden when the channel has none).
+- **Product list**: one row per product with reference, designation, stock and price excl. VAT; below 768 px each row becomes a card. A product without image shows a placeholder.
+- **Product page**: product and variant references, availability, technical sheet (product attributes) and a Documents list for attributes whose text value is a link to a pdf, dwg, step, zip, doc or xls file. Blocks from plugins (for example tier pricing) are left to the plugins and simply absent when the plugin is not installed.
+- Texts are in the `industry_trade` translation domain (`translations/`, English and French).
+- Implemented as theme template overrides (`templates/bundles/SyliusShopBundle/`), which only apply to channels using the theme: Twig hooks are global and would break channels without the theme.
+
 <!-- vitrine:demo-b2b:start -->
 ## B2B demo
 

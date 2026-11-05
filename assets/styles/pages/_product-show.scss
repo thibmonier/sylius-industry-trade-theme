@@ -1,0 +1,53 @@
+@use '../variables' as *;
+
+// Fiche produit : références, disponibilité, fiche technique, documents
+.industry-references {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $industry-spacing-xs $industry-spacing-lg;
+    margin: $industry-spacing-sm 0 0;
+
+    dt {
+        display: inline;
+        font-weight: 400;
+        color: $industry-muted;
+
+        &::after {
+            content: ' ';
+        }
+    }
+
+    dd {
+        display: inline;
+        margin: 0;
+    }
+}
+
+.industry-availability__label {
+    color: $industry-muted;
+    margin-right: $industry-spacing-xs;
+}
+
+.industry-spec-table th {
+    width: 40%;
+    color: $industry-muted;
+    font-weight: 600;
+}
+
+.industry-documents {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    a {
+        display: inline-block;
+        min-height: 2.75rem;
+        line-height: 2.75rem;
+        font-weight: 600;
+
+        &:focus-visible {
+            outline: 3px solid $industry-accent;
+            outline-offset: 2px;
+        }
+    }
+}

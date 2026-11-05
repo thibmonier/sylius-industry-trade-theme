@@ -1,0 +1,26 @@
+industry_trade:
+    home:
+        lead: 'Retrouvez une référence industrielle en quelques secondes : parcourez par rayon, puis lisez référence, désignation, stock et prix sur une ligne.'
+        aisles: 'Parcourir par rayon'
+        point_reference: 'Chaque produit affiche sa référence'
+        point_dense: 'Des listes denses, faites pour être parcourues'
+        point_excl_vat: 'Prix affichés hors taxes'
+    list:
+        caption: 'Produits avec référence, désignation, stock et prix HT'
+        image: 'Image'
+        reference: 'Référence'
+        designation: 'Désignation'
+        stock: 'Stock'
+        price: 'Prix HT'
+        excl_vat: 'HT'
+        no_image: 'Aucune image disponible'
+    stock:
+        available: 'Disponible'
+        in_stock: 'En stock (%count%)'
+        out: 'En rupture'
+    show:
+        product_code: 'Référence produit'
+        variant_code: 'Référence variante'
+        availability: 'Disponibilité :'
+        technical_sheet: 'Fiche technique'
+        documents: 'Documents'
