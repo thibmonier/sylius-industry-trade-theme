@@ -1,6 +1,3 @@
-{% if sylius.channel.themeName != industry_theme_name %}
-    {% include '@SyliusShop/cart/index/content/form/sections/general/items/body/remove.html.twig' %}
-{% else %}
 {% set item = hookable_metadata.context.item %}
 
 <td>
@@ -16,4 +13,3 @@
         {{ ux_icon('tabler:x', {class: 'icon icon-sm', 'aria-hidden': 'true'}) }}
     </button>
 </td>
-{% endif %}

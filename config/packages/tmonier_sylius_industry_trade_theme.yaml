@@ -1,27 +1,13 @@
 # Configuration du thème Industrie & Négoce
-# Ce fichier est copié par la recette Flex dans config/packages/ de l'application.
-# Il enregistre les Twig hooks du thème.
-
-# Panier, compte et pages de contenu (US-224) : copier aussi config/twig_hooks/ dans l'application.
+# Ce fichier est copié dans config/packages/ de l'application. Il n'enregistre que ce qui est nécessaire au thème :
+# - le namespace Twig des gabarits ajoutés par le thème (colonne « Référence » du panier, navigation du compte, page de contenu) ;
+# - l'import des deux hookables de la colonne « Référence » (config/twig_hooks/cart_account.yaml, à copier aussi).
+# Les pages du thème sont des surcharges de gabarits : elles ne s'appliquent que sur un canal dont le `theme_name` est celui du thème
+# et ne remplacent aucun réglage de hook de l'application.
 imports:
     - { resource: '../twig_hooks/cart_account.yaml' }
 
-# Gabarits des hooks (panier, compte, pages de contenu) : namespace toujours résolu, même sur un canal sans le thème.
-# Chacun inclut le gabarit du cœur tant que le thème n'est pas actif sur le canal courant.
+# Gabarits ajoutés par le thème : namespace toujours résolu, même sur un canal sans le thème.
 twig:
     paths:
         '%kernel.project_dir%/vendor/tmonier/sylius-industry-trade-theme/templates/hooks': TmonierSyliusIndustryTradeTheme
-
-sylius_twig_hooks:
-    hooks:
-        # En-tête personnalisé (exemple)
-        'sylius_shop.base.header':
-            industry_theme_header:
-                template: '@SyliusShop/shared/layout/base/header/content.html.twig'
-                priority: 100
-
-        # Pied de page personnalisé (exemple)
-        'sylius_shop.base.footer':
-            industry_theme_footer:
-                template: '@SyliusShop/shared/layout/base/footer/content.html.twig'
-                priority: 100

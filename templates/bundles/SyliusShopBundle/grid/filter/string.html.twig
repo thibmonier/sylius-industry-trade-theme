@@ -1,0 +1,9 @@
+{# Thème Industrie & Négoce — comme le cœur, avec un nom accessible pour le champ (le placeholder seul n'est pas un libellé). #}
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
+{% if form.type is defined %}
+    {{ form_row(form.type, {'label': filter.label}) }}
+{% endif %}
+{# Le filtre de recherche de la liste produit n'a pas de libellé dans la grille du cœur : « Search » à défaut. #}
+{% set field_label = (form.type is defined ? form.value.vars.label : filter.label) ?: 'sylius.ui.search' %}
+{{ form_widget(form.value, {attr: {placeholder: form.value.vars.label, 'aria-label': field_label|trans, class: 'form-control-sm'}, 'label': field_label}) }}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tmonier\SyliusIndustryTradeTheme\Tests\Functional;
 
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpFoundation\Session\SessionFactoryInterface;
 
 /**
@@ -64,9 +65,10 @@ final class HostAppCompatibilityTest extends CatalogWebTestCase
 
     public function testFlashMessagesAreTranslatedWithTheFlashesDomainOnAThemedChannel(): void
     {
-        $session = self::getContainer()->get('session.factory');
-        assert($session instanceof SessionFactoryInterface);
-        $session = $session->createSession();
+        $factory = self::getContainer()->get('session.factory');
+        assert($factory instanceof SessionFactoryInterface);
+        $session = $factory->createSession();
+        assert($session instanceof FlashBagAwareSessionInterface);
         $session->getFlashBag()
             ->add('success', 'sylius.cart.add_item');
         $session->save();

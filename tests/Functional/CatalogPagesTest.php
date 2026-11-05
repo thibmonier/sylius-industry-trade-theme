@@ -138,6 +138,18 @@ final class CatalogPagesTest extends CatalogWebTestCase
         $this->assertSelectorNotExists('[data-industry="home-aisles"]');
     }
 
+    public function testSearchFieldOfTheListHasAnAccessibleName(): void
+    {
+        $taxon = $this->createTaxon('Fasteners');
+        $this->createProduct('SRCH01', 'Hex bolt', $taxon);
+        $this->em->flush();
+
+        $this->client->request('GET', $this->listUrl($taxon));
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('input[name="criteria[search][value]"][aria-label="Search"]');
+    }
+
     public function testPagesRenderWithStandardSyliusWhenThemeIsInactive(): void
     {
         $taxon = $this->createTaxon('Plain');
