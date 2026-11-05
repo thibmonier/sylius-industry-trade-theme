@@ -1,0 +1,21 @@
+{# Thème Industrie & Négoce — prix HT et disponibilité #}
+{% set variant = hookable_metadata.context.variant|default(null) %}
+
+{% if variant is not null %}
+    {% set has_discount = variant|sylius_has_discount({'channel': sylius.channel}) %}
+    {% set days = sylius.channel.channelPriceHistoryConfig.lowestPriceForDiscountedProductsCheckingPeriod %}
+    {% set has_lowest_price = variant|sylius_has_lowest_price({'channel': sylius.channel}) %}
+
+    <div class="mb-3 pb-1">
+        {% hook 'prices' with { variant, has_discount, has_lowest_price, days } %}
+        <p class="industry-excl-vat mb-1">{{ 'industry_trade.list.excl_vat'|trans({}, 'industry_trade') }}</p>
+        <p class="mb-0" data-industry="availability">
+            <span class="industry-availability__label">{{ 'industry_trade.show.availability'|trans({}, 'industry_trade') }}</span>
+            {% include 'industry_trade/_stock.html.twig' with {variant: variant} only %}
+        </p>
+    </div>
+{% else %}
+    <div class="mb-3 pb-1" {{ sylius_test_html_attribute('product-price', 'sylius.ui.unavailable'|trans ) }}>
+        {{ 'sylius.ui.unavailable'|trans }}
+    </div>
+{% endif %}

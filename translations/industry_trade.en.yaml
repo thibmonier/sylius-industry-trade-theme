@@ -1,0 +1,26 @@
+industry_trade:
+    home:
+        lead: 'Find an industrial reference in a few seconds: search by aisle, then read reference, designation, stock and price on one line.'
+        aisles: 'Browse by aisle'
+        point_reference: 'Every product shows its reference'
+        point_dense: 'Dense lists, built for scanning'
+        point_excl_vat: 'Prices shown excluding VAT'
+    list:
+        caption: 'Products with reference, designation, stock and price excluding VAT'
+        image: 'Image'
+        reference: 'Reference'
+        designation: 'Designation'
+        stock: 'Stock'
+        price: 'Price excl. VAT'
+        excl_vat: 'excl. VAT'
+        no_image: 'No image available'
+    stock:
+        available: 'Available'
+        in_stock: 'In stock (%count%)'
+        out: 'Out of stock'
+    show:
+        product_code: 'Product reference'
+        variant_code: 'Variant reference'
+        availability: 'Availability:'
+        technical_sheet: 'Technical sheet'
+        documents: 'Documents'

@@ -1,0 +1,19 @@
+{# Thème Industrie & Négoce — fiche produit : désignation puis références #}
+{% set product = hookable_metadata.context.product %}
+{% set variant = hookable_metadata.context.variant|default(null) %}
+
+<div class="mb-4" data-industry="product-heading">
+    <h1 class="h2 text-break" {{ sylius_test_html_attribute('product-name', product.name) }}>{{ product.name }}</h1>
+    <dl class="industry-references" data-industry="references">
+        <div>
+            <dt>{{ 'industry_trade.show.product_code'|trans({}, 'industry_trade') }}</dt>
+            <dd><code data-industry="product-code">{{ product.code }}</code></dd>
+        </div>
+        {% if variant is not null and variant.code != product.code %}
+            <div>
+                <dt>{{ 'industry_trade.show.variant_code'|trans({}, 'industry_trade') }}</dt>
+                <dd><code data-industry="variant-code">{{ variant.code }}</code></dd>
+            </div>
+        {% endif %}
+    </dl>
+</div>
