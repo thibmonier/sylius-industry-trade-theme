@@ -1,0 +1,5 @@
+{% if sylius.channel.themeName != 'tmonier/sylius-industry-trade-theme' %}
+    {% include '@SyliusShop/cart/index/content/form/sections/general/items/head/total.html.twig' %}
+{% else %}
+<th scope="col" class="text-end text-nowrap">{{ 'industry_theme.cart.total'|trans({}, 'industry_theme') }}</th>
+{% endif %}

@@ -170,20 +170,64 @@ final class CartAccountPagesTest extends WebTestCase
         $this->assertSelectorExists('article.industry-content table tr.industry-table-row');
     }
 
-    private function clientWithTheme(): KernelBrowser
+    public function testCartWithLinesRendersTheStandardPageOnAChannelWithoutTheTheme(): void
+    {
+        $client = $this->clientWithCart(3, null);
+
+        $client->request('GET', '/en_US/cart/');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorCount(3, 'table[data-test-cart-items] tbody tr');
+        $this->assertSelectorNotExists('.industry-cart-table');
+    }
+
+    public function testEmptyCartRendersTheStandardPageOnAChannelWithoutTheTheme(): void
+    {
+        $client = $this->clientWithTheme(null);
+
+        $client->request('GET', '/en_US/cart/');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('body', 'Your cart is empty');
+        $this->assertSelectorNotExists('.industry-cart-empty');
+    }
+
+    public function testAccountRendersTheStandardMenuOnAChannelWithoutTheTheme(): void
+    {
+        $client = $this->clientWithTheme(null);
+        $this->login($client);
+
+        $client->request('GET', '/en_US/account/dashboard');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('body', 'Personal information');
+        $this->assertSelectorNotExists('.industry-account-nav');
+    }
+
+    public function testContentPageStillRendersOnAChannelWithoutTheTheme(): void
+    {
+        $client = $this->clientWithTheme(null);
+
+        $client->request('GET', '/_test/content-page');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextSame('article.industry-content h1', 'Conditions de livraison');
+    }
+
+    private function clientWithTheme(?string $theme = self::THEME): KernelBrowser
     {
         $client = self::createClient();
         $channel = $this->channel();
-        $channel->setThemeName(self::THEME);
+        $channel->setThemeName($theme);
         $this->entityManager()
             ->flush();
 
         return $client;
     }
 
-    private function clientWithCart(int $lines): KernelBrowser
+    private function clientWithCart(int $lines, ?string $theme = self::THEME): KernelBrowser
     {
-        $client = $this->clientWithTheme();
+        $client = $this->clientWithTheme($theme);
         $channel = $this->channel();
         $currency = $channel->getBaseCurrency();
         $this->assertNotNull($currency);

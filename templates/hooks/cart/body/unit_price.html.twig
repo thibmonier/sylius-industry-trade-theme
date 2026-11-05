@@ -1,3 +1,6 @@
+{% if sylius.channel.themeName != 'tmonier/sylius-industry-trade-theme' %}
+    {% include '@SyliusShop/cart/index/content/form/sections/general/items/body/unit_price.html.twig' %}
+{% else %}
 {% import "@SyliusShop/shared/macro/money.html.twig" as money %}
 
 {% set item = hookable_metadata.context.item %}
@@ -13,3 +16,4 @@
         {{ money.convertAndFormat(item.discountedUnitPrice) }}
     </span>
 </td>
+{% endif %}

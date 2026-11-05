@@ -1,3 +1,6 @@
+{% if sylius.channel.themeName != 'tmonier/sylius-industry-trade-theme' %}
+    {% include '@SyliusShop/cart/index/content/form/sections/general/summary.html.twig' %}
+{% else %}
 {# Rendered with \Sylius\Bundle\ShopBundle\Twig\Component\Cart\SummaryComponent #}
 {# Comme le cœur, avec un titre h2 : la page n'a qu'un h1, un h3 sauterait un niveau. #}
 {% import '@SyliusShop/shared/macro/loader.html.twig' as loader %}
@@ -9,3 +12,4 @@
         {% hook 'summary' with {cart} %}
     </div>
 </div>
+{% endif %}

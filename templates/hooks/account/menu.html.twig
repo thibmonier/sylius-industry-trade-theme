@@ -1,0 +1,8 @@
+{% if sylius.channel.themeName != 'tmonier/sylius-industry-trade-theme' %}
+    {% include '@SyliusShop/account/common/content/menu/account.html.twig' %}
+{% else %}
+{# Navigation du compte : le menu `sylius.menu.shop.account` au style du thème (entrées des plugins comprises). #}
+<div class="mb-3 industry-account-nav">
+    {{ knp_menu_render('sylius_shop.account', {'template': '@TmonierSyliusIndustryTradeTheme/account/menu_items.html.twig'}) }}
+</div>
+{% endif %}

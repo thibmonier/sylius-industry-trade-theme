@@ -2,6 +2,10 @@ imports:
     # Hooks de l'US-224 (panier, compte, pages de contenu), chargés comme le ferait l'application hôte.
     - { resource: '../../../../config/twig_hooks/cart_account.yaml' }
 
+twig:
+    paths:
+        '%kernel.project_dir%/../../../templates/hooks': TmonierSyliusIndustryTradeTheme
+
 sylius_theme:
     sources:
         filesystem:

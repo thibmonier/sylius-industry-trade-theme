@@ -8,7 +8,7 @@ Thème B2B pour [Sylius](https://sylius.com) 2 optimisé pour l'industrie et le 
 
 - **Jetons de design** : palette de couleurs avec contrastes WCAG AAA (≥ 7:1), surchargeables via propriétés CSS personnalisées
 - **Composants communs** : en-tête, pied de page, boutons, tableaux, formulaires, messages
-- **Panier, compte et pages de contenu** : panier dense (référence, quantité modifiable, prix HT), navigation du compte au style du thème (entrées des plugins seulement si le plugin est installé), gabarit de page de contenu `@SyliusShop/industry_theme/content/page.html.twig`
+- **Panier, compte et pages de contenu** : panier dense (référence, quantité modifiable, prix HT), navigation du compte au style du thème (entrées des plugins seulement si le plugin est installé), gabarit de page de contenu `@TmonierSyliusIndustryTradeTheme/content/page.html.twig`
 - **Compatibilité** : Sylius 2.2 et 2.3, PHP 8.3+
 - **Assets** : Webpack Encore
 
@@ -31,7 +31,7 @@ cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_ind
 cp -r vendor/tmonier/sylius-industry-trade-theme/config/twig_hooks config/
 ```
 
-Les hooks du panier, du compte et des pages de contenu sont dans `config/twig_hooks/cart_account.yaml`, importé par le fichier principal. Ils ne changent que le gabarit de hookables existants : les pages des autres plugins continuent de fonctionner ; le lien vers la saisie rapide d'un panier vide n'apparaît que si le plugin quick-order est installé.
+Les gabarits des hooks du panier, du compte et des pages de contenu sont dans le namespace Twig `@TmonierSyliusIndustryTradeTheme` (déclaré par `twig.paths` dans la config copiée), résolu sur tous les canaux ; chacun rend le gabarit du cœur tant que le thème n'est pas actif sur le canal courant, donc un canal sans thème garde les pages standard. Les hooks sont dans `config/twig_hooks/cart_account.yaml`, importé par le fichier principal. Ils ne changent que le gabarit de hookables existants : les pages des autres plugins continuent de fonctionner ; le lien vers la saisie rapide d'un panier vide n'apparaît que si le plugin quick-order est installé.
 
 ### Installation des assets
 
