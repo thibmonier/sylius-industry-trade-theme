@@ -1,5 +1,11 @@
 # Thème Industrie & Négoce : panier, compte et pages de contenu (US-224).
 # Hooks uniquement, aucun gabarit du cœur n'est copié : chaque hookable garde son nom et ne change que de gabarit.
+# Nom du thème, déclaré une seule fois : les gabarits de templates/hooks/ le comparent au thème du canal courant
+# et délèguent au gabarit du cœur quand il diffère (canal sans le thème).
+twig:
+    globals:
+        industry_theme_name: 'tmonier/sylius-industry-trade-theme'
+
 sylius_twig_hooks:
     hooks:
         # Panier : le formulaire garde son composant et change de gabarit (état vide).

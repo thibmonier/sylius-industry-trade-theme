@@ -1,4 +1,4 @@
-{% if sylius.channel.themeName != 'tmonier/sylius-industry-trade-theme' %}
+{% if sylius.channel.themeName != industry_theme_name %}
     {% include '@SyliusShop/cart/index/content/form/sections/general/coupon.html.twig' %}
 {% else %}
 {# Bloc coupon du cœur, avec un nom accessible pour le champ et le bouton de retrait. #}

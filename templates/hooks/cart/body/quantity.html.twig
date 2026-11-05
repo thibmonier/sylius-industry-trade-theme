@@ -1,4 +1,4 @@
-{% if sylius.channel.themeName != 'tmonier/sylius-industry-trade-theme' %}
+{% if sylius.channel.themeName != industry_theme_name %}
     {% include '@SyliusShop/cart/index/content/form/sections/general/items/body/quantity.html.twig' %}
 {% else %}
 {% set form = hookable_metadata.context.form %}
