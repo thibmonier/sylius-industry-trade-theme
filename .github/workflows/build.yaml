@@ -9,6 +9,9 @@ on:
     pull_request:
         paths-ignore:
             - "*.md"
+    schedule:
+        # Weekly (Monday): catches Sylius template drift between pushes (US-225).
+        - cron: '17 5 * * 1'
     workflow_dispatch: ~
 
 concurrency:

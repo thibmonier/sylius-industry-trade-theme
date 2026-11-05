@@ -1,0 +1,14 @@
+{
+    "2.2": {
+        "SyliusShopBundle/shared/flashes.html.twig": "63b373d827fda3924d35cdf07f1979cc3ebadf3fd367f5f8e5b91d352ada31e9",
+        "SyliusShopBundle/shared/layout/base.html.twig": "c59abea78ee84174c9d575148a57abab5d52f36e0127565f2717591e71e381b6",
+        "SyliusShopBundle/shared/layout/base/footer/content.html.twig": "4a8461bac4935fe6f0a75cb2c36410211a32c7fd539e83d0d9ecb33d838c9299",
+        "SyliusShopBundle/shared/layout/base/header/content.html.twig": "e598422d8247b29e641909e4a4e24b29dde3ce65b304a7fa7cd5e25e68d3eac9"
+    },
+    "2.3": {
+        "SyliusShopBundle/shared/flashes.html.twig": "63b373d827fda3924d35cdf07f1979cc3ebadf3fd367f5f8e5b91d352ada31e9",
+        "SyliusShopBundle/shared/layout/base.html.twig": "85a88e81f737af797f10d7e593db295eb6f3cf4a8e8745a72081eeca3cc281a5",
+        "SyliusShopBundle/shared/layout/base/footer/content.html.twig": "4a8461bac4935fe6f0a75cb2c36410211a32c7fd539e83d0d9ecb33d838c9299",
+        "SyliusShopBundle/shared/layout/base/header/content.html.twig": "e598422d8247b29e641909e4a4e24b29dde3ce65b304a7fa7cd5e25e68d3eac9"
+    }
+}

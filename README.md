@@ -65,6 +65,18 @@ Twig templates can be overridden in `templates/bundles/SyliusShopBundle/` of you
 2. Theme: `vendor/tmonier/sylius-industry-trade-theme/templates/`
 3. Sylius Bundle: `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
 
+### Reviewing template drift
+
+Every template the theme overrides under `templates/bundles/<Bundle>/**` is copied from a Sylius template. The unit test `tests/Unit/TemplateDrift/ThemeTemplateDriftTest.php` compares the fingerprint of each original (normalized sha256, per Sylius minor version) with `tests/TemplateDrift/fingerprints.json`, recorded at the last review. It runs in the `unit` testsuite and in a weekly scheduled run (Monday). Overrides are discovered automatically.
+
+When it fails, the message names the template:
+
+- **original template modified**: read the upstream diff between the previously reviewed Sylius version and the new one, adapt the override, then run `php bin/template-fingerprints --update`;
+- **template removed upstream**: adapt or remove the override (the script refuses to write while an original is missing);
+- **override not registered**: run `php bin/template-fingerprints --update` after review.
+
+The script rewrites the fingerprints of the Sylius minor version installed in `vendor/`. To record the other minor version too, install it (`composer require sylius/sylius:~2.2.0 --no-update && composer update`), run the script again, then restore your constraint. `php bin/template-fingerprints --check` only reports the drift.
+
 <!-- vitrine:demo-b2b:start -->
 ## B2B demo
 

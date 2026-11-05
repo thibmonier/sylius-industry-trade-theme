@@ -65,6 +65,18 @@ Les gabarits Twig peuvent être surchargés dans `templates/bundles/SyliusShopBu
 2. Thème : `vendor/tmonier/sylius-industry-trade-theme/templates/`
 3. Bundle Sylius : `vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/Resources/views/`
 
+### Revue de la dérive des gabarits
+
+Chaque gabarit surchargé par le thème sous `templates/bundles/<Bundle>/**` est dérivé d'un gabarit Sylius. Le test unitaire `tests/Unit/TemplateDrift/ThemeTemplateDriftTest.php` compare l'empreinte de chaque gabarit d'origine (sha256 normalisée, par version mineure de Sylius) à `tests/TemplateDrift/fingerprints.json`, enregistré à la dernière revue. Il tourne dans la testsuite `unit` et dans une exécution planifiée hebdomadaire (lundi). Les surcharges sont découvertes automatiquement.
+
+Quand il échoue, le message nomme le gabarit :
+
+- **gabarit d'origine modifié** : lire le diff amont entre la version de Sylius précédemment revue et la nouvelle, adapter la surcharge, puis lancer `php bin/template-fingerprints --update` ;
+- **gabarit supprimé en amont** : adapter ou retirer la surcharge (le script refuse d'écrire tant qu'un original manque) ;
+- **surcharge non enregistrée** : lancer `php bin/template-fingerprints --update` après revue.
+
+Le script réécrit les empreintes de la version mineure de Sylius installée dans `vendor/`. Pour enregistrer aussi l'autre version mineure, l'installer (`composer require sylius/sylius:~2.2.0 --no-update && composer update`), relancer le script, puis restaurer votre contrainte. `php bin/template-fingerprints --check` signale seulement la dérive.
+
 <!-- vitrine:demo-b2b:start -->
 ## Démo B2B
 
