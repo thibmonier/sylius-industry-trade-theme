@@ -1,11 +1,27 @@
 {
     "2.2": {
+        "SyliusShopBundle/homepage/banner.html.twig": "ccc6b5ab1d346e76b8d6b3ca9accdeff322eab325858fbf69c3c28b398f96681",
+        "SyliusShopBundle/product/index/content/body/main/filters/controls/limit/toggle.html.twig": "f2a70a3be26d8b60c0dd2c43cfb0fc06b4eba8f9d977353df7689ff18f06bb59",
+        "SyliusShopBundle/product/index/content/body/main/filters/controls/sorting/toggle.html.twig": "0ae641b6d0cb95c196d626390ae7eab8067ca8fb1abefa7cf65c471766d97c3d",
+        "SyliusShopBundle/product/index/content/body/main/products.html.twig": "d4366095bb1fd6495c847fae552d97e8edbbf374736d60219bf72ce85ce056b9",
+        "SyliusShopBundle/product/show/content/info/overview/accordion/attributes/content.html.twig": "accbf03c125598210d89df3ce6b877ae37c492757b2fe4066d175576494810a6",
+        "SyliusShopBundle/product/show/content/info/overview/accordion/attributes/title.html.twig": "581d148bdf6ab84e94325c0c68a07305cd757f178bc5de0b4fc4378f713cbdd0",
+        "SyliusShopBundle/product/show/content/info/summary/header.html.twig": "a62d809c206fe6a2936af78513dbfdc00ff1047715118d641c78c97f52011751",
+        "SyliusShopBundle/product/show/content/info/summary/prices.html.twig": "dfd346a47863abef5f13bae770a2028ceefcdbff9288745500dcfa04ee07bc79",
         "SyliusShopBundle/shared/flashes.html.twig": "63b373d827fda3924d35cdf07f1979cc3ebadf3fd367f5f8e5b91d352ada31e9",
         "SyliusShopBundle/shared/layout/base.html.twig": "c59abea78ee84174c9d575148a57abab5d52f36e0127565f2717591e71e381b6",
         "SyliusShopBundle/shared/layout/base/footer/content.html.twig": "4a8461bac4935fe6f0a75cb2c36410211a32c7fd539e83d0d9ecb33d838c9299",
         "SyliusShopBundle/shared/layout/base/header/content.html.twig": "e598422d8247b29e641909e4a4e24b29dde3ce65b304a7fa7cd5e25e68d3eac9"
     },
     "2.3": {
+        "SyliusShopBundle/homepage/banner.html.twig": "ccc6b5ab1d346e76b8d6b3ca9accdeff322eab325858fbf69c3c28b398f96681",
+        "SyliusShopBundle/product/index/content/body/main/filters/controls/limit/toggle.html.twig": "f2a70a3be26d8b60c0dd2c43cfb0fc06b4eba8f9d977353df7689ff18f06bb59",
+        "SyliusShopBundle/product/index/content/body/main/filters/controls/sorting/toggle.html.twig": "0ae641b6d0cb95c196d626390ae7eab8067ca8fb1abefa7cf65c471766d97c3d",
+        "SyliusShopBundle/product/index/content/body/main/products.html.twig": "d4366095bb1fd6495c847fae552d97e8edbbf374736d60219bf72ce85ce056b9",
+        "SyliusShopBundle/product/show/content/info/overview/accordion/attributes/content.html.twig": "accbf03c125598210d89df3ce6b877ae37c492757b2fe4066d175576494810a6",
+        "SyliusShopBundle/product/show/content/info/overview/accordion/attributes/title.html.twig": "581d148bdf6ab84e94325c0c68a07305cd757f178bc5de0b4fc4378f713cbdd0",
+        "SyliusShopBundle/product/show/content/info/summary/header.html.twig": "a62d809c206fe6a2936af78513dbfdc00ff1047715118d641c78c97f52011751",
+        "SyliusShopBundle/product/show/content/info/summary/prices.html.twig": "dfd346a47863abef5f13bae770a2028ceefcdbff9288745500dcfa04ee07bc79",
         "SyliusShopBundle/shared/flashes.html.twig": "63b373d827fda3924d35cdf07f1979cc3ebadf3fd367f5f8e5b91d352ada31e9",
         "SyliusShopBundle/shared/layout/base.html.twig": "85a88e81f737af797f10d7e593db295eb6f3cf4a8e8745a72081eeca3cc281a5",
         "SyliusShopBundle/shared/layout/base/footer/content.html.twig": "4a8461bac4935fe6f0a75cb2c36410211a32c7fd539e83d0d9ecb33d838c9299",
