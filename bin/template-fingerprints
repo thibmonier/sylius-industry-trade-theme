@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// Recomputes tests/TemplateDrift/fingerprints.json for the installed Sylius minor version, after review.
+// Usage: bin/template-fingerprints --update | --check
+
+use Tmonier\SyliusIndustryTradeTheme\Tests\TemplateDrift\TemplateDriftDetector;
+
+$root = dirname(__DIR__);
+require $root . '/vendor/autoload.php';
+require_once $root . '/tests/TemplateDrift/TemplateDriftDetector.php';
+
+$mode = $argv[1] ?? '';
+if (!in_array($mode, ['--update', '--check'], true)) {
+    fwrite(STDERR, "Usage: bin/template-fingerprints --update | --check\n");
+    exit(2);
+}
+
+$file = $root . '/tests/TemplateDrift/fingerprints.json';
+$minor = TemplateDriftDetector::minorVersion((string) Composer\InstalledVersions::getPrettyVersion('sylius/sylius'));
+$detector = new TemplateDriftDetector($root, $root . '/vendor');
+$all = TemplateDriftDetector::loadFingerprints($file);
+
+if ('--check' === $mode) {
+    $errors = $detector->check($all[$minor] ?? []);
+    fwrite(STDOUT, [] === $errors ? "Sylius $minor : aucune dérive.\n" : implode("\n", $errors) . "\n");
+    exit([] === $errors ? 0 : 1);
+}
+
+$missing = array_values(array_diff($detector->overrides(), array_keys($detector->compute())));
+if ([] !== $missing) {
+    fwrite(STDERR, "Gabarit supprimé en amont, rien n'est écrit :\n- " . implode("\n- ", $missing) . "\n");
+    exit(1);
+}
+
+$all[$minor] = $detector->compute();
+ksort($all);
+file_put_contents($file, json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n");
+fwrite(STDOUT, sprintf("Sylius %s : %d empreinte(s) écrite(s) dans %s.\n", $minor, count($all[$minor]), 'tests/TemplateDrift/fingerprints.json'));
