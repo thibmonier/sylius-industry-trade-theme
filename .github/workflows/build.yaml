@@ -149,7 +149,7 @@ jobs:
             -
                 name: Create a Sylius-Standard project (theme from this checkout, as version 0.1.99)
                 run: |
-                    composer create-project "sylius/sylius-standard:$SYLIUS_VERSION" app --no-install --no-interaction
+                    composer create-project "sylius/sylius-standard:$SYLIUS_VERSION" app --no-install --no-scripts --no-interaction
                     cd app
                     composer require "sylius/sylius:$SYLIUS_VERSION" --no-update --no-interaction
                     composer config repositories.theme '{"type": "path", "url": "../theme", "options": {"symlink": false, "versions": {"tmonier/sylius-industry-trade-theme": "0.1.99"}}}'
