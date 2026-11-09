@@ -43,7 +43,13 @@ fi
 
 if [ "$FAILED" = 1 ]; then
     echo "--- errors of $LOG (deprecations left out)"
-    grep -E '"level_name":"(ERROR|CRITICAL|ALERT|EMERGENCY)"|\.(ERROR|CRITICAL):' "$LOG" 2>/dev/null | tail -n 5 | cut -c1-2000 || true
+    grep -E '"level(_name)?":("?(ERROR|CRITICAL|ALERT|EMERGENCY)"?|[45][0-9]{2})|\.(ERROR|CRITICAL):' "$LOG" 2>/dev/null | tail -n 5 | cut -c1-2000 || true
+    echo "--- exception of the themed home, replayed with APP_DEBUG=1"
+    APP_DEBUG=1 php -S 127.0.0.1:8081 -t public > var/log/server-debug.log 2>&1 &
+    sleep 3
+    curl -sS -L --resolve themed.localhost:8081:127.0.0.1 http://themed.localhost:8081/ -o debug-home.html || true
+    grep -o '<title>[^<]*</title>' debug-home.html | head -n 1 || true
+    grep -oE 'class="exception-message[^"]*"[^>]*>[^<]*' debug-home.html | head -n 3 || true
     echo "--- end of var/log/server.log"
     tail -n 20 var/log/server.log 2>/dev/null || true
     exit 1
