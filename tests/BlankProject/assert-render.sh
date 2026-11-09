@@ -42,8 +42,10 @@ if ! grep -lqE 'data-theme=.?industry-trade' public/build/app/shop/*.css 2>/dev/
 fi
 
 if [ "$FAILED" = 1 ]; then
-    echo "--- end of $LOG"
-    tail -n 60 "$LOG" 2>/dev/null || true
+    echo "--- errors of $LOG (deprecations left out)"
+    grep -E '"level_name":"(ERROR|CRITICAL|ALERT|EMERGENCY)"|\.(ERROR|CRITICAL):' "$LOG" 2>/dev/null | tail -n 5 | cut -c1-2000 || true
+    echo "--- end of var/log/server.log"
+    tail -n 20 var/log/server.log 2>/dev/null || true
     exit 1
 fi
 echo "Render assertions passed: themed home and product list, channel without the theme, compiled styles."
