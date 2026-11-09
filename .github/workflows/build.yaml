@@ -192,8 +192,9 @@ jobs:
             -
                 name: Render assertions
                 working-directory: app
+                # variables_order=EGPCS: the built-in server hides the job environment (APP_ENV, DATABASE_URL) otherwise.
                 run: |
-                    php -S 127.0.0.1:8080 -t public > var/log/server.log 2>&1 &
+                    php -d variables_order=EGPCS -S 127.0.0.1:8080 -t public > var/log/server.log 2>&1 &
                     for _ in $(seq 1 30); do curl -s -o /dev/null http://127.0.0.1:8080/ && break; sleep 1; done
                     bash ../theme/tests/BlankProject/assert-render.sh 8080
 
