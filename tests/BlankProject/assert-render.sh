@@ -12,9 +12,10 @@ fail() {
     FAILED=1
 }
 
-# fetch <host> <path> <output file>: prints the HTTP status, follows the locale redirect.
+# fetch <host> <path> <output file>: prints the HTTP status (000 when the server gives no response), follows the locale redirect.
 fetch() {
-    curl -sS -L -o "$3" -w '%{http_code}' --resolve "$1:$PORT:127.0.0.1" "http://$1:$PORT$2"
+    : > "$3"
+    curl -sS -L -o "$3" -w '%{http_code}' --resolve "$1:$PORT:127.0.0.1" "http://$1:$PORT$2" || true
 }
 
 status=$(fetch themed.localhost / themed-home.html)
