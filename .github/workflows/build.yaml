@@ -152,6 +152,9 @@ jobs:
                     composer create-project "sylius/sylius-standard:$SYLIUS_VERSION" app --no-install --no-scripts --no-interaction
                     cd app
                     composer require "sylius/sylius:$SYLIUS_VERSION" --no-update --no-interaction
+                    # Sylius-Standard 2.2 registers FOSRestBundle without requiring it: it came through
+                    # sylius/resource-bundle, which no longer requires it since 1.14 (Standard 2.3 requires it).
+                    composer require "friendsofsymfony/rest-bundle:^3.7" --no-update --no-interaction
                     composer config repositories.theme '{"type": "path", "url": "../theme", "options": {"symlink": false, "versions": {"tmonier/sylius-industry-trade-theme": "0.1.99"}}}'
                     composer install --no-interaction --no-progress
 
@@ -168,7 +171,8 @@ jobs:
             -
                 name: Node dependencies of the blank project
                 working-directory: app
-                run: npm install --no-audit --no-fund
+                # yarn, as in the Sylius documentation: npm 10 crashes on the file: dependencies of Sylius-Standard.
+                run: yarn install --non-interactive
 
             -
                 name: README installation steps
