@@ -1,0 +1,65 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// Runs the installation steps of the README, as written, in the current directory (a Sylius project).
+// Used by the "blank project" CI job (US-273): the README is the only source of these commands.
+// Usage: php bin/blank-project-steps <README.md> [--list]
+// BLANK_PROJECT_SKIP_STEP=<name> skips one step, to prove that the job turns red without it.
+
+use Tmonier\SyliusIndustryTradeTheme\Tests\BlankProject\ReadmeSteps;
+
+require_once dirname(__DIR__) . '/tests/BlankProject/ReadmeSteps.php';
+
+$readme = $argv[1] ?? '';
+if ('' === $readme || !is_file($readme)) {
+    fwrite(STDERR, "Usage: php bin/blank-project-steps <README.md> [--list]\n");
+    exit(2);
+}
+
+$steps = ReadmeSteps::parse((string) file_get_contents($readme));
+if ([] === $steps) {
+    fwrite(STDERR, "No blank-project step found in $readme.\n");
+    exit(1);
+}
+
+if ('--list' === ($argv[2] ?? '')) {
+    foreach ($steps as $step) {
+        fwrite(STDOUT, $step['name'] . ' (' . ($step['file'] ?? 'bash') . ")\n");
+    }
+    exit(0);
+}
+
+$skip = (string) getenv('BLANK_PROJECT_SKIP_STEP');
+foreach ($steps as $step) {
+    $name = $step['name'];
+    if ($name === $skip) {
+        fwrite(STDOUT, "::warning title=README step skipped::$name (BLANK_PROJECT_SKIP_STEP)\n");
+        continue;
+    }
+
+    fwrite(STDOUT, "::group::README step $name\n");
+    if (null !== $step['file']) {
+        $dir = dirname($step['file']);
+        if (!is_dir($dir) && !mkdir($dir, 0o777, true)) {
+            fwrite(STDOUT, "::endgroup::\n::error title=README step $name::cannot create $dir\n");
+            exit(1);
+        }
+        $flags = 'replace' === $step['write'] ? 0 : \FILE_APPEND;
+        $written = file_put_contents($step['file'], "\n" . $step['body'] . "\n", $flags);
+        fwrite(STDOUT, false === $written ? '' : ($step['write'] ?? 'append') . " {$step['file']}:\n{$step['body']}\n");
+        $code = false === $written ? 1 : 0;
+    } else {
+        fwrite(STDOUT, '$ ' . str_replace("\n", "\n$ ", $step['body']) . "\n");
+        passthru('bash -euo pipefail -c ' . escapeshellarg($step['body']), $code);
+    }
+    fwrite(STDOUT, "::endgroup::\n");
+
+    if (0 !== $code) {
+        fwrite(STDOUT, "::error title=README step $name::the step failed (exit $code); fix the README or the theme\n");
+        exit(1);
+    }
+}
+
+fwrite(STDOUT, count($steps) . " README steps run.\n");

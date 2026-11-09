@@ -20,12 +20,14 @@ B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: h
 
 ## Installation
 
+<!-- blank-project: step=require -->
 ```bash
 composer require tmonier/sylius-industry-trade-theme
 ```
 
 Copy the configuration to your application:
 
+<!-- blank-project: step=copy-config -->
 ```bash
 cp vendor/tmonier/sylius-industry-trade-theme/config/packages/tmonier_sylius_industry_trade_theme.yaml config/packages/
 cp -r vendor/tmonier/sylius-industry-trade-theme/config/twig_hooks config/
@@ -42,17 +44,33 @@ What the configuration does, and what it never does:
 
 The package ships SCSS sources, not compiled assets. Import them in the Encore entry of your application, **after** the Sylius shop styles (Sass loader enabled, as in a standard Sylius application):
 
+<!-- blank-project: step=styles file=assets/shop/entrypoint.scss write=append -->
 ```scss
 // assets/shop/entrypoint.scss (or the stylesheet imported by your shop entry)
 @use '../../vendor/tmonier/sylius-industry-trade-theme/assets/styles/theme';
 ```
 
-then build as usual (`npm run build`). All the rules of the theme are scoped to `[data-theme="industry-trade"]`, an attribute the theme layout sets on `<body>`: on a channel without the theme, or elsewhere in your application, no token and no component changes.
+If your shop entry does not import a stylesheet yet (a fresh Sylius-Standard project), import this file from it:
+
+<!-- blank-project: step=styles-entry file=assets/shop/entrypoint.js write=append -->
+```js
+import './entrypoint.scss';
+```
+
+then build as usual:
+
+<!-- blank-project: step=build -->
+```bash
+npm run build
+```
+
+All the rules of the theme are scoped to `[data-theme="industry-trade"]`, an attribute the theme layout sets on `<body>`: on a channel without the theme, or elsewhere in your application, no token and no component changes.
 
 ### Theme activation
 
 Sylius must find the theme: its filesystem source scans the directories of `sylius_theme.sources.filesystem.directories` (`composer.json` files, `scan_depth` levels deep), for example
 
+<!-- blank-project: step=theme-source file=config/packages/sylius_theme.yaml write=replace -->
 ```yaml
 sylius_theme:
     sources:
@@ -64,6 +82,8 @@ sylius_theme:
 ```
 
 Then set the `theme_name` of a Sylius channel to `tmonier/sylius-industry-trade-theme`.
+
+The CI runs this procedure, as written, in a fresh Sylius-Standard project (Sylius 2.2 and 2.3): the code blocks marked `blank-project` above are executed by `bin/blank-project-steps`, then the job checks a channel with the theme and a channel without it. Change a command here and the job runs the new one.
 
 ## Usage
 
