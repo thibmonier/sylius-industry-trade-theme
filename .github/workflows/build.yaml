@@ -1,18 +1,20 @@
 name: Build
 
+# No paths-ignore on "*.md": the README is the installation procedure the blank-project job runs (US-273).
 on:
     push:
         branches-ignore:
             - 'dependabot/**'
-        paths-ignore:
-            - "*.md"
-    pull_request:
-        paths-ignore:
-            - "*.md"
+    pull_request: ~
     schedule:
         # Weekly (Monday): catches Sylius template drift between pushes (US-225).
         - cron: '17 5 * * 1'
-    workflow_dispatch: ~
+    workflow_dispatch:
+        inputs:
+            skip_step:
+                description: "Blank project: README step to skip, to prove the job turns red (e.g. copy-config)"
+                required: false
+                default: ""
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
@@ -93,6 +95,108 @@ jobs:
                 name: Lint Twig
                 run: |
                     vendor/bin/console lint:twig templates
+
+    # The README installation procedure, as written, in a fresh Sylius-Standard project (US-273).
+    blank-project:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        timeout-minutes: 40
+
+        name: "Blank project, Sylius ${{ matrix.sylius }}"
+
+        strategy:
+            fail-fast: false
+            matrix:
+                sylius: ["~2.2.0", "~2.3.0"]
+
+        services:
+            mysql:
+                image: mysql:8.4.13@sha256:76f0358884cb92d9a086d24e5671c38048d3fef40f2588703d73eb55392d6b69
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+                ports: ["3306:3306"]
+                options: --health-cmd="mysqladmin ping -h 127.0.0.1" --health-interval=5s --health-retries=20
+
+        env:
+            APP_ENV: prod
+            APP_DEBUG: "0"
+            DATABASE_NAME: sylius_blank
+            DATABASE_URL: "mysql://root@127.0.0.1:3306/sylius_blank?serverVersion=8.4.0&charset=utf8mb4"
+            SYLIUS_VERSION: ${{ matrix.sylius }}
+            BLANK_PROJECT_SKIP_STEP: ${{ inputs.skip_step }}
+
+        steps:
+            -
+                uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+                with:
+                    path: theme
+                    persist-credentials: false
+
+            -
+                uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2.40.0
+                with:
+                    php-version: "8.3"
+                    extensions: intl, gd, exif, pdo_mysql
+                    tools: composer:v2
+                    coverage: none
+
+            -
+                uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+                with:
+                    node-version: "22.x"
+
+            -
+                name: Create a Sylius-Standard project (theme from this checkout, as version 0.1.99)
+                run: |
+                    composer create-project "sylius/sylius-standard:$SYLIUS_VERSION" app --no-install --no-scripts --no-interaction
+                    cd app
+                    composer require "sylius/sylius:$SYLIUS_VERSION" --no-update --no-interaction
+                    # Sylius-Standard 2.2 registers FOSRestBundle without requiring it: it came through
+                    # sylius/resource-bundle, which no longer requires it since 1.14 (Standard 2.3 requires it).
+                    composer require "friendsofsymfony/rest-bundle:^3.7" --no-update --no-interaction
+                    composer config repositories.theme '{"type": "path", "url": "../theme", "options": {"symlink": false, "versions": {"tmonier/sylius-industry-trade-theme": "0.1.99"}}}'
+                    composer install --no-interaction --no-progress
+
+            -
+                name: Database and fixtures of the blank project
+                working-directory: app
+                env:
+                    APP_ENV: dev
+                run: |
+                    bin/console doctrine:database:create --if-not-exists --no-interaction
+                    bin/console doctrine:migrations:migrate --no-interaction
+                    bin/console sylius:fixtures:load --no-interaction
+
+            -
+                name: Node dependencies of the blank project
+                working-directory: app
+                # yarn, as in the Sylius documentation: npm 10 crashes on the file: dependencies of Sylius-Standard.
+                run: yarn install --non-interactive
+
+            -
+                name: README installation steps
+                working-directory: app
+                run: php ../theme/bin/blank-project-steps ../theme/README.md
+
+            -
+                name: Boot the kernel after the README steps
+                working-directory: app
+                run: bin/console cache:clear
+
+            -
+                name: Channel with the theme, channel without it
+                working-directory: app
+                run: mysql -h 127.0.0.1 -u root "$DATABASE_NAME" < ../theme/tests/BlankProject/channels.sql
+
+            -
+                name: Render assertions
+                working-directory: app
+                # variables_order=EGPCS: the built-in server hides the job environment (APP_ENV, DATABASE_URL) otherwise.
+                run: |
+                    php -d variables_order=EGPCS -S 127.0.0.1:8080 -t public > var/log/server.log 2>&1 &
+                    for _ in $(seq 1 30); do curl -s -o /dev/null http://127.0.0.1:8080/ && break; sleep 1; done
+                    bash ../theme/tests/BlankProject/assert-render.sh 8080
 
     # Static audit of the workflows themselves (US-209). Version and image are pinned, no network.
     zizmor:
