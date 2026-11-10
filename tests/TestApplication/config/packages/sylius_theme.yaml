@@ -3,6 +3,8 @@ imports:
     - { resource: 'a_host_app.yaml' }
     # Hooks de l'US-224 (panier, compte, pages de contenu), chargés comme le ferait l'application hôte.
     - { resource: '../../../../config/twig_hooks/cart_account.yaml' }
+    # Commutateur clair/sombre (US-226), monté comme le ferait l'application hôte.
+    - { resource: '../../../../config/twig_hooks/color_mode.yaml' }
 
 twig:
     paths:

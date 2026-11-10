@@ -47,6 +47,6 @@ final class DarkModeStylesTest extends TestCase
     {
         $theme = (string) file_get_contents(self::STYLES . '/theme.scss');
 
-        $this->assertStringContainsString("html:not([data-industry-mode])", $theme);
+        $this->assertStringContainsString('html:not([data-industry-mode])', $theme);
     }
 }

@@ -16,6 +16,8 @@
 @use 'pages/cart';
 @use 'pages/account';
 @use 'pages/content';
+// Commutateur clair/sombre (US-226)
+@use 'pages/color-mode';
 
 // Variables CSS Bootstrap et composants, limités au thème actif
 [data-theme='industry-trade'] {
@@ -208,6 +210,7 @@
         --bs-body-color: #{$industry-dark-text};
         --bs-body-color-rgb: #{$industry-dark-text-rgb};
         --bs-emphasis-color: #{$industry-dark-text};
+        --bs-emphasis-color-rgb: #{$industry-dark-text-rgb};
         --bs-heading-color: #{$industry-dark-text};
         --bs-border-color: #{$industry-dark-border};
         --bs-secondary-bg: #{$industry-dark-surface};

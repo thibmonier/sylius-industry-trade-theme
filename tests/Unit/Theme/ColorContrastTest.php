@@ -115,8 +115,14 @@ final class ColorContrastTest extends TestCase
         foreach ($pairs as [$foreground, $background, $minimum]) {
             $label = sprintf('dark : %s sur %s%s', $foreground, $background, $minimum < 7.0 ? ' (UI)' : '');
             yield $label => [
-                $tokens[$foreground] ?? throw new \LogicException(sprintf('Jeton sombre manquant : $industry-dark-%s', $foreground)),
-                $tokens[$background] ?? throw new \LogicException(sprintf('Jeton sombre manquant : $industry-dark-%s', $background)),
+                $tokens[$foreground] ?? throw new \LogicException(sprintf(
+                    'Jeton sombre manquant : $industry-dark-%s',
+                    $foreground,
+                )),
+                $tokens[$background] ?? throw new \LogicException(sprintf(
+                    'Jeton sombre manquant : $industry-dark-%s',
+                    $background,
+                )),
                 $minimum,
             ];
         }

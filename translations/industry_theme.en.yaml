@@ -12,3 +12,5 @@ industry_theme:
             catalogue: Add products from the catalogue to start your order.
             catalogue_link: Browse the catalogue
             quick_order: Type or paste references with the quick order below.
+    color_mode:
+        toggle: Dark mode

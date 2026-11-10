@@ -1,0 +1,8 @@
+{# US-226 : commutateur clair/sombre de la barre du haut. Rien n'est rendu tant que le thème n'est pas actif sur le canal.
+   Nom accessible fixe, état annoncé par aria-pressed ; masqué tant que le script du <head> n'a pas tourné (sans JavaScript, il ne ferait rien). #}
+{% if sylius.channel.themeName == industry_theme_name %}
+<button type="button" class="btn btn-sm industry-color-mode" data-industry-color-mode-toggle aria-pressed="false" hidden>
+    <span aria-hidden="true" class="industry-color-mode__icon">&#9680;</span>
+    {{ 'industry_theme.color_mode.toggle'|trans({}, 'industry_theme') }}
+</button>
+{% endif %}
