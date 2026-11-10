@@ -7,6 +7,7 @@ Thème B2B pour [Sylius](https://sylius.com) 2 optimisé pour l'industrie et le 
 ## Caractéristiques
 
 - **Jetons de design** : palette de couleurs avec contrastes WCAG AAA (≥ 7:1), surchargeables via propriétés CSS personnalisées
+- **Mode sombre optionnel** : jeu de jetons sombre, toutes les paires texte/fond à 7:1 (AAA, vérifié en CI), commutateur clair/sombre mémorisé d'une visite à l'autre
 - **Composants communs** : en-tête, pied de page, boutons, tableaux, formulaires, messages
 - **Panier, compte et pages de contenu** : panier dense (référence, quantité modifiable, prix HT), navigation du compte au style du thème (entrées des plugins seulement si le plugin est installé), gabarit de page de contenu `@TmonierSyliusIndustryTradeTheme/content/page.html.twig`
 - **Compatibilité** : Sylius 2.2 et 2.3, PHP 8.3+
@@ -38,6 +39,7 @@ Ce que fait la configuration, et ce qu'elle ne fait jamais :
 - Elle déclare le namespace Twig `@TmonierSyliusIndustryTradeTheme` (`twig.paths`), résolu sur tous les canaux, pour les gabarits que le thème ajoute : la colonne « Référence » du panier, les entrées de navigation du compte et le gabarit de page de contenu.
 - Elle ajoute deux hookables, `industry_reference`, à l'en-tête et au corps du tableau du panier (priorité 350). Ils n'affichent rien tant que le thème n'est pas actif sur le canal courant.
 - Elle ne REMPLACE aucun hookable de Sylius ni de votre application. Les pages du thème (en-tête, pied de page, messages flash, panier, compte, liste produits, champ de recherche) sont des surcharges de gabarits sous `templates/bundles/SyliusShopBundle/`, que Sylius n'applique qu'aux canaux qui utilisent le thème. Les hookables que vous ajoutez à `sylius_shop.base.header.content`, `sylius_shop.base.footer.content` ou à la liste produits continuent de s'afficher, et vos propres réglages sur les hookables `items`, `coupon`, `summary`, `form` et `account` du panier et du compte (gabarit, props, priorité) restent les vôtres, sur un canal avec ou sans le thème.
+- Elle ajoute encore un hookable, `industry_color_mode` (`config/twig_hooks/color_mode.yaml`), à la barre du haut de la boutique (`sylius_shop.base.header.top_bar`, priorité -100) : le commutateur clair/sombre. Il n'affiche rien tant que le thème n'est pas actif sur le canal courant. Ne copiez pas ce fichier si vous ne voulez pas du commutateur : le thème suit alors le seul réglage du système.
 - Le lien vers la saisie rapide d'un panier vide n'apparaît que si le plugin quick-order est installé.
 
 ### Installation des styles et des assets
@@ -101,6 +103,23 @@ Le thème définit ses propriétés CSS personnalisées sur `[data-theme="indust
 ```
 
 Voir `assets/styles/theme.scss` pour la liste complète des propriétés personnalisées disponibles.
+
+### Mode sombre (optionnel)
+
+Le thème livre un jeu de jetons sombre sous `[data-theme="industry-trade"]`. Il n'y a pas de mode sombre par défaut :
+
+- **Réglage du système** : tant que le visiteur n'a rien choisi, `prefers-color-scheme: dark` applique les jetons sombres ; un système clair reste clair.
+- **Commutateur** : le bouton de la barre du haut (« Mode sombre », `aria-pressed` annonce l'état, accessible au clavier) pose `data-industry-mode="dark"` ou `"light"` sur `<html>` et mémorise le choix dans `localStorage` (clé `industry-trade:color-mode`). Choisir « clair » l'emporte sur un système sombre.
+- **Sans scintillement** : un petit script en ligne dans le `<head>`, exécuté avant les feuilles de style, applique le choix mémorisé avant le premier affichage. Le commutateur reste masqué tant que ce script n'a pas tourné (sans JavaScript, il ne ferait rien).
+- **Stockage indisponible** (navigation bloquée ou privée) : le mode s'applique à la page courante, rien n'est mémorisé, aucune erreur JavaScript.
+- **CSP** : le script est en ligne (`<script data-industry-color-mode>`). Si votre Content-Security-Policy interdit les scripts en ligne, autorisez-le avec un nonce ou l'empreinte du script (`templates/industry_trade/_color_mode_script.html.twig`).
+- **Contraste** : les paires sombres sont les jetons `$industry-dark-*` de `assets/styles/_variables.scss` ; `tests/Unit/Theme/ColorContrastTest.php` les lit et échoue en CI, en nommant la paire, quand l'une passe sous 7:1 (3:1 pour les limites de contrôles).
+- **Surcharges** : vos surcharges `[data-theme="industry-trade"]` valent en mode clair ; pour changer une couleur en mode sombre, utilisez `[data-industry-mode="dark"] [data-theme="industry-trade"] { ... }` (et la même règle dans `@media (prefers-color-scheme: dark)` sur `html:not([data-industry-mode])` pour qu'elle suive aussi le système).
+- **Logo et images** : ils vous appartiennent ; le logo Sylius par défaut a un texte noir qui disparaît sur fond sombre, utilisez un logo SVG en `fill: currentColor` ou une variante sombre.
+
+| Clair | Sombre |
+|---|---|
+| ![Mode clair](docs/color-mode-light.png) | ![Mode sombre](docs/color-mode-dark.png) |
 
 ### Surcharge des composants
 

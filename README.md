@@ -7,6 +7,7 @@ B2B theme for [Sylius](https://sylius.com) 2 optimized for industry and trade: h
 ## Features
 
 - **Design tokens**: color palette with WCAG AAA contrasts (≥ 7:1), overridable via CSS custom properties
+- **Optional dark mode**: dark token set, every text/background pair at 7:1 (AAA, checked in CI), light/dark toggle remembered between visits
 - **Common components**: header, footer, buttons, tables, forms, messages
 - **Cart, account and content pages**: dense cart (reference, editable quantity, prices excl. tax), themed account navigation (plugin entries included only when the plugin is installed), content page layout `@TmonierSyliusIndustryTradeTheme/content/page.html.twig`
 - **Compatibility**: Sylius 2.2 and 2.3, PHP 8.3+
@@ -38,6 +39,7 @@ What the configuration does, and what it never does:
 - It registers the Twig namespace `@TmonierSyliusIndustryTradeTheme` (`twig.paths`), resolved on every channel, for the templates the theme adds: the cart "Reference" column, the account navigation items and the content page layout.
 - It adds two hookables, `industry_reference`, to the cart head and body (priority 350). They render nothing unless the theme is active on the current channel.
 - It does **not** replace any hookable of Sylius or of your application. The themed pages (header, footer, flash messages, cart, account, product list, search field) are template overrides under `templates/bundles/SyliusShopBundle/`, which Sylius applies only to channels using the theme. The hookables you added to `sylius_shop.base.header.content`, `sylius_shop.base.footer.content` or the product list keep rendering, and your own settings on the cart hookables `items`, `coupon`, `summary`, `form` and `account` (template, props, priority) stay yours, on themed and non-themed channels alike.
+- It adds one more hookable, `industry_color_mode` (`config/twig_hooks/color_mode.yaml`), to the shop top bar (`sylius_shop.base.header.top_bar`, priority -100): the light/dark toggle. It renders nothing unless the theme is active on the current channel. Do not copy that file if you do not want the toggle: the theme then only follows the system setting.
 - The quick order link of an empty cart appears only when the quick-order plugin is installed.
 
 ### Install the styles and assets
@@ -101,6 +103,23 @@ The theme defines its CSS custom properties on `[data-theme="industry-trade"]` (
 ```
 
 See `assets/styles/theme.scss` for the complete list of available custom properties.
+
+### Dark mode (optional)
+
+The theme ships a dark token set under `[data-theme="industry-trade"]`. There is no dark mode by default:
+
+- **System setting**: while the visitor has not chosen, `prefers-color-scheme: dark` applies the dark tokens; a light system stays light.
+- **Toggle**: the button in the top bar ("Dark mode", `aria-pressed` announces the state, keyboard reachable) sets `data-industry-mode="dark"` or `"light"` on `<html>` and remembers the choice in `localStorage` (key `industry-trade:color-mode`). Choosing "light" overrides a dark system setting.
+- **No flash**: a small inline script in the `<head>`, run before the stylesheets, applies the remembered choice before the first paint. The toggle stays hidden until that script has run (without JavaScript it would do nothing).
+- **Storage unavailable** (blocked or private browsing): the mode applies to the current page, nothing is remembered, no JavaScript error.
+- **CSP**: the script is inline (`<script data-industry-color-mode>`). If your Content-Security-Policy forbids inline scripts, allow it with a nonce or the hash of the script (`templates/industry_trade/_color_mode_script.html.twig`).
+- **Contrast**: the dark pairs are the `$industry-dark-*` tokens of `assets/styles/_variables.scss`; `tests/Unit/Theme/ColorContrastTest.php` reads them and fails in CI, naming the pair, when one falls under 7:1 (3:1 for control borders).
+- **Overrides**: your own `[data-theme="industry-trade"]` overrides apply in light mode; to change a color in dark mode, use `[data-industry-mode="dark"] [data-theme="industry-trade"] { ... }` (and the same inside `@media (prefers-color-scheme: dark)` on `html:not([data-industry-mode])` if you want it to follow the system too).
+- **Logo and images**: they are yours; the default Sylius logo has a black wordmark that disappears on the dark background, use an SVG logo with `fill: currentColor` or a dark variant.
+
+| Light | Dark |
+|---|---|
+| ![Light mode](docs/color-mode-light.png) | ![Dark mode](docs/color-mode-dark.png) |
 
 ### Override components
 
