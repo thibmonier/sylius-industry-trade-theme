@@ -51,6 +51,10 @@ if ! grep -lqE "data-industry-mode=.?dark" public/build/app/shop/*.css 2>/dev/nu
     fail "compiled styles: no dark mode rule ([data-industry-mode=dark]) in public/build/app/shop/*.css"
 fi
 
+if ! grep -lqE "aria-label\*=.?logo" public/build/app/shop/*.css 2>/dev/null; then
+    fail "compiled styles: no dark mode rule for the application logo in public/build/app/shop/*.css"
+fi
+
 if ! grep -lqE 'data-theme=.?industry-trade' public/build/app/shop/*.css 2>/dev/null; then
     fail "compiled styles: no [data-theme=industry-trade] rule in public/build/app/shop/*.css (styles not imported)"
 fi

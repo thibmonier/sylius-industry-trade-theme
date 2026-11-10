@@ -115,7 +115,7 @@ The theme ships a dark token set under `[data-theme="industry-trade"]`. There is
 - **CSP**: the script is inline (`<script data-industry-color-mode>`). If your Content-Security-Policy forbids inline scripts, allow it with a nonce or the hash of the script (`templates/industry_trade/_color_mode_script.html.twig`).
 - **Contrast**: the dark pairs are the `$industry-dark-*` tokens of `assets/styles/_variables.scss`; `tests/Unit/Theme/ColorContrastTest.php` reads them and fails in CI, naming the pair, when one falls under 7:1 (3:1 for control borders).
 - **Overrides**: your own `[data-theme="industry-trade"]` overrides apply in light mode; to change a color in dark mode, use `[data-industry-mode="dark"] [data-theme="industry-trade"] { ... }` (and the same inside `@media (prefers-color-scheme: dark)` on `html:not([data-industry-mode])` if you want it to follow the system too).
-- **Logo and images**: they are yours; the default Sylius logo has a black wordmark that disappears on the dark background, use an SVG logo with `fill: currentColor` or a dark variant.
+- **Logo**: in dark mode the theme puts a light rounded backdrop behind the header logo (`header a[aria-label*='logo' i]`), so a logo with dark text, like the default Sylius one, stays readable; your logo is not modified. If you ship a dark-ready logo, reset it with `[data-industry-mode="dark"] [data-theme="industry-trade"] header a[aria-label*='logo' i] { background: none; padding: 0; }`.
 
 | Light | Dark |
 |---|---|

@@ -49,4 +49,20 @@ final class DarkModeStylesTest extends TestCase
 
         $this->assertStringContainsString('html:not([data-industry-mode])', $theme);
     }
+
+    public function testToggleIsAtLeast44PixelsWide(): void
+    {
+        $toggle = (string) file_get_contents(self::STYLES . '/pages/_color-mode.scss');
+
+        $this->assertStringContainsString('min-height: 2.75rem', $toggle);
+        $this->assertStringContainsString('min-width: 2.75rem', $toggle);
+    }
+
+    public function testDarkModeGivesTheApplicationLogoALightBackdrop(): void
+    {
+        $theme = (string) file_get_contents(self::STYLES . '/theme.scss');
+
+        $this->assertStringContainsString("header a[aria-label*='logo' i]", $theme);
+        $this->assertStringContainsString('background: #{$industry-dark-text}', $theme);
+    }
 }

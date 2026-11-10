@@ -115,7 +115,7 @@ Le thème livre un jeu de jetons sombre sous `[data-theme="industry-trade"]`. Il
 - **CSP** : le script est en ligne (`<script data-industry-color-mode>`). Si votre Content-Security-Policy interdit les scripts en ligne, autorisez-le avec un nonce ou l'empreinte du script (`templates/industry_trade/_color_mode_script.html.twig`).
 - **Contraste** : les paires sombres sont les jetons `$industry-dark-*` de `assets/styles/_variables.scss` ; `tests/Unit/Theme/ColorContrastTest.php` les lit et échoue en CI, en nommant la paire, quand l'une passe sous 7:1 (3:1 pour les limites de contrôles).
 - **Surcharges** : vos surcharges `[data-theme="industry-trade"]` valent en mode clair ; pour changer une couleur en mode sombre, utilisez `[data-industry-mode="dark"] [data-theme="industry-trade"] { ... }` (et la même règle dans `@media (prefers-color-scheme: dark)` sur `html:not([data-industry-mode])` pour qu'elle suive aussi le système).
-- **Logo et images** : ils vous appartiennent ; le logo Sylius par défaut a un texte noir qui disparaît sur fond sombre, utilisez un logo SVG en `fill: currentColor` ou une variante sombre.
+- **Logo** : en mode sombre, le thème place un fond clair arrondi derrière le logo de l'en-tête (`header a[aria-label*='logo' i]`), donc un logo à texte sombre, comme celui de Sylius par défaut, reste lisible ; votre logo n'est pas modifié. Si vous avez un logo prévu pour le sombre, annulez le fond avec `[data-industry-mode="dark"] [data-theme="industry-trade"] header a[aria-label*='logo' i] { background: none; padding: 0; }`.
 
 | Clair | Sombre |
 |---|---|

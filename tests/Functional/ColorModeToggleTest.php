@@ -48,6 +48,13 @@ final class ColorModeToggleTest extends CatalogWebTestCase
         $this->assertSelectorTextContains('header [data-industry-color-mode-toggle]', 'Dark mode');
     }
 
+    public function testToggleSitsInAContentWidthColumnSoItDoesNotStretchAcrossTheTopBar(): void
+    {
+        $this->client->request('GET', '/' . self::LOCALE . '/');
+
+        $this->assertSelectorExists('header .row > .col-12.col-md-auto > button[data-industry-color-mode-toggle]');
+    }
+
     public function testHookablesOfTheApplicationInTheHeaderAreKept(): void
     {
         $this->client->request('GET', '/' . self::LOCALE . '/');

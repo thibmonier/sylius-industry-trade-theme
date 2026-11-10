@@ -249,6 +249,13 @@
         --industry-paper: #{$industry-dark-surface};
         --industry-ink: #{$industry-dark-text};
 
+        // Le logo de l'application (texte noir du logo Sylius par défaut) disparaîtrait sur fond sombre : fond clair derrière lui.
+        header a[aria-label*='logo' i] {
+            background: #{$industry-dark-text};
+            border-radius: $industry-border-radius-md;
+            padding: $industry-spacing-xs $industry-spacing-sm;
+        }
+
         .nav-pills {
             --bs-nav-pills-link-active-color: #{$industry-dark-page};
             --bs-nav-pills-link-active-bg: #{$industry-dark-navy};
