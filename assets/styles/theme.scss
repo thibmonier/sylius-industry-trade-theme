@@ -28,6 +28,19 @@
     --industry-accent: #{$industry-accent};
     --industry-accent-rgb: #{$industry-accent-rgb};
 
+    // Jetons lus par les pages du thème (pages/*) : le mode sombre les redéfinit plus bas.
+    // `white` est le fond des contrôles et le texte posé sur navy ; `navy` le texte et les liens.
+    --industry-white: #{$industry-white};
+    --industry-navy: #{$industry-navy};
+    --industry-muted: #{$industry-muted};
+    --industry-surface: #{$industry-surface};
+    --industry-surface-strong: #{$industry-surface-strong};
+    --industry-border: #{$industry-border};
+    --industry-success: #{$industry-success};
+    --industry-danger: #{$industry-danger};
+    --industry-paper: #{$industry-paper};
+    --industry-ink: #{$industry-ink};
+
     // Liens : navy par défaut, brun du logo au survol (changement visible de couleur, pas seulement de nuance)
     --bs-link-color: #{$industry-navy};
     --bs-link-color-rgb: #{$industry-navy-rgb};
@@ -179,5 +192,187 @@
         --bs-table-border-color: #{$industry-border};
         --bs-table-striped-bg: #{$industry-surface};
         --bs-table-hover-bg: #{$industry-surface-strong};
+    }
+}
+
+// Mode sombre optionnel (US-226). Activé par le réglage du système (`prefers-color-scheme: dark`) tant que le visiteur n'a
+// rien choisi, ou par le commutateur de la barre du haut, qui pose `data-industry-mode` sur <html> (script du <head>, avant
+// le premier rendu : pas de scintillement) et le mémorise. Aucun mode sombre par défaut : sans réglage système ni choix, le
+// thème reste clair. Toutes les paires texte/fond sont mesurées à 7:1 dans tests/Unit/Theme/ColorContrastTest.php.
+@mixin industry-dark-mode {
+    [data-theme='industry-trade'] {
+        color-scheme: dark;
+
+        --bs-body-bg: #{$industry-dark-page};
+        --bs-body-bg-rgb: #{$industry-dark-page-rgb};
+        --bs-body-color: #{$industry-dark-text};
+        --bs-body-color-rgb: #{$industry-dark-text-rgb};
+        --bs-emphasis-color: #{$industry-dark-text};
+        --bs-heading-color: #{$industry-dark-text};
+        --bs-border-color: #{$industry-dark-border};
+        --bs-secondary-bg: #{$industry-dark-surface};
+        --bs-tertiary-bg: #{$industry-dark-surface};
+        --bs-light-rgb: #{$industry-dark-surface-rgb};
+
+        --bs-primary: #{$industry-dark-navy};
+        --bs-primary-rgb: #{$industry-dark-navy-rgb};
+        --bs-primary-text-emphasis: #{$industry-dark-navy};
+        --bs-link-color: #{$industry-dark-navy};
+        --bs-link-color-rgb: #{$industry-dark-navy-rgb};
+        --bs-link-hover-color: #{$industry-dark-accent};
+        --bs-link-hover-color-rgb: #{$industry-dark-accent-rgb};
+        --bs-secondary-color: #{$industry-dark-muted};
+        --bs-secondary-color-rgb: #{$industry-dark-muted-rgb};
+        --bs-tertiary-color: #{$industry-dark-muted};
+        --bs-tertiary-color-rgb: #{$industry-dark-muted-rgb};
+        --bs-secondary: #{$industry-dark-muted};
+        --bs-secondary-rgb: #{$industry-dark-muted-rgb};
+        --bs-success: #{$industry-dark-success};
+        --bs-success-rgb: #{$industry-dark-success-rgb};
+        --bs-danger: #{$industry-dark-danger};
+        --bs-danger-rgb: #{$industry-dark-danger-rgb};
+        --bs-code-color: #{$industry-dark-accent};
+
+        --industry-accent: #{$industry-dark-accent};
+        --industry-accent-rgb: #{$industry-dark-accent-rgb};
+        --industry-white: #{$industry-dark-page};
+        --industry-navy: #{$industry-dark-navy};
+        --industry-muted: #{$industry-dark-muted};
+        --industry-surface: #{$industry-dark-surface};
+        --industry-surface-strong: #{$industry-dark-surface-strong};
+        --industry-border: #{$industry-dark-border};
+        --industry-success: #{$industry-dark-success};
+        --industry-danger: #{$industry-dark-danger};
+        --industry-paper: #{$industry-dark-surface};
+        --industry-ink: #{$industry-dark-text};
+
+        .nav-pills {
+            --bs-nav-pills-link-active-color: #{$industry-dark-page};
+            --bs-nav-pills-link-active-bg: #{$industry-dark-navy};
+        }
+
+        .btn-primary {
+            --bs-btn-color: #{$industry-dark-page};
+            --bs-btn-bg: #{$industry-dark-navy};
+            --bs-btn-border-color: #{$industry-dark-navy};
+            --bs-btn-hover-color: #{$industry-dark-page};
+            --bs-btn-hover-bg: #{$industry-dark-accent};
+            --bs-btn-hover-border-color: #{$industry-dark-accent};
+            --bs-btn-focus-shadow-rgb: #{$industry-dark-accent-rgb};
+            --bs-btn-active-color: #{$industry-dark-page};
+            --bs-btn-active-bg: #{$industry-dark-accent};
+            --bs-btn-active-border-color: #{$industry-dark-accent};
+            --bs-btn-disabled-color: #{$industry-dark-page};
+            --bs-btn-disabled-bg: #{$industry-dark-navy};
+            --bs-btn-disabled-border-color: #{$industry-dark-navy};
+        }
+
+        .btn-outline-primary {
+            --bs-btn-color: #{$industry-dark-navy};
+            --bs-btn-border-color: #{$industry-dark-navy};
+            --bs-btn-hover-color: #{$industry-dark-page};
+            --bs-btn-hover-bg: #{$industry-dark-navy};
+            --bs-btn-hover-border-color: #{$industry-dark-navy};
+            --bs-btn-focus-shadow-rgb: #{$industry-dark-navy-rgb};
+            --bs-btn-active-color: #{$industry-dark-page};
+            --bs-btn-active-bg: #{$industry-dark-navy};
+            --bs-btn-active-border-color: #{$industry-dark-navy};
+        }
+
+        .btn-outline-secondary {
+            --bs-btn-color: #{$industry-dark-muted};
+            --bs-btn-border-color: #{$industry-dark-muted};
+            --bs-btn-hover-color: #{$industry-dark-page};
+            --bs-btn-hover-bg: #{$industry-dark-muted};
+            --bs-btn-hover-border-color: #{$industry-dark-muted};
+            --bs-btn-focus-shadow-rgb: #{$industry-dark-muted-rgb};
+            --bs-btn-active-color: #{$industry-dark-page};
+            --bs-btn-active-bg: #{$industry-dark-muted};
+            --bs-btn-active-border-color: #{$industry-dark-muted};
+        }
+
+        .pagination {
+            --bs-pagination-color: #{$industry-dark-navy};
+            --bs-pagination-bg: #{$industry-dark-surface};
+            --bs-pagination-border-color: #{$industry-dark-line};
+            --bs-pagination-hover-color: #{$industry-dark-page};
+            --bs-pagination-hover-bg: #{$industry-dark-navy};
+            --bs-pagination-hover-border-color: #{$industry-dark-navy};
+            --bs-pagination-focus-color: #{$industry-dark-page};
+            --bs-pagination-focus-bg: #{$industry-dark-navy};
+            --bs-pagination-active-color: #{$industry-dark-page};
+            --bs-pagination-active-bg: #{$industry-dark-navy};
+            --bs-pagination-active-border-color: #{$industry-dark-navy};
+            --bs-pagination-disabled-color: #{$industry-dark-muted};
+            --bs-pagination-disabled-bg: #{$industry-dark-surface};
+        }
+
+        .alert {
+            &-primary {
+                --bs-alert-color: #{$industry-dark-navy};
+                --bs-alert-bg: #{$industry-dark-alert-primary-bg};
+                --bs-alert-border-color: #{$industry-dark-navy};
+            }
+
+            &-success {
+                --bs-alert-color: #{$industry-dark-success};
+                --bs-alert-bg: #{$industry-dark-alert-success-bg};
+                --bs-alert-border-color: #{$industry-dark-success};
+            }
+
+            &-warning {
+                --bs-alert-color: #{$industry-dark-accent};
+                --bs-alert-bg: #{$industry-dark-alert-warning-bg};
+                --bs-alert-border-color: #{$industry-dark-accent};
+            }
+
+            &-danger {
+                --bs-alert-color: #{$industry-dark-danger};
+                --bs-alert-bg: #{$industry-dark-alert-danger-bg};
+                --bs-alert-border-color: #{$industry-dark-danger};
+            }
+        }
+
+        .form-control,
+        .form-select {
+            background-color: #{$industry-dark-surface};
+            border-color: #{$industry-dark-line};
+            color: #{$industry-dark-text};
+
+            &:focus {
+                border-color: #{$industry-dark-accent};
+                box-shadow: 0 0 0 0.25rem rgba($industry-dark-accent, 0.35);
+            }
+        }
+
+        .card {
+            --bs-card-bg: #{$industry-dark-surface};
+            border-color: #{$industry-dark-border};
+
+            &-header {
+                background-color: #{$industry-dark-surface-strong};
+                border-bottom-color: #{$industry-dark-border};
+            }
+        }
+
+        .table {
+            --bs-table-color: #{$industry-dark-text};
+            --bs-table-bg: transparent;
+            --bs-table-border-color: #{$industry-dark-border};
+            --bs-table-striped-color: #{$industry-dark-text};
+            --bs-table-striped-bg: #{$industry-dark-surface};
+            --bs-table-hover-color: #{$industry-dark-text};
+            --bs-table-hover-bg: #{$industry-dark-surface-strong};
+        }
+    }
+}
+
+[data-industry-mode='dark'] {
+    @include industry-dark-mode;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-industry-mode]) {
+        @include industry-dark-mode;
     }
 }

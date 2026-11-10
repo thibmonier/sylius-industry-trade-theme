@@ -3,7 +3,7 @@
 
 .industry-content {
     max-width: 60rem;
-    color: $industry-navy;
+    color: var(--industry-navy);
     overflow-wrap: anywhere;
 
     &__title {
@@ -39,15 +39,15 @@
     }
 
     .industry-table-header th {
-        color: $industry-navy;
-        background: $industry-surface;
+        color: var(--industry-navy);
+        background: var(--industry-surface);
         text-align: start;
     }
 
     th,
     td {
         padding: $industry-spacing-sm;
-        border-bottom: 1px solid $industry-border;
+        border-bottom: 1px solid var(--industry-border);
     }
 
     @media (max-width: 575.98px) {

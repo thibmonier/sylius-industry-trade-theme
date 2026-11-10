@@ -51,6 +51,16 @@ $industry-dark-alert-success-bg: #1c2f23;
 $industry-dark-alert-warning-bg: #35200f;
 $industry-dark-alert-danger-bg: #3a1c22;
 
+// Triplets RGB du mode sombre (ombres translucides et variables Bootstrap `--bs-*-rgb`)
+$industry-dark-page-rgb: 20, 27, 38;
+$industry-dark-surface-rgb: 27, 36, 51;
+$industry-dark-text-rgb: 241, 243, 246;
+$industry-dark-muted-rgb: 201, 209, 220;
+$industry-dark-navy-rgb: 169, 200, 242;
+$industry-dark-accent-rgb: 242, 181, 68;
+$industry-dark-success-rgb: 127, 219, 168;
+$industry-dark-danger-rgb: 255, 159, 171;
+
 // Triplets RGB pour les variables CSS Bootstrap `--bs-*-rgb` et les ombres translucides
 $industry-navy-rgb: 31, 58, 95;
 $industry-accent-rgb: 138, 56, 0;

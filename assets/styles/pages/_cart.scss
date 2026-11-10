@@ -7,11 +7,11 @@
 }
 
 .industry-cart-table {
-    --bs-table-bg: #{$industry-white};
+    --bs-table-bg: var(--industry-white);
 
     th {
-        color: $industry-navy;
-        background: $industry-surface;
+        color: var(--industry-navy);
+        background: var(--industry-surface);
         font-size: 0.875rem;
         font-weight: 600;
         white-space: normal;
@@ -46,7 +46,7 @@
 }
 
 .industry-cart-reference code {
-    color: $industry-navy;
+    color: var(--industry-navy);
     font-family: $industry-font-family-mono;
     font-size: 0.8125rem;
     overflow-wrap: anywhere;
@@ -54,9 +54,9 @@
 
 .industry-cart-empty {
     padding: $industry-spacing-xl;
-    color: $industry-navy;
-    background: $industry-surface;
-    border: 1px solid $industry-border;
+    color: var(--industry-navy);
+    background: var(--industry-surface);
+    border: 1px solid var(--industry-border);
     border-radius: $industry-border-radius-lg;
 
     h2 {

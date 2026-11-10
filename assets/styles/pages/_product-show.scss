@@ -10,7 +10,7 @@
     dt {
         display: inline;
         font-weight: 400;
-        color: $industry-muted;
+        color: var(--industry-muted);
 
         &::after {
             content: ' ';
@@ -24,13 +24,13 @@
 }
 
 .industry-availability__label {
-    color: $industry-muted;
+    color: var(--industry-muted);
     margin-right: $industry-spacing-xs;
 }
 
 .industry-spec-table th {
     width: 40%;
-    color: $industry-muted;
+    color: var(--industry-muted);
     font-weight: 600;
 }
 
@@ -46,7 +46,7 @@
         font-weight: 600;
 
         &:focus-visible {
-            outline: 3px solid $industry-accent;
+            outline: 3px solid var(--industry-accent);
             outline-offset: 2px;
         }
     }
