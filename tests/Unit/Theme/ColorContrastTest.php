@@ -15,6 +15,7 @@ final class ColorContrastTest extends TestCase
      */
     #[DataProvider('colorPairsProvider')]
     #[DataProvider('darkColorPairsProvider')]
+    #[DataProvider('topBarLinkPairsProvider')]
     public function testColorContrastMeetsWCAGAAA(string $foreground, string $background, float $minimumRatio): void
     {
         $ratio = $this->calculateContrastRatio($foreground, $background);
@@ -126,6 +127,22 @@ final class ColorContrastTest extends TestCase
                 $minimum,
             ];
         }
+    }
+
+    /**
+     * Barre supérieure du cœur de Sylius (US-277) : fond noir (`bg-black`) dans les deux modes, le thème n'y change rien.
+     * Le lien d'information y reçoit la couleur de lien générale du thème ; chaque paire est nommée pour que la CI désigne
+     * « lien de la barre supérieure » dès qu'elle passe sous le seuil.
+     *
+     * @return iterable<string, array{string, string, float}>
+     */
+    public static function topBarLinkPairsProvider(): iterable
+    {
+        $black = '#000000';
+        $tokens = self::darkTokens();
+
+        yield 'lien de la barre supérieure (clair) sur le fond de la barre' => ['#1f3a5f', $black, 7.0];
+        yield 'lien de la barre supérieure (sombre) sur le fond de la barre' => [$tokens['navy'], $black, 7.0];
     }
 
     /**
