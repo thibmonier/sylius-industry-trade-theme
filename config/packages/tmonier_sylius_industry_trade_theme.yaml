@@ -1,11 +1,13 @@
 # Configuration du thème Industrie & Négoce
 # Ce fichier est copié dans config/packages/ de l'application. Il n'enregistre que ce qui est nécessaire au thème :
 # - le namespace Twig des gabarits ajoutés par le thème (colonne « Référence » du panier, navigation du compte, page de contenu) ;
-# - l'import des deux hookables de la colonne « Référence » (config/twig_hooks/cart_account.yaml, à copier aussi).
+# - l'import des deux hookables de la colonne « Référence » (config/twig_hooks/cart_account.yaml, à copier aussi) ;
+# - l'import du commutateur du mode d'affichage (config/twig_hooks/color_mode.yaml, copié avec le même dossier).
 # Les pages du thème sont des surcharges de gabarits : elles ne s'appliquent que sur un canal dont le `theme_name` est celui du thème
 # et ne remplacent aucun réglage de hook de l'application.
 imports:
     - { resource: '../twig_hooks/cart_account.yaml' }
+    - { resource: '../twig_hooks/color_mode.yaml' }
 
 # Gabarits ajoutés par le thème : namespace toujours résolu, même sur un canal sans le thème.
 twig:

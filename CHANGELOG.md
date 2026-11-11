@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+
+- The display mode switch is rendered in a real installation: `config/packages/tmonier_sylius_industry_trade_theme.yaml` now imports `config/twig_hooks/color_mode.yaml` (in v0.2.0 the file was copied but never imported, so the toggle never appeared; only the test application imported it). `PackageConfigTest` checks that every hook file is imported, and the blank-project job now looks for the buttons themselves.
+
 ### Added
 
 - Dark mode switch with three choices (US-278): "Automatic", "Light", "Dark". "Automatic" removes the remembered choice (`industry-trade:color-mode`) and the page follows `prefers-color-scheme` again, including when the system changes during the visit. A `industry-trade:color-mode-change` event is dispatched on `document`.
