@@ -1,10 +1,14 @@
-// DOM minimal pour exécuter le script du mode sombre (US-226) : lit un scénario JSON sur stdin, écrit le résultat sur stdout.
-// Scénario : script, stored (valeur du stockage), systemDark, storageBroken, click (nombre de clics sur le commutateur).
+// DOM minimal pour exécuter le script du mode d'affichage (US-226, US-278) : lit un scénario JSON sur stdin, écrit le résultat sur stdout.
+// Scénario : script, stored (valeur du stockage), systemDark, storageBroken, steps (liste d'étapes jouées après le chargement :
+// "dark" | "light" | "auto" = clic sur le choix correspondant, "system-dark" | "system-light" = le système change de réglage).
 const chunks = [];
 process.stdin.on('data', (chunk) => chunks.push(chunk));
 process.stdin.on('end', () => {
     const scenario = JSON.parse(Buffer.concat(chunks).toString());
-    const result = { mode: null, modeAtScriptEnd: null, pressed: null, hidden: null, storage: null, error: null };
+    const result = {
+        mode: null, modeAtScriptEnd: null, group: { hidden: null }, pressed: {}, storage: null, storageKeyPresent: false,
+        events: [], error: null,
+    };
 
     const attributes = {};
     const root = {
@@ -13,30 +17,53 @@ process.stdin.on('end', () => {
         removeAttribute: (name) => { delete attributes[name]; },
     };
 
-    const buttonAttributes = { 'aria-pressed': 'false', hidden: '' };
-    const button = {
-        setAttribute: (name, value) => { buttonAttributes[name] = String(value); },
-        getAttribute: (name) => (name in buttonAttributes ? buttonAttributes[name] : null),
-        removeAttribute: (name) => { delete buttonAttributes[name]; },
-        hasAttribute: (name) => name in buttonAttributes,
+    const makeElement = (initial) => {
+        const attrs = { ...initial };
+
+        return {
+            setAttribute: (name, value) => { attrs[name] = String(value); },
+            getAttribute: (name) => (name in attrs ? attrs[name] : null),
+            removeAttribute: (name) => { delete attrs[name]; },
+            hasAttribute: (name) => name in attrs,
+        };
     };
-    button.closest = (selector) => (selector.includes('data-industry-color-mode-toggle') ? button : null);
+
+    const group = makeElement({ hidden: '' });
+    const buttons = {};
+    for (const choice of ['auto', 'light', 'dark']) {
+        const button = makeElement({ 'aria-pressed': 'false', 'data-industry-color-mode-choice': choice });
+        button.closest = (selector) => (selector.includes('data-industry-color-mode-choice') ? button : null);
+        buttons[choice] = button;
+    }
 
     const listeners = {};
     const document = {
         documentElement: root,
         readyState: 'loading',
         addEventListener: (type, handler) => { (listeners[type] = listeners[type] || []).push(handler); },
-        querySelectorAll: (selector) => (selector.includes('data-industry-color-mode-toggle') ? [button] : []),
+        dispatchEvent: (event) => { result.events.push({ type: event.type, detail: event.detail }); return true; },
+        querySelectorAll: (selector) => {
+            if (selector.includes('data-industry-color-mode-choice')) {
+                return Object.values(buttons);
+            }
+
+            return selector.includes('data-industry-color-mode-toggle') ? [group] : [];
+        },
     };
 
     const store = {};
     if (scenario.stored !== undefined) {
         store['industry-trade:color-mode'] = scenario.stored;
     }
+
+    let systemDark = Boolean(scenario.systemDark);
+    const mediaListeners = [];
     const window = {
-        matchMedia: () => ({ matches: Boolean(scenario.systemDark) }),
-        addEventListener: () => {},
+        matchMedia: () => ({
+            get matches() { return systemDark; },
+            addEventListener: (type, handler) => { if (type === 'change') { mediaListeners.push(handler); } },
+        }),
+        CustomEvent: class { constructor(type, init) { this.type = type; this.detail = init && init.detail; } },
     };
     Object.defineProperty(window, 'localStorage', {
         get() {
@@ -47,6 +74,7 @@ process.stdin.on('end', () => {
             return {
                 getItem: (key) => (key in store ? store[key] : null),
                 setItem: (key, value) => { store[key] = String(value); },
+                removeItem: (key) => { delete store[key]; },
             };
         },
     });
@@ -55,16 +83,24 @@ process.stdin.on('end', () => {
         new Function('window', 'document', scenario.script)(window, document);
         result.modeAtScriptEnd = root.getAttribute('data-industry-mode');
         (listeners.DOMContentLoaded || []).forEach((handler) => handler({}));
-        for (let i = 0; i < (scenario.click || 0); i++) {
-            (listeners.click || []).forEach((handler) => handler({ target: button }));
+        for (const step of scenario.steps || []) {
+            if (step.startsWith('system-')) {
+                systemDark = step === 'system-dark';
+                mediaListeners.forEach((handler) => handler({ matches: systemDark }));
+                continue;
+            }
+            (listeners.click || []).forEach((handler) => handler({ target: buttons[step] }));
         }
     } catch (error) {
         result.error = String(error);
     }
 
     result.mode = root.getAttribute('data-industry-mode');
-    result.pressed = button.getAttribute('aria-pressed');
-    result.hidden = button.hasAttribute('hidden');
+    for (const [choice, button] of Object.entries(buttons)) {
+        result.pressed[choice] = button.getAttribute('aria-pressed');
+    }
+    result.group.hidden = group.hasAttribute('hidden');
     result.storage = store['industry-trade:color-mode'] ?? null;
+    result.storageKeyPresent = 'industry-trade:color-mode' in store;
     process.stdout.write(JSON.stringify(result));
 });
