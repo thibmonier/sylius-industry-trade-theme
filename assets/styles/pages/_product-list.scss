@@ -144,8 +144,10 @@
             padding: $industry-spacing-sm $industry-spacing-md;
             border-inline-start: 4px solid transparent;
 
+            // Fond surface (pas surface-strong) : la référence en <code> (accent) y garde 7,3:1 ; le repère d'accent et la
+            // graisse marquent l'option sans dépendre de la couleur.
             &[aria-selected='true'] {
-                background: var(--industry-surface-strong);
+                background: var(--industry-surface);
                 border-inline-start-color: var(--industry-accent);
                 font-weight: 600;
             }
