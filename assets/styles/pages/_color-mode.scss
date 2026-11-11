@@ -1,8 +1,18 @@
-// Commutateur clair/sombre de la barre du haut (US-226).
+// Sélecteur du mode d'affichage de la barre du haut (US-226, US-278) : groupe de trois boutons (automatique, clair, sombre).
 // Pastille autonome : texte navy sur blanc (clair) ou bleu pâle sur fond de page (sombre), quelle que soit la couleur de la barre.
+// Le choix actif est marqué par une coche et un texte gras, pas seulement par la couleur (WCAG 1.4.1).
 @use '../variables' as *;
 
 .industry-color-mode {
+    display: inline-flex;
+    gap: $industry-spacing-xs;
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.industry-color-mode__choice {
     --bs-btn-color: var(--industry-navy);
     --bs-btn-bg: var(--industry-white);
     --bs-btn-border-color: var(--industry-navy);
@@ -13,8 +23,8 @@
     --bs-btn-active-bg: var(--industry-navy);
     --bs-btn-active-border-color: var(--industry-navy);
 
-    display: inline-flex;
     align-items: center;
+    display: inline-flex;
     gap: $industry-spacing-xs;
     justify-content: center;
     min-height: 2.75rem; // cible tactile AAA (WCAG 2.5.5)
@@ -22,8 +32,13 @@
     padding-inline: $industry-spacing-md;
     white-space: nowrap;
 
-    &[hidden] {
-        display: none;
+    &[aria-pressed='true'] {
+        border-width: 3px;
+        font-weight: 700;
+
+        &::before {
+            content: '\2713'; // coche : l'état actif ne dépend pas de la couleur
+        }
     }
 
     &:focus-visible {
@@ -32,7 +47,7 @@
     }
 }
 
-// Sans script, le bouton reste masqué : la colonne qui l'entoure ne doit pas laisser de vide dans la barre.
+// Sans script, le groupe reste masqué : la colonne qui l'entoure ne doit pas laisser de vide dans la barre.
 .industry-color-mode-wrapper:has(> [hidden]) {
     display: none;
 }

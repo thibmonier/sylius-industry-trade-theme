@@ -13,4 +13,7 @@ industry_theme:
             catalogue_link: Browse the catalogue
             quick_order: Type or paste references with the quick order below.
     color_mode:
-        toggle: Dark mode
+        group: Display mode
+        auto: Automatic
+        light: Light
+        dark: Dark

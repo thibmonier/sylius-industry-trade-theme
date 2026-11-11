@@ -13,4 +13,7 @@ industry_theme:
             catalogue_link: Parcourir le catalogue
             quick_order: Saisissez ou collez des références avec la saisie rapide ci-dessous.
     color_mode:
-        toggle: Mode sombre
+        group: "Mode d'affichage"
+        auto: Automatique
+        light: Clair
+        dark: Sombre

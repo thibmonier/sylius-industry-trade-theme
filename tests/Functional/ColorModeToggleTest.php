@@ -39,8 +39,15 @@ final class ColorModeToggleTest extends CatalogWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('header [role="group"][data-industry-color-mode-toggle][hidden]');
-        foreach (['auto' => 'Automatic', 'light' => 'Light', 'dark' => 'Dark'] as $choice => $label) {
-            $selector = sprintf('header [data-industry-color-mode-toggle] button[type="button"][data-industry-color-mode-choice="%s"][aria-pressed="false"]', $choice);
+        foreach ([
+            'auto' => 'Automatic',
+            'light' => 'Light',
+            'dark' => 'Dark',
+        ] as $choice => $label) {
+            $selector = sprintf(
+                'header [data-industry-color-mode-toggle] button[type="button"][data-industry-color-mode-choice="%s"][aria-pressed="false"]',
+                $choice,
+            );
             $this->assertSelectorTextContains($selector, $label);
         }
         $this->assertSelectorExists('header [data-industry-color-mode-toggle][aria-label="Display mode"]');
