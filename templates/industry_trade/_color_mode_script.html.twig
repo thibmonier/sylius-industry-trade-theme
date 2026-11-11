@@ -2,8 +2,11 @@
    style et le premier rendu : le choix mémorisé est posé sur <html> (data-industry-mode) sans scintillement. « Automatique » (ou
    aucun choix) : aucun attribut, la feuille de style suit le réglage du système (prefers-color-scheme), y compris quand il change
    pendant la visite. Stockage indisponible (navigateur, mode privé) : le choix s'applique à la page, rien n'est mémorisé, aucune
-   erreur. Le commutateur est masqué (hidden) tant que ce script n'a pas tourné. #}
-<script data-industry-color-mode>
+   erreur. Le commutateur est masqué (hidden) tant que ce script n'a pas tourné (script bloqué par une CSP : il reste masqué).
+   US-279 : CSP stricte. Si l'application fournit la variable Twig `industry_trade_script_nonce`, le script porte ce nonce ;
+   sinon l'intégrateur autorise l'empreinte SHA-256 publiée dans le README. Le contenu du script est statique (aucun Twig) :
+   toute modification change l'empreinte, ce que ColorModeScriptCspTest détecte. #}
+<script data-industry-color-mode{% if industry_trade_script_nonce|default(null) %} nonce="{{ industry_trade_script_nonce }}"{% endif %}>
 (function (window, document) {
     var KEY = 'industry-trade:color-mode';
     var ATTRIBUTE = 'data-industry-mode';

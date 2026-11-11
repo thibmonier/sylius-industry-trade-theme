@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- Dark mode switch with three choices (US-278): "Automatic", "Light", "Dark". "Automatic" removes the remembered choice (`industry-trade:color-mode`) and the page follows `prefers-color-scheme` again, including when the system changes during the visit. A `industry-trade:color-mode-change` event is dispatched on `document`.
+- CSP-strict ready script (US-279): the script carries the application nonce when it exposes the Twig variable `industry_trade_script_nonce`; the SHA-256 hash of the script is published in both READMEs and checked by `ColorModeScriptCspTest`.
+
+### Changed
+
+- The top-bar toggle button (`data-industry-color-mode-toggle` on the button) becomes a group of three buttons (`data-industry-color-mode-choice`); translation key `industry_theme.color_mode.toggle` is replaced by `group`, `auto`, `light`, `dark`.
+
 ### Fixed
 
 - Readable top bar link (US-277): the link of the Sylius core top bar (black background, `sylius_shop.base.header.top_bar`) no longer takes the theme's general dark blue link color (1.8:1). It uses dedicated tokens (`$industry-topbar-link`, `$industry-dark-topbar-link`, hover and focus included), at 7:1 or more in light and dark modes, with a 3:1 focus outline. The language dropdown and the mode toggle are untouched, and a channel without the theme keeps the core rendering.
