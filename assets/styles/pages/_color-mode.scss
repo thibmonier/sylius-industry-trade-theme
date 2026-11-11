@@ -1,0 +1,38 @@
+// Commutateur clair/sombre de la barre du haut (US-226).
+// Pastille autonome : texte navy sur blanc (clair) ou bleu pâle sur fond de page (sombre), quelle que soit la couleur de la barre.
+@use '../variables' as *;
+
+.industry-color-mode {
+    --bs-btn-color: var(--industry-navy);
+    --bs-btn-bg: var(--industry-white);
+    --bs-btn-border-color: var(--industry-navy);
+    --bs-btn-hover-color: var(--industry-white);
+    --bs-btn-hover-bg: var(--industry-navy);
+    --bs-btn-hover-border-color: var(--industry-navy);
+    --bs-btn-active-color: var(--industry-white);
+    --bs-btn-active-bg: var(--industry-navy);
+    --bs-btn-active-border-color: var(--industry-navy);
+
+    display: inline-flex;
+    align-items: center;
+    gap: $industry-spacing-xs;
+    justify-content: center;
+    min-height: 2.75rem; // cible tactile AAA (WCAG 2.5.5)
+    min-width: 2.75rem;
+    padding-inline: $industry-spacing-md;
+    white-space: nowrap;
+
+    &[hidden] {
+        display: none;
+    }
+
+    &:focus-visible {
+        outline: 3px solid var(--industry-accent);
+        outline-offset: 2px;
+    }
+}
+
+// Sans script, le bouton reste masqué : la colonne qui l'entoure ne doit pas laisser de vide dans la barre.
+.industry-color-mode-wrapper:has(> [hidden]) {
+    display: none;
+}

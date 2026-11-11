@@ -33,6 +33,34 @@ $industry-night-raised: #1b2433;  // cartes sur night
 $industry-night-text: #c9c3b8;    // texte secondaire sur night : 9,9:1, sur raised 8,9:1
 $industry-night-line: #8b96a8;    // limite de contrôles sur night : 5,8:1 (3:1 requis)
 
+// Mode sombre (US-226), optionnel : activé par le réglage du système ou par le commutateur.
+// Paires texte/fond mesurées à 7:1 (AAA) dans tests/Unit/Theme/ColorContrastTest.php, qui lit ces valeurs ici.
+$industry-dark-page: #141b26;           // fond de page ; texte dessus 15,6:1
+$industry-dark-surface: #1b2433;        // cartes, héros, lignes alternées ; texte dessus 14:1
+$industry-dark-surface-strong: #222c3d; // survol, entrée active de navigation
+$industry-dark-text: #f1f3f6;
+$industry-dark-muted: #c9d1dc;          // texte secondaire
+$industry-dark-navy: #a9c8f2;           // liens, titres, texte des contrôles
+$industry-dark-accent: #f2b544;         // survol des liens, contour de focus
+$industry-dark-success: #7fdba8;
+$industry-dark-danger: #ff9fab;
+$industry-dark-line: #8b96a8;           // limites de contrôles (3:1 requis)
+$industry-dark-border: #3a4760;         // décoration uniquement
+$industry-dark-alert-primary-bg: #1b2a44;
+$industry-dark-alert-success-bg: #1c2f23;
+$industry-dark-alert-warning-bg: #35200f;
+$industry-dark-alert-danger-bg: #3a1c22;
+
+// Triplets RGB du mode sombre (ombres translucides et variables Bootstrap `--bs-*-rgb`)
+$industry-dark-page-rgb: 20, 27, 38;
+$industry-dark-surface-rgb: 27, 36, 51;
+$industry-dark-text-rgb: 241, 243, 246;
+$industry-dark-muted-rgb: 201, 209, 220;
+$industry-dark-navy-rgb: 169, 200, 242;
+$industry-dark-accent-rgb: 242, 181, 68;
+$industry-dark-success-rgb: 127, 219, 168;
+$industry-dark-danger-rgb: 255, 159, 171;
+
 // Triplets RGB pour les variables CSS Bootstrap `--bs-*-rgb` et les ombres translucides
 $industry-navy-rgb: 31, 58, 95;
 $industry-accent-rgb: 138, 56, 0;

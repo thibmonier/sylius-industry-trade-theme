@@ -1,0 +1,13 @@
+# Thème Industrie & Négoce : commutateur clair/sombre (US-226).
+#
+# Ce fichier n'AJOUTE qu'un hookable à la barre du haut (priorité -100, après les sélecteurs de devise et de langue). Le gabarit
+# n'affiche rien tant que le thème n'est pas actif sur le canal courant, et rien d'existant n'est remplacé. Le mode sombre reste
+# une option : sans réglage du système ni choix du visiteur, le thème est clair. Pour ne pas proposer le commutateur, ne copiez
+# pas ce fichier (le thème suit alors le seul réglage du système). Le nom du thème (`industry_theme_name`) est déclaré par
+# `cart_account.yaml`.
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.base.header.top_bar':
+            industry_color_mode:
+                template: '@TmonierSyliusIndustryTradeTheme/color_mode/toggle.html.twig'
+                priority: -100

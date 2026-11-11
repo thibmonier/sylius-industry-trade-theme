@@ -25,6 +25,11 @@ grep -q 'data-theme="industry-trade"' themed-home.html \
 grep -q '/build/app/shop/' themed-home.html \
     || fail "themed channel, home: the stylesheet of the application entry is not linked"
 
+grep -q 'data-industry-color-mode-toggle' themed-home.html \
+    || fail "themed channel, home: the light/dark toggle is not rendered in the top bar"
+grep -q '<script data-industry-color-mode>' themed-home.html \
+    || fail "themed channel, home: the color mode script is missing from the head"
+
 slug=$(mysql -h 127.0.0.1 -u root -N -B "$DATABASE_NAME" -e "SELECT tt.slug FROM sylius_product p
     JOIN sylius_taxon_translation tt ON tt.translatable_id = p.main_taxon_id AND tt.locale = 'en_US' LIMIT 1")
 status=$(fetch themed.localhost "/en_US/taxons/$slug" themed-list.html)
@@ -36,6 +41,18 @@ status=$(fetch plain.localhost / plain-home.html)
 [ "$status" = 200 ] || fail "channel without the theme, home: HTTP $status instead of 200"
 if grep -q 'data-theme="industry-trade"' plain-home.html; then
     fail "channel without the theme, home: data-theme=\"industry-trade\" is present"
+fi
+
+if grep -q 'data-industry-color-mode' plain-home.html; then
+    fail "channel without the theme, home: the color mode toggle or script is present"
+fi
+
+if ! grep -lqE "data-industry-mode=.?dark" public/build/app/shop/*.css 2>/dev/null; then
+    fail "compiled styles: no dark mode rule ([data-industry-mode=dark]) in public/build/app/shop/*.css"
+fi
+
+if ! grep -lqE "aria-label\*=.?logo" public/build/app/shop/*.css 2>/dev/null; then
+    fail "compiled styles: no dark mode rule for the application logo in public/build/app/shop/*.css"
 fi
 
 if ! grep -lqE 'data-theme=.?industry-trade' public/build/app/shop/*.css 2>/dev/null; then

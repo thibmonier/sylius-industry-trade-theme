@@ -14,6 +14,7 @@ final class ColorContrastTest extends TestCase
      * (ratio >= 7:1 pour le texte, >= 3:1 pour les éléments d'interface).
      */
     #[DataProvider('colorPairsProvider')]
+    #[DataProvider('darkColorPairsProvider')]
     public function testColorContrastMeetsWCAGAAA(string $foreground, string $background, float $minimumRatio): void
     {
         $ratio = $this->calculateContrastRatio($foreground, $background);
@@ -71,6 +72,77 @@ final class ColorContrastTest extends TestCase
 
         // Éléments d'interface (ratio minimum 3:1)
         yield 'night-line sur night (UI)' => ['#8b96a8', '#141b26', 3.0];
+    }
+
+    /**
+     * Mode sombre (US-226) : les couleurs sont lues dans assets/styles/_variables.scss (`$industry-dark-*`),
+     * la source des jetons, pour que l'audit mesure ce que le CSS applique réellement.
+     * Chaque paire est nommée : un ratio sous le seuil fait échouer la CI en la désignant.
+     *
+     * @return iterable<string, array{string, string, float}>
+     */
+    public static function darkColorPairsProvider(): iterable
+    {
+        $tokens = self::darkTokens();
+        $pairs = [
+            // [avant-plan, arrière-plan, ratio minimum] : 7:1 pour le texte (AAA), 3:1 pour les éléments d'interface
+            ['text', 'page', 7.0],
+            ['text', 'surface', 7.0],
+            ['text', 'surface-strong', 7.0],
+            ['muted', 'page', 7.0],
+            ['muted', 'surface', 7.0],
+            ['muted', 'surface-strong', 7.0],
+            ['navy', 'page', 7.0],
+            ['navy', 'surface', 7.0],
+            ['navy', 'surface-strong', 7.0],
+            ['accent', 'page', 7.0],
+            ['accent', 'surface', 7.0],
+            ['success', 'page', 7.0],
+            ['success', 'surface', 7.0],
+            ['danger', 'page', 7.0],
+            ['danger', 'surface', 7.0],
+            ['page', 'navy', 7.0],
+            ['page', 'accent', 7.0],
+            ['navy', 'alert-primary-bg', 7.0],
+            ['success', 'alert-success-bg', 7.0],
+            ['accent', 'alert-warning-bg', 7.0],
+            ['danger', 'alert-danger-bg', 7.0],
+            ['line', 'page', 3.0],
+            ['line', 'surface', 3.0],
+            ['accent', 'surface-strong', 3.0],
+        ];
+
+        foreach ($pairs as [$foreground, $background, $minimum]) {
+            $label = sprintf('dark : %s sur %s%s', $foreground, $background, $minimum < 7.0 ? ' (UI)' : '');
+            yield $label => [
+                $tokens[$foreground] ?? throw new \LogicException(sprintf(
+                    'Jeton sombre manquant : $industry-dark-%s',
+                    $foreground,
+                )),
+                $tokens[$background] ?? throw new \LogicException(sprintf(
+                    'Jeton sombre manquant : $industry-dark-%s',
+                    $background,
+                )),
+                $minimum,
+            ];
+        }
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private static function darkTokens(): array
+    {
+        $scss = file_get_contents(__DIR__ . '/../../../assets/styles/_variables.scss');
+        self::assertIsString($scss);
+        preg_match_all('/^\$industry-dark-([a-z-]+):\s*(#[0-9a-fA-F]{6});/m', $scss, $matches, \PREG_SET_ORDER);
+
+        $tokens = [];
+        foreach ($matches as $match) {
+            $tokens[$match[1]] = $match[2];
+        }
+
+        return $tokens;
     }
 
     private function calculateContrastRatio(string $foreground, string $background): float
