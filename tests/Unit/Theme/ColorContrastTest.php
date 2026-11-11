@@ -138,11 +138,45 @@ final class ColorContrastTest extends TestCase
      */
     public static function topBarLinkPairsProvider(): iterable
     {
-        $black = '#000000';
-        $tokens = self::darkTokens();
+        $light = self::tokens('industry-topbar-');
+        $dark = self::tokens('industry-dark-topbar-');
+        $pairs = [
+            // [libellé, jeton de lien, ratio minimum] : texte 7:1 (AAA), contour de focus 3:1
+            ['lien de la barre supérieure (clair)', $light['link'], 7.0],
+            ['lien de la barre supérieure (clair, survol)', $light['link-hover'], 7.0],
+            ['lien de la barre supérieure (clair, focus)', $light['link-hover'], 3.0],
+            ['lien de la barre supérieure (sombre)', $dark['link'], 7.0],
+            ['lien de la barre supérieure (sombre, survol)', $dark['link-hover'], 7.0],
+            ['lien de la barre supérieure (sombre, focus)', $dark['link-hover'], 3.0],
+        ];
 
-        yield 'lien de la barre supérieure (clair) sur le fond de la barre' => ['#1f3a5f', $black, 7.0];
-        yield 'lien de la barre supérieure (sombre) sur le fond de la barre' => [$tokens['navy'], $black, 7.0];
+        foreach ($pairs as [$label, $link, $minimum]) {
+            yield sprintf('%s sur le fond de la barre', $label) => [$link, $light['bg'], $minimum];
+        }
+    }
+
+    /**
+     * Jetons `$<préfixe><nom>: #rrggbb;` de _variables.scss, indexés par nom.
+     *
+     * @return array<string, string>
+     */
+    private static function tokens(string $prefix): array
+    {
+        $scss = file_get_contents(__DIR__ . '/../../../assets/styles/_variables.scss');
+        self::assertIsString($scss);
+        preg_match_all(
+            '/^\$' . preg_quote($prefix, '/') . '([a-z-]+):\s*(#[0-9a-fA-F]{6});/m',
+            $scss,
+            $matches,
+            \PREG_SET_ORDER,
+        );
+
+        $tokens = [];
+        foreach ($matches as $match) {
+            $tokens[$match[1]] = $match[2];
+        }
+
+        return $tokens;
     }
 
     /**

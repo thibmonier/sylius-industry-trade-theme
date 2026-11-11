@@ -1,0 +1,21 @@
+// Lien de la barre supérieure du cœur de Sylius (US-277, hook `sylius_shop.base.header.top_bar`).
+// La barre est noire dans les deux modes : le lien prend un jeton dédié au lieu de la couleur de lien générale du thème.
+// Seuls les liens posés directement dans une colonne de la barre sont visés : le menu déroulant des langues et le
+// commutateur de mode (un bouton) gardent leurs propres couleurs. La portée `[data-theme]` laisse intact un canal sans le thème.
+@use '../variables' as *;
+
+[data-theme='industry-trade'] header .bg-black .row > [class*='col'] > a:not(.btn) {
+    color: var(--industry-topbar-link);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:hover {
+        color: var(--industry-topbar-link-hover);
+    }
+
+    &:focus-visible {
+        color: var(--industry-topbar-link-hover);
+        outline: 3px solid var(--industry-topbar-link-hover);
+        outline-offset: 2px;
+    }
+}

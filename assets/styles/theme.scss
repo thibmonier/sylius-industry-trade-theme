@@ -18,6 +18,8 @@
 @use 'pages/content';
 // Commutateur clair/sombre (US-226)
 @use 'pages/color-mode';
+// Lien de la barre supérieure (US-277)
+@use 'pages/top-bar';
 
 // Variables CSS Bootstrap et composants, limités au thème actif
 [data-theme='industry-trade'] {
@@ -42,6 +44,8 @@
     --industry-danger: #{$industry-danger};
     --industry-paper: #{$industry-paper};
     --industry-ink: #{$industry-ink};
+    --industry-topbar-link: #{$industry-topbar-link};
+    --industry-topbar-link-hover: #{$industry-topbar-link-hover};
 
     // Liens : navy par défaut, brun du logo au survol (changement visible de couleur, pas seulement de nuance)
     --bs-link-color: #{$industry-navy};
@@ -248,6 +252,8 @@
         --industry-danger: #{$industry-dark-danger};
         --industry-paper: #{$industry-dark-surface};
         --industry-ink: #{$industry-dark-text};
+        --industry-topbar-link: #{$industry-dark-topbar-link};
+        --industry-topbar-link-hover: #{$industry-dark-topbar-link-hover};
 
         // Le logo de l'application (texte noir du logo Sylius par défaut) disparaîtrait sur fond sombre : fond clair derrière lui.
         header a[aria-label*='logo' i] {

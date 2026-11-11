@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Readable top bar link (US-277): the link of the Sylius core top bar (black background, `sylius_shop.base.header.top_bar`) no longer takes the theme's general dark blue link color (1.8:1). It uses dedicated tokens (`$industry-topbar-link`, `$industry-dark-topbar-link`, hover and focus included), at 7:1 or more in light and dark modes, with a 3:1 focus outline. The language dropdown and the mode toggle are untouched, and a channel without the theme keeps the core rendering.
+- `ColorContrastTest` now measures the top bar link pairs (light, dark, hover, focus).
+
 ## [0.2.0] - 2026-11-11
 
 ### Added
