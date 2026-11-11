@@ -16,6 +16,14 @@ industry_trade:
         actions: 'Actions'
         price_hidden: 'Price not displayed'
         no_image: 'No image available'
+    quick_find:
+        label: 'Go to a reference or a designation'
+        hint: 'Arrow keys to choose, Enter to go to the line, Escape to close. In the list, arrow keys move between cells and Escape comes back here.'
+        results: 'Matching references'
+        none: 'No reference found'
+        one: '1 reference found'
+        many: '%count% references found'
+        palette: 'Open the command palette'
     stock:
         available: 'Available'
         in_stock: 'In stock (%count%)'

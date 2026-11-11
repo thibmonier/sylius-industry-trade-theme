@@ -1,0 +1,163 @@
+{# US-227 : saisie rapide au clavier de la liste dense. Les options sont rendues côté serveur (référence et désignation des lignes
+   de la page) : le script ne fait que filtrer, annoncer le nombre de résultats et déplacer le focus. Sans JavaScript, le champ
+   reste masqué par `hidden` et la liste se parcourt comme avant. Si votre politique CSP interdit les scripts inline, ajoutez-y
+   un nonce ou un hash de ce script (voir le README). #}
+<script data-industry-quick-find-script>
+(function (window, document) {
+    var root = document.querySelector('[data-industry-quick-find]');
+    if (!root) {
+        return;
+    }
+    var input = root.querySelector('[data-industry-quick-find-input]');
+    var list = root.querySelector('[data-industry-quick-find-list]');
+    var status = root.querySelector('[data-industry-quick-find-status]');
+    var palette = root.querySelector('[data-industry-quick-find-palette]');
+    var grid = document.querySelector('[data-industry="product-list"]');
+    var options = [].slice.call(list.querySelectorAll('[role="option"]'));
+    var shown = [];
+    var active = -1;
+
+    function announce(count) {
+        if (count === null) {
+            status.textContent = '';
+        } else if (count === 0) {
+            status.textContent = root.getAttribute('data-message-none');
+        } else if (count === 1) {
+            status.textContent = root.getAttribute('data-message-one');
+        } else {
+            status.textContent = root.getAttribute('data-message-many').replace('%count%', String(count));
+        }
+    }
+
+    function highlight(index) {
+        active = index;
+        options.forEach(function (option) {
+            option.removeAttribute('aria-selected');
+        });
+        if (index < 0) {
+            input.removeAttribute('aria-activedescendant');
+            return;
+        }
+        shown[index].setAttribute('aria-selected', 'true');
+        input.setAttribute('aria-activedescendant', shown[index].getAttribute('id'));
+    }
+
+    function close() {
+        list.setAttribute('hidden', '');
+        input.setAttribute('aria-expanded', 'false');
+        highlight(-1);
+    }
+
+    function filter() {
+        var query = input.value.trim().toLowerCase();
+        if (query === '') {
+            shown = [];
+            options.forEach(function (option) { option.setAttribute('hidden', ''); });
+            close();
+            announce(null);
+            return;
+        }
+        shown = options.filter(function (option) {
+            var match = option.getAttribute('data-search').indexOf(query) !== -1;
+            if (match) {
+                option.removeAttribute('hidden');
+            } else {
+                option.setAttribute('hidden', '');
+            }
+            return match;
+        });
+        if (shown.length === 0) {
+            close();
+        } else {
+            list.removeAttribute('hidden');
+            input.setAttribute('aria-expanded', 'true');
+            highlight(0);
+        }
+        announce(shown.length);
+    }
+
+    function choose() {
+        var target = document.getElementById(shown[active].getAttribute('data-target'));
+        close();
+        if (target) {
+            target.focus();
+        }
+    }
+
+    function move(step) {
+        highlight((active + step + shown.length) % shown.length);
+    }
+
+    input.addEventListener('input', filter);
+    input.addEventListener('keydown', function (event) {
+        var open = shown.length > 0 && active >= 0 && !list.hasAttribute('hidden');
+        if (event.key === 'ArrowDown' && open) {
+            event.preventDefault();
+            move(1);
+        } else if (event.key === 'ArrowUp' && open) {
+            event.preventDefault();
+            move(-1);
+        } else if (event.key === 'Enter' && open) {
+            event.preventDefault();
+            choose();
+        } else if (event.key === 'Escape') {
+            if (open) {
+                close();
+            } else {
+                input.value = '';
+                filter();
+            }
+        }
+    });
+
+    var FIELDS = /^(INPUT|SELECT|TEXTAREA)$/;
+    var FOCUSABLE = 'a[href], button, input, select';
+
+    function cellsOf(row) {
+        return row ? [].slice.call(row.querySelectorAll(FOCUSABLE)) : [];
+    }
+
+    function neighbour(target, key) {
+        var row = target.closest('tr');
+        var cells = cellsOf(row);
+        var index = cells.indexOf(target);
+        if (key === 'ArrowLeft' || key === 'ArrowRight') {
+            return cells[index + (key === 'ArrowRight' ? 1 : -1)];
+        }
+        var rows = [].slice.call(grid.querySelectorAll('[data-industry="product-row"]'));
+        var next = cellsOf(rows[rows.indexOf(row) + (key === 'ArrowDown' ? 1 : -1)]);
+        return next[Math.min(index, next.length - 1)];
+    }
+
+    if (grid) {
+        grid.addEventListener('keydown', function (event) {
+            var target = event.target;
+            if (!target || FIELDS.test(target.tagName)) {
+                return;
+            }
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                input.focus();
+            } else if (/^Arrow(Up|Down|Left|Right)$/.test(event.key)) {
+                event.preventDefault();
+                var next = neighbour(target, event.key);
+                if (next) {
+                    next.focus();
+                }
+            }
+        });
+    }
+
+    // Le thème ne dépend pas de la palette de commandes : son lien n'apparaît que si la page en porte le déclencheur.
+    var trigger = document.querySelector('[data-tmonier-command-palette-trigger]');
+    if (palette && trigger) {
+        palette.removeAttribute('hidden');
+        palette.addEventListener('click', function (event) {
+            event.preventDefault();
+            trigger.click();
+        });
+    }
+
+    root.removeAttribute('hidden');
+}(window, document));
+</script>

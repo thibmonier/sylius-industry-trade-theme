@@ -16,6 +16,14 @@ industry_trade:
         actions: 'Actions'
         price_hidden: 'Prix non affiché'
         no_image: 'Aucune image disponible'
+    quick_find:
+        label: 'Aller à une référence ou une désignation'
+        hint: 'Flèches pour choisir, Entrée pour aller à la ligne, Échap pour fermer. Dans la liste, les flèches changent de cellule et Échap revient ici.'
+        results: 'Références correspondantes'
+        none: 'Aucune référence trouvée'
+        one: '1 référence trouvée'
+        many: '%count% références trouvées'
+        palette: 'Ouvrir la palette de commandes'
     stock:
         available: 'Disponible'
         in_stock: 'En stock (%count%)'
