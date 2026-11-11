@@ -281,25 +281,9 @@ final class QuickFindScriptTest extends TestCase
         $this->assertSame('input', $result['focus']);
     }
 
-    public function testPaletteLinkStaysHiddenWithoutPalette(): void
-    {
-        $this->assertTrue($this->runScenario([])['paletteHidden']);
-    }
-
-    public function testPaletteLinkAppearsWhenAPaletteTriggerIsOnThePageAndOpensIt(): void
-    {
-        $result = $this->runScenario([[
-            'type' => 'click',
-        ]], true);
-
-        $this->assertFalse($result['paletteHidden']);
-        $this->assertTrue($result['paletteOpened']);
-        $this->assertTrue($result['lastPrevented']);
-    }
-
     public function testScriptRunsWithoutErrorOnAPageWithoutTheField(): void
     {
-        $result = $this->runScenario([], false, false);
+        $result = $this->runScenario([], false);
 
         $this->assertNull($result['error']);
     }
@@ -309,7 +293,7 @@ final class QuickFindScriptTest extends TestCase
      *
      * @return array<string, mixed>
      */
-    private function runScenario(array $steps, bool $paletteTrigger = false, bool $withField = true): array
+    private function runScenario(array $steps, bool $withField = true): array
     {
         $node = (new ExecutableFinder())->find('node');
         if ($node === null) {
@@ -325,7 +309,6 @@ final class QuickFindScriptTest extends TestCase
             'script' => $match[1] ?? '',
             'rows' => $withField ? self::ROWS : [],
             'steps' => $steps,
-            'paletteTrigger' => $paletteTrigger,
             'withField' => $withField,
         ], \JSON_THROW_ON_ERROR));
         $process->mustRun();

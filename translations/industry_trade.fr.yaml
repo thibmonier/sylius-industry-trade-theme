@@ -23,7 +23,6 @@ industry_trade:
         none: 'Aucune référence trouvée'
         one: '1 référence trouvée'
         many: '%count% références trouvées'
-        palette: 'Ouvrir la palette de commandes'
     stock:
         available: 'Disponible'
         in_stock: 'En stock (%count%)'

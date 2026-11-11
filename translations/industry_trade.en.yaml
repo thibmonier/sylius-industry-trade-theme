@@ -23,7 +23,6 @@ industry_trade:
         none: 'No reference found'
         one: '1 reference found'
         many: '%count% references found'
-        palette: 'Open the command palette'
     stock:
         available: 'Available'
         in_stock: 'In stock (%count%)'

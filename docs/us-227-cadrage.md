@@ -14,14 +14,16 @@ garde ses propres champs, le thème n'y touche pas.
 - Source retenue : les lignes déjà rendues sur la page (référence et désignation), sans requête réseau. Les options sont rendues
   côté serveur, le script ne fait que filtrer (attribut `hidden`). La recherche sur tout le catalogue reste celle du cœur.
 
-## Palette de commandes
+## Palette de commandes (retirée le 2026-11-11)
 
 Le plugin de palette est un plugin du back-office : son dialogue est rendu par les hooks `admin` et son `assets/shop/entrypoint.js`
 est vide. Aucune palette n'existe donc en boutique aujourd'hui. Détection sans dépendance : le lien du thème est masqué et
 n'apparaît que si la page contient un déclencheur `[data-tmonier-command-palette-trigger]` ; un clic le déclenche. Tant qu'aucun
 plugin ne rend ce déclencheur en boutique, le lien reste invisible (à dire dans le README, sans promesse).
 
+**Décision de Thibaut du 2026-11-11 :** le lien est retiré du périmètre (code sans effet tant qu'aucune palette n'existe en boutique). Le scénario « Palette de commandes » sort de la story.
+
 ## Estimation
 
-5 points, inchangée : champ combobox + région live (2), navigation clavier de la grille et lien palette (1,5), tests avec
+5 points, inchangée : champ combobox + région live (2), navigation clavier de la grille (1,5), tests avec
 script exécuté sous Node, AAA, README et CHANGELOG (1,5).

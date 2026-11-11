@@ -85,7 +85,6 @@ function run(scenario, result) {
     const rows = scenario.rows;
     const input = new El('input', { 'data-industry-quick-find-input': '', role: 'combobox', 'aria-expanded': 'false' });
     const status = new El('div', { 'data-industry-quick-find-status': '', role: 'status' });
-    const palette = new El('a', { 'data-industry-quick-find-palette': '', href: '#', hidden: '' });
     const options = rows.map((row, i) => new El('li', {
         id: 'opt-' + i,
         role: 'option',
@@ -99,7 +98,7 @@ function run(scenario, result) {
         'data-message-none': 'Aucune référence trouvée',
         'data-message-one': '1 référence trouvée',
         'data-message-many': '%count% références trouvées',
-    }, [input, list, status, palette]);
+    }, [input, list, status]);
 
     const trs = rows.map((row, i) => new El('tr', { 'data-industry': 'product-row' }, [
         new El('td', {}, [new El('a', { href: '/p/' + i, id: 'link-' + i })]),
@@ -113,13 +112,6 @@ function run(scenario, result) {
     }
     root.parent = document;
     productList.parent = document;
-
-    if (scenario.paletteTrigger) {
-        const trigger = new El('button', { 'data-tmonier-command-palette-trigger': '' });
-        trigger.addEventListener('click', () => { result.paletteOpened = true; });
-        document.children.push(trigger);
-        trigger.parent = document;
-    }
 
     function dispatch(target, event) {
         event.target = target;
@@ -143,7 +135,7 @@ function run(scenario, result) {
         } else if (step.type === 'key') {
             result.lastPrevented = dispatch(target, { type: 'keydown', key: step.key }).defaultPrevented;
         } else if (step.type === 'click') {
-            result.lastPrevented = dispatch(target || palette, { type: 'click' }).defaultPrevented;
+            result.lastPrevented = dispatch(target, { type: 'click' }).defaultPrevented;
         } else if (step.type === 'focus') {
             target.focus();
         }
@@ -157,5 +149,4 @@ function run(scenario, result) {
     result.status = status.textContent;
     result.focus = active ? (active === input ? 'input' : active.attributes.id) : null;
     result.inputValue = input.value;
-    result.paletteHidden = 'hidden' in palette.attributes;
 }
