@@ -96,7 +96,9 @@ final class ColorModeScriptCspTest extends TestCase
 
     private function content(string $html): string
     {
-        $this->assertSame(1, preg_match('#<script[^>]*>(.*?)</script>#s', $html, $match));
+        if (preg_match('#<script[^>]*>(.*?)</script>#s', $html, $match) !== 1) {
+            self::fail('aucune balise <script> dans le gabarit rendu');
+        }
 
         return $match[1];
     }

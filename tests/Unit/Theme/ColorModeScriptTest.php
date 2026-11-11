@@ -188,7 +188,9 @@ final class ColorModeScriptTest extends TestCase
 
         $twig = new Environment(new FilesystemLoader(__DIR__ . '/../../../templates/industry_trade'));
         $html = $twig->render('_color_mode_script.html.twig');
-        $this->assertSame(1, preg_match('#<script[^>]*data-industry-color-mode[^>]*>(.*?)</script>#s', $html, $match));
+        if (preg_match('#<script[^>]*data-industry-color-mode[^>]*>(.*?)</script>#s', $html, $match) !== 1) {
+            self::fail('le script du mode d\'affichage est absent du gabarit rendu');
+        }
 
         $process = new Process([$node, self::HARNESS], null, null, json_encode([
             'script' => $match[1],
