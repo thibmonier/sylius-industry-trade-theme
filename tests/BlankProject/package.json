@@ -1,0 +1,10 @@
+{
+    "name": "industry-trade-theme-blank-project-audit",
+    "private": true,
+    "description": "Dark mode contrast audit run by the Blank project job (US-280). Exact versions, lock file committed.",
+    "type": "module",
+    "dependencies": {
+        "axe-core": "4.14.0",
+        "puppeteer-core": "25.17.0"
+    }
+}
