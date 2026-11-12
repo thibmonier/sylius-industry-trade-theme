@@ -65,4 +65,15 @@ final class DarkModeStylesTest extends TestCase
         $this->assertStringContainsString("header a[aria-label*='logo' i]", $theme);
         $this->assertStringContainsString('background: #{$industry-dark-text}', $theme);
     }
+
+    public function testTopBarLinkStaysInsideTheThemeScopeAndLeavesTheDropdownAlone(): void
+    {
+        $topBar = (string) file_get_contents(self::STYLES . '/pages/_top-bar.scss');
+
+        $this->assertStringContainsString(
+            "[data-theme='industry-trade'] header .bg-black .row > [class*='col'] > a:not(.btn)",
+            $topBar,
+        );
+        $this->assertStringContainsString('var(--industry-topbar-link)', $topBar);
+    }
 }
