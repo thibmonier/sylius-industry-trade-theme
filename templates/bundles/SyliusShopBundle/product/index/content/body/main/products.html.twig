@@ -6,6 +6,32 @@
 {% set resources = hookable_metadata.context.resources %}
 
 {% if resources.data|length > 0 %}
+    <div class="industry-quick-find mb-3" data-industry-quick-find hidden
+         data-message-none="{{ 'industry_trade.quick_find.none'|trans({}, 'industry_trade') }}"
+         data-message-one="{{ 'industry_trade.quick_find.one'|trans({}, 'industry_trade') }}"
+         data-message-many="{{ 'industry_trade.quick_find.many'|trans({'%count%': '%count%'}, 'industry_trade') }}">
+        <label for="industry-quick-find-input" class="form-label">{{ 'industry_trade.quick_find.label'|trans({}, 'industry_trade') }}</label>
+        <div class="industry-quick-find__field">
+            <input type="text" id="industry-quick-find-input" class="form-control" autocomplete="off" spellcheck="false"
+                   role="combobox" aria-expanded="false" aria-controls="industry-quick-find-list" aria-autocomplete="list"
+                   aria-describedby="industry-quick-find-hint" data-industry-quick-find-input>
+            <ul id="industry-quick-find-list" class="industry-quick-find__list list-unstyled" role="listbox" hidden
+                aria-label="{{ 'industry_trade.quick_find.results'|trans({}, 'industry_trade') }}" data-industry-quick-find-list>
+                {% for product in resources.data %}
+                    {% set variant = product.enabledVariants.first|default(null) %}
+                    {% set reference = variant is not null ? variant.code : product.code %}
+                    <li id="industry-quick-find-option-{{ loop.index }}" role="option" hidden
+                        data-search="{{ (reference ~ ' ' ~ product.name)|lower }}" data-target="industry-product-link-{{ loop.index }}">
+                        <code>{{ reference }}</code> {{ product.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <p id="industry-quick-find-hint" class="form-text mb-0">
+            {{ 'industry_trade.quick_find.hint'|trans({}, 'industry_trade') }}
+        </p>
+        <div class="visually-hidden" role="status" aria-live="polite" data-industry-quick-find-status></div>
+    </div>
     <div class="industry-product-list overflow-x-auto" data-industry="product-list" {{ sylius_test_html_attribute('products') }}>
         <table class="table industry-product-table">
             <caption class="visually-hidden">{{ 'industry_trade.list.caption'|trans({}, 'industry_trade') }}</caption>
@@ -33,7 +59,7 @@
                             <code data-industry="reference">{{ variant is not null ? variant.code : product.code }}</code>
                         </td>
                         <th scope="row" class="industry-product-table__name" data-label="{{ 'industry_trade.list.designation'|trans({}, 'industry_trade') }}">
-                            <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" {{ sylius_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a>
+                            <a id="industry-product-link-{{ loop.index }}" href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" {{ sylius_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a>
                         </th>
                         <td class="industry-product-table__stock" data-label="{{ 'industry_trade.list.stock'|trans({}, 'industry_trade') }}">
                             {% if variant is null %}
@@ -53,6 +79,7 @@
             </tbody>
         </table>
     </div>
+    {% include 'industry_trade/_quick_find_script.html.twig' %}
 {% else %}
     {{ messages.info('sylius.ui.no_results_to_display') }}
 {% endif %}

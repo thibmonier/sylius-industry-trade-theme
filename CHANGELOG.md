@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 - Dark mode switch with three choices (US-278): "Automatic", "Light", "Dark". "Automatic" removes the remembered choice (`industry-trade:color-mode`) and the page follows `prefers-color-scheme` again, including when the system changes during the visit. A `industry-trade:color-mode-change` event is dispatched on `document`.
 - CSP-strict ready script (US-279): the script carries the application nonce when it exposes the Twig variable `industry_trade_script_nonce`; the SHA-256 hash of the script is published in both READMEs and checked by `ColorModeScriptCspTest`.
+- Keyboard entry on the dense product list (US-227): reference/designation combobox with a live region announcing the result count ("No reference found" when empty), arrow-key navigation between grid cells (Enter, Esc), visible focus. Suggestions come from the rows of the current page (the core has no search by reference). The script carries the application nonce when `industry_trade_script_nonce` is defined. The theme still depends on no plugin. Script covered by a Node-run test (`QuickFindScriptTest`).
 
 ### Changed
 

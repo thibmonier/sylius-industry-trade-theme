@@ -45,6 +45,22 @@ final class CatalogStylesTest extends TestCase
         $this->assertStringContainsString('--bs-success-rgb: #{$industry-success-rgb};', $theme);
     }
 
+    /**
+     * US-227 : l'option mise en évidence garde 7:1 pour la référence en <code> (accent), mesuré par l'audit axe :
+     * l'accent sur surface-strong ne fait que 6,69:1, sur surface 7,3:1 (ColorContrastTest).
+     */
+    public function testHighlightedQuickFindOptionKeepsTheReferenceAt7To1(): void
+    {
+        $list = (string) file_get_contents(self::STYLES . '/pages/_product-list.scss');
+
+        $this->assertSame(
+            1,
+            preg_match("/\\[aria-selected='true'\\]\\s*\\{([^}]*)\\}/", $list, $match),
+            'règle de l\'option mise en évidence absente',
+        );
+        $this->assertStringContainsString('background: var(--industry-surface);', $match[1] ?? '');
+    }
+
     public function testListFoldsIntoCardsBelow768PixelsWithoutHorizontalScroll(): void
     {
         $list = (string) file_get_contents(self::STYLES . '/pages/_product-list.scss');

@@ -121,6 +121,18 @@ The theme ships a dark token set under `[data-theme="industry-trade"]`. There is
 |---|---|
 | ![Light mode](docs/color-mode-light.png) | ![Dark mode](docs/color-mode-dark.png) |
 
+### Keyboard entry on the product list
+
+On the dense product list (taxon and search result pages), a "Go to a reference or a designation" field lets a buyer jump to a line without the mouse:
+
+- **Field**: an ARIA combobox (`role="combobox"`, `aria-controls`, `aria-activedescendant`). Typing filters the references and designations **of the lines on the page** (no network request: the core has no endpoint searching by reference, its list search covers the name only). The first match is highlighted, <kbd>↓</kbd>/<kbd>↑</kbd> move through the matches, <kbd>Enter</kbd> moves the focus to the line, <kbd>Esc</kbd> closes the list, then clears the field.
+- **Announcements**: a live region (`role="status"`) says "N references found" or "No reference found".
+- **Grid**: <kbd>←</kbd>/<kbd>→</kbd> move between the focusable cells of a row (link, buttons), <kbd>↑</kbd>/<kbd>↓</kbd> to the same cell of the next row, <kbd>Esc</kbd> back to the field; the focus ring is 3 px. Quantity inputs keep their own arrow keys.
+- **Without JavaScript** the field stays hidden (`hidden`) and the list reads as before. **CSP**: the script is inline (`<script data-industry-quick-find-script>`); it carries the application nonce when the Twig variable `industry_trade_script_nonce` is defined (like the color mode script); otherwise allow its hash (`templates/industry_trade/_quick_find_script.html.twig`). Under a CSP that blocks it, the field stays hidden.
+- The quick-order plugin keeps its own page and fields; the theme does not touch them.
+
+No screenshot yet: the keyboard behaviour is covered by `tests/Unit/Theme/QuickFindScriptTest.php` (script run under Node) and `tests/Functional/QuickFindTest.php`.
+
 ### Override components
 
 On a channel that uses the theme, a template of the theme **wins over** the same template in `templates/bundles/` of your application. The lookup order, for a themed channel, is:
