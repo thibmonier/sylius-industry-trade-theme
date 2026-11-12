@@ -43,9 +43,9 @@
                 </main>
 
                 {% block footer %}
-                    <footer class="mt-auto">
+                    <div class="mt-auto">
                         {% hook 'footer' with { _prefixes: prefixes } %}
-                    </footer>
+                    </div>
                 {% endblock %}
             </div>
             {% hook 'offcanvas' with { _prefixes: prefixes } %}

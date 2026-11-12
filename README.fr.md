@@ -128,10 +128,12 @@ Sur la liste dense (pages de rayon et de résultats de recherche), un champ « A
 - **Champ** : combobox ARIA (`role="combobox"`, `aria-controls`, `aria-activedescendant`). La saisie filtre les références et désignations **des lignes de la page** (aucune requête réseau : le cœur n'a pas de point d'accès qui cherche par référence, la recherche de sa liste ne porte que sur le nom). La première correspondance est mise en évidence, <kbd>↓</kbd>/<kbd>↑</kbd> parcourent les correspondances, <kbd>Entrée</kbd> place le focus sur la ligne, <kbd>Échap</kbd> ferme la liste puis vide le champ.
 - **Annonces** : une région live (`role="status"`) dit « N références trouvées » ou « Aucune référence trouvée ».
 - **Grille** : <kbd>←</kbd>/<kbd>→</kbd> passent d'une cellule focalisable à l'autre d'une ligne (lien, boutons), <kbd>↑</kbd>/<kbd>↓</kbd> vers la même cellule de la ligne voisine, <kbd>Échap</kbd> revient au champ ; l'indicateur de focus fait 3 px. Les champs de quantité gardent leurs propres flèches.
-- **Sans JavaScript**, le champ reste masqué (`hidden`) et la liste se lit comme avant. **CSP** : le script est en ligne (`<script data-industry-quick-find-script>`) ; il porte le nonce de l'application quand la variable Twig `industry_trade_script_nonce` est définie (comme le script du mode d'affichage) ; sinon, autorisez son empreinte (`templates/industry_trade/_quick_find_script.html.twig`). Sous une CSP qui le bloque, le champ reste masqué.
+- **Sans JavaScript**, le champ reste masqué (`hidden`) et la liste se lit comme avant. **CSP** : le script est en ligne (`<script data-industry-quick-find-script>`) ; il porte le nonce de l'application quand la variable Twig `industry_trade_script_nonce` est définie (comme le script du mode d'affichage) ; sinon, ajoutez 'sha256-UtJO2cK4ZiY0HTR39tItR/U8YODUkpxMoJ08YnSUzbQ=' à `script-src` (SHA-256 du contenu exact du script ; `QuickFindScriptCspTest` échoue en CI quand le script change sans que cette valeur, et celle de `README.md`, soit mise à jour). Sous une CSP qui le bloque, le champ reste masqué.
 - Le plugin quick-order garde sa page et ses champs ; le thème n'y touche pas.
 
-Pas encore de capture : le comportement au clavier est couvert par `tests/Unit/Theme/QuickFindScriptTest.php` (script exécuté sous Node) et `tests/Functional/QuickFindTest.php`.
+![Saisie rapide : « star » tapé, référence correspondante mise en évidence au-dessus de la liste dense](docs/quick-find.png)
+
+Le comportement au clavier est couvert par `tests/Unit/Theme/QuickFindScriptTest.php` (script exécuté sous Node) et `tests/Functional/QuickFindTest.php`.
 
 ### Surcharge des composants
 

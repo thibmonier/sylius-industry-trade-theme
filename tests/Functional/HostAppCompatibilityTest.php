@@ -42,6 +42,18 @@ final class HostAppCompatibilityTest extends CatalogWebTestCase
         $this->assertSelectorTextSame('footer [data-host-app="footer"]', 'host app');
     }
 
+    public function testThemedLayoutHasASingleFooterLandmark(): void
+    {
+        $crawler = $this->client->request('GET', '/' . self::LOCALE . '/');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorNotExists(
+            'footer footer',
+            'le pied de page du cœur est déjà un <footer> : le gabarit du thème ne doit pas l\'envelopper dans un second',
+        );
+        $this->assertCount(1, $crawler->filter('footer'), 'une page thémée a un seul landmark contentinfo');
+    }
+
     public function testHookableAddedByTheApplicationToTheProductListIsRenderedOnAThemedChannel(): void
     {
         $taxon = $this->createTaxon('Fasteners');
