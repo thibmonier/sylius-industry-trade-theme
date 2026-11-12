@@ -54,6 +54,30 @@ final class HostAppCompatibilityTest extends CatalogWebTestCase
         $this->assertCount(1, $crawler->filter('footer'), 'une page thémée a un seul landmark contentinfo');
     }
 
+    public function testRegisterLinkOfTheHeaderHasNoMenuitemRoleWithoutAMenu(): void
+    {
+        $this->client->request('GET', '/' . self::LOCALE . '/');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('#register-page-button');
+        $this->assertSelectorNotExists(
+            '#register-page-button[role]',
+            'un role="menuitem" sans menu parent viole aria-required-parent (US-281)',
+        );
+    }
+
+    public function testCartButtonIsNamedByItsContentIncludingTheVisibleTotal(): void
+    {
+        $this->client->request('GET', '/' . self::LOCALE . '/');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorNotExists(
+            'button[data-bs-target="#offcanvasCart"][aria-label]',
+            'un aria-label sans le montant affiché viole label-content-name-mismatch (US-281)',
+        );
+        $this->assertSelectorTextSame('button[data-bs-target="#offcanvasCart"] .visually-hidden', 'Cart');
+    }
+
     public function testHookableAddedByTheApplicationToTheProductListIsRenderedOnAThemedChannel(): void
     {
         $taxon = $this->createTaxon('Fasteners');

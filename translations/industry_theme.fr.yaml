@@ -1,5 +1,6 @@
 industry_theme:
     cart:
+        button: Panier
         caption: Lignes du panier
         reference: Référence
         unit_price: Prix unitaire HT

@@ -144,6 +144,10 @@
         --bs-pagination-active-color: #{$industry-white};
         --bs-pagination-active-bg: #{$industry-navy};
         --bs-pagination-active-border-color: #{$industry-navy};
+        // Lien désactivé (« Précédent » sur la première page) : texte secondaire du thème, 9,4:1 (le gris du cœur donnait 2,07:1)
+        --bs-pagination-disabled-color: #{$industry-muted};
+        --bs-pagination-disabled-bg: #{$industry-white};
+        --bs-pagination-disabled-border-color: #{$industry-muted};
     }
 
     // Alertes

@@ -1,0 +1,24 @@
+{# Rendered with \Sylius\Bundle\ShopBundle\Twig\Component\Common\CartComponent #}
+{# US-281 : le cœur nomme ce bouton « cart button » (aria-label anglais, sans le montant affiché : axe label-content-name-mismatch,
+   critère 2.5.3). Le nom vient du contenu : « Panier » masqué visuellement, puis le montant visible à partir de 992 px. #}
+{% import '@SyliusShop/shared/macro/loader.html.twig' as loader %}
+{% import "@SyliusShop/shared/macro/money.html.twig" as money %}
+
+<div class="col-auto position-relative" {{ attributes }}>
+    {{ loader.render() }}
+    <div {{ sylius_test_html_attribute('cart-button') }}>
+        <button class="btn btn-icon btn-transparent px-0 position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart">
+            {{ ux_icon('tabler:shopping-bag', { 'aria-hidden': 'true' }) }}
+            <span class="visually-hidden">{{ 'industry_theme.cart.button'|trans({}, 'industry_theme') }}</span>
+            <span class="d-none d-lg-block ps-1" {{ sylius_test_html_attribute('cart-total') }}>
+            {{- money.convertAndFormat(cart.itemsTotal) -}}
+                {{- 'sylius.ui.item.choice'|trans({'%count%': cart.totalQuantity}) }}
+        </span>
+            {% if cart.totalQuantity > 0 %}
+                <span class="position-absolute top-0 start-0 badge rounded-pill bg-primary" {{ sylius_test_html_attribute('cart-quantity', cart.totalQuantity) }}>
+                {{ cart.totalQuantity }}
+            </span>
+            {% endif %}
+        </button>
+    </div>
+</div>

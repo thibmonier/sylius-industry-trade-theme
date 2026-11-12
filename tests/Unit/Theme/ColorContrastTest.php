@@ -50,6 +50,7 @@ final class ColorContrastTest extends TestCase
         yield 'blanc sur accent-dark' => ['#ffffff', '#6b2b00', 7.0];
         yield 'accent sur accent-subtle' => ['#8a3800', '#fbf1ea', 7.0];
         yield 'muted sur blanc' => ['#3f4753', '#ffffff', 7.0];
+        yield 'pagination désactivée : muted sur blanc' => ['#3f4753', '#ffffff', 7.0];
         yield 'muted sur surface' => ['#3f4753', '#f3f5f8', 7.0];
         yield 'success sur blanc' => ['#0f5a36', '#ffffff', 7.0];
         yield 'warning sur blanc' => ['#774000', '#ffffff', 7.0];
