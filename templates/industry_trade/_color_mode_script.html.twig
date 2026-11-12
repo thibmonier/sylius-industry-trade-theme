@@ -1,13 +1,17 @@
-{# US-226 : mode sombre optionnel. Script du <head>, exécuté avant les feuilles de style et le premier rendu : le choix mémorisé
-   est posé sur <html> (data-industry-mode) sans scintillement. Sans choix, aucun attribut : la feuille de style suit le réglage
-   du système (prefers-color-scheme). Stockage indisponible (navigateur, mode privé) : le mode s'applique à la page, rien n'est
-   mémorisé, aucune erreur. Le commutateur est masqué (hidden) tant que ce script n'a pas tourné. Si votre politique CSP interdit
-   les scripts inline, ajoutez-y un nonce ou un hash de ce script (voir le README). #}
-<script data-industry-color-mode>
+{# US-226, US-278 : mode d'affichage à trois choix (automatique, clair, sombre). Script du <head>, exécuté avant les feuilles de
+   style et le premier rendu : le choix mémorisé est posé sur <html> (data-industry-mode) sans scintillement. « Automatique » (ou
+   aucun choix) : aucun attribut, la feuille de style suit le réglage du système (prefers-color-scheme), y compris quand il change
+   pendant la visite. Stockage indisponible (navigateur, mode privé) : le choix s'applique à la page, rien n'est mémorisé, aucune
+   erreur. Le commutateur est masqué (hidden) tant que ce script n'a pas tourné (script bloqué par une CSP : il reste masqué).
+   US-279 : CSP stricte. Si l'application fournit la variable Twig `industry_trade_script_nonce`, le script porte ce nonce ;
+   sinon l'intégrateur autorise l'empreinte SHA-256 publiée dans le README. Le contenu du script est statique (aucun Twig) :
+   toute modification change l'empreinte, ce que ColorModeScriptCspTest détecte. #}
+<script data-industry-color-mode{% if industry_trade_script_nonce|default(null) %} nonce="{{ industry_trade_script_nonce }}"{% endif %}>
 (function (window, document) {
     var KEY = 'industry-trade:color-mode';
     var ATTRIBUTE = 'data-industry-mode';
     var TOGGLE = '[data-industry-color-mode-toggle]';
+    var CHOICES = '[data-industry-color-mode-choice]';
     var root = document.documentElement;
 
     function stored() {
@@ -19,41 +23,76 @@
         }
     }
 
+    function remember(choice) {
+        try {
+            if (choice === 'auto') {
+                window.localStorage.removeItem(KEY);
+            } else {
+                window.localStorage.setItem(KEY, choice);
+            }
+        } catch (error) {
+            // Stockage indisponible : le choix vaut pour cette page seulement.
+        }
+    }
+
     function systemMode() {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
 
-    function currentMode() {
-        return root.getAttribute(ATTRIBUTE) || systemMode();
+    function choice() {
+        return root.getAttribute(ATTRIBUTE) || 'auto';
+    }
+
+    function announce() {
+        if (typeof window.CustomEvent !== 'function') {
+            return;
+        }
+        var current = choice();
+        document.dispatchEvent(new window.CustomEvent('industry-trade:color-mode-change', {
+            detail: { choice: current, mode: current === 'auto' ? systemMode() : current }
+        }));
     }
 
     function sync() {
-        var buttons = document.querySelectorAll(TOGGLE);
+        var groups = document.querySelectorAll(TOGGLE);
+        var buttons = document.querySelectorAll(CHOICES);
         for (var i = 0; i < buttons.length; i++) {
-            buttons[i].setAttribute('aria-pressed', currentMode() === 'dark' ? 'true' : 'false');
-            buttons[i].removeAttribute('hidden');
+            buttons[i].setAttribute('aria-pressed', buttons[i].getAttribute('data-industry-color-mode-choice') === choice() ? 'true' : 'false');
+        }
+        for (var j = 0; j < groups.length; j++) {
+            groups[j].removeAttribute('hidden');
         }
     }
 
-    var choice = stored();
-    if (choice) {
-        root.setAttribute(ATTRIBUTE, choice);
+    var saved = stored();
+    if (saved) {
+        root.setAttribute(ATTRIBUTE, saved);
     }
 
     document.addEventListener('click', function (event) {
-        var button = event.target && event.target.closest ? event.target.closest(TOGGLE) : null;
+        var button = event.target && event.target.closest ? event.target.closest(CHOICES) : null;
         if (!button) {
             return;
         }
-        var next = currentMode() === 'dark' ? 'light' : 'dark';
-        root.setAttribute(ATTRIBUTE, next);
-        try {
-            window.localStorage.setItem(KEY, next);
-        } catch (error) {
-            // Stockage indisponible : le choix vaut pour cette page seulement.
+        var next = button.getAttribute('data-industry-color-mode-choice');
+        if (next === 'auto') {
+            root.removeAttribute(ATTRIBUTE);
+        } else {
+            root.setAttribute(ATTRIBUTE, next);
         }
+        remember(next);
         sync();
+        announce();
     });
+
+    var system = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    if (system && system.addEventListener) {
+        system.addEventListener('change', function () {
+            if (choice() === 'auto') {
+                announce();
+            }
+        });
+    }
 
     document.addEventListener('DOMContentLoaded', sync);
     document.addEventListener('turbo:load', sync);

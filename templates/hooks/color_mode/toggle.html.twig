@@ -1,10 +1,15 @@
-{# US-226 : commutateur clair/sombre de la barre du haut. Rien n'est rendu tant que le thème n'est pas actif sur le canal.
-   Nom accessible fixe, état annoncé par aria-pressed ; masqué tant que le script du <head> n'a pas tourné (sans JavaScript, il ne ferait rien). #}
+{# US-226, US-278 : sélecteur du mode d'affichage de la barre du haut (automatique, clair, sombre). Rien n'est rendu tant que le
+   thème n'est pas actif sur le canal. Trois boutons nommés dans un groupe nommé ; le choix actif est annoncé par aria-pressed et
+   marqué visuellement par un repère (coche) en plus de la couleur. Groupe masqué tant que le script du <head> n'a pas tourné
+   (sans JavaScript, ou script bloqué par une CSP, il ne ferait rien). #}
 {% if sylius.channel.themeName == industry_theme_name %}
 <div class="col-12 col-md-auto industry-color-mode-wrapper">
-    <button type="button" class="btn btn-sm industry-color-mode" data-industry-color-mode-toggle aria-pressed="false" hidden>
-        <span aria-hidden="true" class="industry-color-mode__icon">&#9680;</span>
-        {{ 'industry_theme.color_mode.toggle'|trans({}, 'industry_theme') }}
-    </button>
+    <div class="industry-color-mode" role="group" aria-label="{{ 'industry_theme.color_mode.group'|trans({}, 'industry_theme') }}" data-industry-color-mode-toggle hidden>
+        {% for choice in ['auto', 'light', 'dark'] %}
+            <button type="button" class="btn btn-sm industry-color-mode__choice" data-industry-color-mode-choice="{{ choice }}" aria-pressed="false">
+                {{ ('industry_theme.color_mode.' ~ choice)|trans({}, 'industry_theme') }}
+            </button>
+        {% endfor %}
+    </div>
 </div>
 {% endif %}

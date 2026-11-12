@@ -25,7 +25,7 @@ grep -q 'data-theme="industry-trade"' themed-home.html \
 grep -q '/build/app/shop/' themed-home.html \
     || fail "themed channel, home: the stylesheet of the application entry is not linked"
 
-grep -q 'data-industry-color-mode-toggle' themed-home.html \
+grep -q 'data-industry-color-mode-choice="auto"' themed-home.html \
     || fail "themed channel, home: the light/dark toggle is not rendered in the top bar"
 grep -q '<script data-industry-color-mode>' themed-home.html \
     || fail "themed channel, home: the color mode script is missing from the head"
