@@ -8,3 +8,4 @@
 /package-lock.json
 /.phpunit.result.cache
 /.php-cs-fixer.cache
+/tests/BlankProject/node_modules/

@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - Dark mode switch with three choices (US-278): "Automatic", "Light", "Dark". "Automatic" removes the remembered choice (`industry-trade:color-mode`) and the page follows `prefers-color-scheme` again, including when the system changes during the visit. A `industry-trade:color-mode-change` event is dispatched on `document`.
 - CSP-strict ready script (US-279): the script carries the application nonce when it exposes the Twig variable `industry_trade_script_nonce`; the SHA-256 hash of the script is published in both READMEs and checked by `ColorModeScriptCspTest`.
 - Keyboard entry on the dense product list (US-227): reference/designation combobox with a live region announcing the result count ("No reference found" when empty), arrow-key navigation between grid cells (Enter, Esc), visible focus. Suggestions come from the rows of the current page (the core has no search by reference). The script carries the application nonce when `industry_trade_script_nonce` is defined. The theme still depends on no plugin. Script covered by a Node-run test (`QuickFindScriptTest`).
+- The Blank project CI job audits the dark mode contrast (`tests/BlankProject/audit-dark-contrast.mjs`, puppeteer-core and axe-core pinned) and fails naming the axe rule and the element.
 
 ### Changed
 
@@ -21,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - Readable top bar link (US-277): the link of the Sylius core top bar (black background, `sylius_shop.base.header.top_bar`) no longer takes the theme's general dark blue link color (1.8:1). It uses dedicated tokens (`$industry-topbar-link`, `$industry-dark-topbar-link`, hover and focus included), at 7:1 or more in light and dark modes, with a 3:1 focus outline. The language dropdown and the mode toggle are untouched, and a channel without the theme keeps the core rendering.
 - `ColorContrastTest` now measures the top bar link pairs (light, dark, hover, focus).
 - The display mode switch is rendered in a real installation: `config/packages/tmonier_sylius_industry_trade_theme.yaml` now imports `config/twig_hooks/color_mode.yaml` (in v0.2.0 the file was copied but never imported, so the toggle never appeared; only the test application imported it). `PackageConfigTest` checks that every hook file is imported, and the blank-project job now looks for the buttons themselves.
+- Dark mode readable on the whole page (US-280): main menu links, footer links and the cart total in the header (core `.nav` and `.btn-light` / `.btn-transparent` colors, `#212529` / `#000` on the dark page) now use the dark text tokens, only under `[data-theme="industry-trade"]`. A blank-project audit (axe-core, dark mode, home and product list) finds no more contrast violation.
+- The skip link text (`skip_link`, domain `shop_layout`) is translated in English and French.
 
 ## [0.2.0] - 2026-11-11
 

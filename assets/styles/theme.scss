@@ -262,6 +262,42 @@
             padding: $industry-spacing-xs $industry-spacing-sm;
         }
 
+        // Liens du menu principal, du pied de page et total du panier (US-280). Le cœur de Sylius fixe `--bs-nav-link-color: #212529`
+        // sur `.nav` et `--bs-btn-color: #000` sur `.btn-light` / `.btn-transparent` : sans ces redéfinitions, texte quasi noir (1,1:1)
+        // sur le fond de page sombre. Mêmes jetons que le texte courant : paires déjà mesurées dans ColorContrastTest.
+        .nav,
+        .navbar-nav {
+            --bs-nav-link-color: #{$industry-dark-text};
+            --bs-nav-link-hover-color: #{$industry-dark-accent};
+            --bs-nav-link-disabled-color: #{$industry-dark-muted};
+        }
+
+        .btn-light,
+        .btn-transparent {
+            --bs-btn-color: #{$industry-dark-text};
+            --bs-btn-bg: #{$industry-dark-surface};
+            --bs-btn-border-color: #{$industry-dark-surface};
+            --bs-btn-hover-color: #{$industry-dark-text};
+            --bs-btn-hover-bg: #{$industry-dark-surface-strong};
+            --bs-btn-hover-border-color: #{$industry-dark-surface-strong};
+            --bs-btn-active-color: #{$industry-dark-text};
+            --bs-btn-active-bg: #{$industry-dark-surface-strong};
+            --bs-btn-active-border-color: #{$industry-dark-surface-strong};
+        }
+
+        .btn-transparent {
+            --bs-btn-bg: transparent;
+            --bs-btn-border-color: transparent;
+
+            &:hover {
+                background-color: #{$industry-dark-surface-strong};
+            }
+
+            &:active {
+                background-color: #{$industry-dark-surface-strong} !important;
+            }
+        }
+
         .nav-pills {
             --bs-nav-pills-link-active-color: #{$industry-dark-page};
             --bs-nav-pills-link-active-bg: #{$industry-dark-navy};
