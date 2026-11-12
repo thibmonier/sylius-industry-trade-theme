@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+
+- The Blank project CI job runs a full axe-core audit (every WCAG 2.x rule of levels A, AA and AAA plus the best practices), in light and dark modes, on the home page and the product list of the most populated taxon (paginated): a themed page must have no violation at all. `tests/BlankProject/audit-dark-contrast.mjs` becomes `tests/BlankProject/audit-axe.mjs` (US-281).
+
+### Fixed
+
+- No more axe violation inherited from the Sylius core on a themed page (US-281):
+  - the disabled pagination link ("Previous" on the first page) uses the theme secondary text color, 9.4:1 (the core gray gave 2.07:1);
+  - the header "Register" link no longer has `role="menuitem"` without a menu parent (`aria-required-parent`); the theme overrides `shared/layout/base/header/content/security/visitor/desktop/register.html.twig`;
+  - the header cart button is named by its content, a visually hidden "Cart" then the displayed total, instead of the English `aria-label="cart button"` that did not contain the visible text (`label-content-name-mismatch`); the theme overrides `shared/components/header/cart.html.twig` and adds the translation key `industry_theme.cart.button`.
+
 ## [0.3.0] - 2026-11-12
 
 ### Added
