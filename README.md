@@ -131,7 +131,9 @@ On the dense product list (taxon and search result pages), a "Go to a reference 
 - **Without JavaScript** the field stays hidden (`hidden`) and the list reads as before. **CSP**: the script is inline (`<script data-industry-quick-find-script>`); it carries the application nonce when the Twig variable `industry_trade_script_nonce` is defined (like the color mode script); otherwise add 'sha256-UtJO2cK4ZiY0HTR39tItR/U8YODUkpxMoJ08YnSUzbQ=' to `script-src` (SHA-256 of the exact script content; `QuickFindScriptCspTest` fails in CI when the script changes without this value, and the one in `README.fr.md`, being updated). Under a CSP that blocks it, the field stays hidden.
 - The quick-order plugin keeps its own page and fields; the theme does not touch them.
 
-No screenshot yet: the keyboard behaviour is covered by `tests/Unit/Theme/QuickFindScriptTest.php` (script run under Node) and `tests/Functional/QuickFindTest.php`.
+![Quick find: "star" typed, matching reference highlighted above the dense list](docs/quick-find.png)
+
+The keyboard behaviour is covered by `tests/Unit/Theme/QuickFindScriptTest.php` (script run under Node) and `tests/Functional/QuickFindTest.php`.
 
 ### Override components
 

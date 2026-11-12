@@ -131,7 +131,9 @@ Sur la liste dense (pages de rayon et de résultats de recherche), un champ « A
 - **Sans JavaScript**, le champ reste masqué (`hidden`) et la liste se lit comme avant. **CSP** : le script est en ligne (`<script data-industry-quick-find-script>`) ; il porte le nonce de l'application quand la variable Twig `industry_trade_script_nonce` est définie (comme le script du mode d'affichage) ; sinon, ajoutez 'sha256-UtJO2cK4ZiY0HTR39tItR/U8YODUkpxMoJ08YnSUzbQ=' à `script-src` (SHA-256 du contenu exact du script ; `QuickFindScriptCspTest` échoue en CI quand le script change sans que cette valeur, et celle de `README.md`, soit mise à jour). Sous une CSP qui le bloque, le champ reste masqué.
 - Le plugin quick-order garde sa page et ses champs ; le thème n'y touche pas.
 
-Pas encore de capture : le comportement au clavier est couvert par `tests/Unit/Theme/QuickFindScriptTest.php` (script exécuté sous Node) et `tests/Functional/QuickFindTest.php`.
+![Saisie rapide : « star » tapé, référence correspondante mise en évidence au-dessus de la liste dense](docs/quick-find.png)
+
+Le comportement au clavier est couvert par `tests/Unit/Theme/QuickFindScriptTest.php` (script exécuté sous Node) et `tests/Functional/QuickFindTest.php`.
 
 ### Surcharge des composants
 
