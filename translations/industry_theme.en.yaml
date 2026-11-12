@@ -1,5 +1,6 @@
 industry_theme:
     cart:
+        button: Cart
         caption: Cart lines
         reference: Reference
         unit_price: Unit price excl. tax

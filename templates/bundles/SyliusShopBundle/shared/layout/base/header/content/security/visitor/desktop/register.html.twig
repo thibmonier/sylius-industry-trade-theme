@@ -1,0 +1,12 @@
+{# US-281 : le cœur donne au lien « Inscription » role="menuitem" sans menu parent (axe aria-required-parent, critère 1.3.1).
+   Le lien garde son texte comme nom accessible, comme le lien « Connexion » voisin. #}
+{% import '@SyliusShop/shared/buttons.html.twig' as buttons %}
+
+<small aria-hidden="true" role="presentation" class="text-black px-1">|</small>
+{{ buttons.transparent(
+    path('sylius_shop_register'),
+    'sylius.ui.register'|trans,
+    'register-page-button',
+    null,
+    null
+) }}
