@@ -201,18 +201,26 @@ jobs:
                     bash ../theme/tests/BlankProject/assert-render.sh 8080
 
             -
-                name: Dark mode contrast audit (axe-core)
+                name: Accessibility audit (axe-core)
                 working-directory: app
-                # Home and a product list of the themed channel, prefers-color-scheme: dark emulated (US-280). Only the contrast
-                # rules run: the landmark and ARIA findings of the Sylius core pages do not depend on the theme or on the dark mode.
-                # The audit uses the Chrome of the runner; puppeteer-core and axe-core are pinned in tests/BlankProject/package-lock.json.
+                # Home and the product list of the most populated taxon of the themed channel (paginated, so the disabled
+                # "Previous" link is on the page), light then dark prefers-color-scheme emulated. Every WCAG A, AA and AAA rule
+                # plus the best practices run: a themed page has no axe violation, including the ones of the Sylius core pages
+                # that the theme overrides (US-280, US-281). The audit uses the Chrome of the runner; puppeteer-core and
+                # axe-core are pinned in tests/BlankProject/package-lock.json.
                 run: |
                     npm ci --prefix ../theme/tests/BlankProject --no-audit --no-fund
                     ( php -d variables_order=EGPCS -d display_errors=stderr -d log_errors=1 -S 127.0.0.1:8081 -t public > var/log/server-audit.log 2>&1 & )
                     for _ in $(seq 1 30); do curl -s -o /dev/null http://127.0.0.1:8081/ && break; sleep 1; done
-                    slug=$(mysql -h 127.0.0.1 -u root -N -B "$DATABASE_NAME" -e "SELECT tt.slug FROM sylius_product p
-                        JOIN sylius_taxon_translation tt ON tt.translatable_id = p.main_taxon_id AND tt.locale = 'en_US' LIMIT 1")
-                    CHROME_PATH="$(command -v google-chrome)" node ../theme/tests/BlankProject/audit-dark-contrast.mjs \
+                    slug=$(mysql -h 127.0.0.1 -u root -N -B "$DATABASE_NAME" -e "SELECT tt.slug FROM sylius_product_taxon pt
+                        JOIN sylius_taxon_translation tt ON tt.translatable_id = pt.taxon_id AND tt.locale = 'en_US'
+                        GROUP BY tt.slug ORDER BY COUNT(*) DESC LIMIT 1")
+                    list=$(curl -s -H 'Host: themed.localhost' "http://127.0.0.1:8081/en_US/taxons/$slug")
+                    if ! grep -q 'page-item disabled' <<< "$list"; then
+                        echo "::error title=Accessibility audit::/en_US/taxons/$slug has no disabled pagination link to audit"
+                        exit 1
+                    fi
+                    CHROME_PATH="$(command -v google-chrome)" node ../theme/tests/BlankProject/audit-axe.mjs \
                         http://themed.localhost:8081 / "/en_US/taxons/$slug"
 
             -
