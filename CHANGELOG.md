@@ -6,10 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-12
+
 ### Added
 
 - Dark mode switch with three choices (US-278): "Automatic", "Light", "Dark". "Automatic" removes the remembered choice (`industry-trade:color-mode`) and the page follows `prefers-color-scheme` again, including when the system changes during the visit. A `industry-trade:color-mode-change` event is dispatched on `document`.
-- CSP-strict ready script (US-279): the script carries the application nonce when it exposes the Twig variable `industry_trade_script_nonce`; the SHA-256 hash of the script is published in both READMEs and checked by `ColorModeScriptCspTest`.
+- CSP-strict ready script (US-279): the script carries the application nonce when it exposes the Twig variable `industry_trade_script_nonce`; the SHA-256 hash of the script is published in both READMEs and checked by `ColorModeScriptCspTest`. The quick find script (US-227) does the same, its hash checked by `QuickFindScriptCspTest`.
 - Keyboard entry on the dense product list (US-227): reference/designation combobox with a live region announcing the result count ("No reference found" when empty), arrow-key navigation between grid cells (Enter, Esc), visible focus. Suggestions come from the rows of the current page (the core has no search by reference). The script carries the application nonce when `industry_trade_script_nonce` is defined. The theme still depends on no plugin. Script covered by a Node-run test (`QuickFindScriptTest`).
 - The Blank project CI job audits the dark mode contrast (`tests/BlankProject/audit-dark-contrast.mjs`, puppeteer-core and axe-core pinned) and fails naming the axe rule and the element.
 
@@ -24,6 +26,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - The display mode switch is rendered in a real installation: `config/packages/tmonier_sylius_industry_trade_theme.yaml` now imports `config/twig_hooks/color_mode.yaml` (in v0.2.0 the file was copied but never imported, so the toggle never appeared; only the test application imported it). `PackageConfigTest` checks that every hook file is imported, and the blank-project job now looks for the buttons themselves.
 - Dark mode readable on the whole page (US-280): main menu links, footer links and the cart total in the header (core `.nav` and `.btn-light` / `.btn-transparent` colors, `#212529` / `#000` on the dark page) now use the dark text tokens, only under `[data-theme="industry-trade"]`. A blank-project audit (axe-core, dark mode, home and product list) finds no more contrast violation.
 - The skip link text (`skip_link`, domain `shop_layout`) is translated in English and French.
+
+### Upgrade
+
+- Translation key `industry_theme.color_mode.toggle` no longer exists: if you override the theme translations, use `industry_theme.color_mode.group`, `.auto`, `.light` and `.dark`. Custom CSS or scripts targeting `[data-industry-color-mode-toggle]` on the button should target `[data-industry-color-mode-choice]`.
+- Strict Content-Security-Policy: expose a Twig variable `industry_trade_script_nonce` (your application's script nonce) and both inline scripts carry it; or allow the two hashes published in the README (color mode and quick find).
+- Nothing to copy: `config/twig_hooks/color_mode.yaml` is now imported by the package configuration file.
 
 ## [0.2.0] - 2026-11-11
 
@@ -42,5 +50,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - To get the toggle, copy `config/twig_hooks/color_mode.yaml`. Without it, the theme follows the system setting only.
 - With a strict Content-Security-Policy, allow the inline `<script data-industry-color-mode>` with a nonce or a hash (see the README).
 
-[Unreleased]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.1.1...v0.2.0
