@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - The display mode switch is rendered in a real installation: `config/packages/tmonier_sylius_industry_trade_theme.yaml` now imports `config/twig_hooks/color_mode.yaml` (in v0.2.0 the file was copied but never imported, so the toggle never appeared; only the test application imported it). `PackageConfigTest` checks that every hook file is imported, and the blank-project job now looks for the buttons themselves.
 - Dark mode readable on the whole page (US-280): main menu links, footer links and the cart total in the header (core `.nav` and `.btn-light` / `.btn-transparent` colors, `#212529` / `#000` on the dark page) now use the dark text tokens, only under `[data-theme="industry-trade"]`. A blank-project audit (axe-core, dark mode, home and product list) finds no more contrast violation.
 - The skip link text (`skip_link`, domain `shop_layout`) is translated in English and French.
+- A single footer landmark: the theme layout no longer wraps the core footer (already a `<footer>`) in a second `<footer>`, which gave two nested contentinfo landmarks (axe `landmark-no-duplicate-contentinfo`, present since v0.1.0).
 
 ### Upgrade
 
