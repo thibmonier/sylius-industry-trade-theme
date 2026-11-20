@@ -163,6 +163,35 @@ avec `templates/bundles/SyliusShopBundle/...` à côté de ce `composer.json` (d
 
 Les hookables et leurs props restent le moyen de changer ce que le thème ne surcharge pas : ajoutez-les ou configurez-les dans votre propre fichier `sylius_twig_hooks`.
 
+### Fermer le lien « Inscription »
+
+Le thème surcharge le gabarit du lien « Inscription » de l'en-tête (correctif d'accessibilité de la 0.3.1). Sur un canal themé, sa version l'emporte sur celle de votre application : une condition que vous auriez posée dans `templates/bundles/` n'est plus lue, et le lien réapparaît. Si vos inscriptions sont fermées, il pointe alors vers une route qui répond 403.
+
+Le thème rend cette décision à l'application, sans connaître votre règle. Déclarez votre implémentation dans vos propres services :
+
+```yaml
+# config/services.yaml
+services:
+    App\Shop\InvitationOnlyRegistration: ~
+
+    Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface:
+        alias: App\Shop\InvitationOnlyRegistration
+```
+
+```php
+final readonly class InvitationOnlyRegistration implements RegistrationLinkPolicyInterface
+{
+    public function isVisible(): bool
+    {
+        return false; // ou la règle qui décide chez vous
+    }
+}
+```
+
+Le gabarit lit le global Twig `industry_theme_registration_link_policy`, déclaré par le fichier de configuration du thème. La décision est prise à chaque rendu : une règle qui dépend de la requête, du canal ou d'un rôle est donc consultée à chaque fois.
+
+Si vous montez depuis une 0.3.x sans recopier `config/packages/tmonier_sylius_industry_trade_theme.yaml`, le global est absent : le gabarit le lit avec `|default(null)`, et le lien reste visible comme avant. Rien ne casse ; le point d'extension n'est simplement actif qu'après la copie.
+
 ### Revue de la dérive des gabarits
 
 Chaque gabarit surchargé par le thème sous `templates/bundles/<Bundle>/**` est dérivé d'un gabarit Sylius. Le test unitaire `tests/Unit/TemplateDrift/ThemeTemplateDriftTest.php` compare l'empreinte de chaque gabarit d'origine (sha256 normalisée, par version mineure de Sylius) à `tests/TemplateDrift/fingerprints.json`, enregistré à la dernière revue. Il tourne dans la testsuite `unit` et dans une exécution planifiée hebdomadaire (lundi). Les surcharges sont découvertes automatiquement.
