@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- Extension point for the header "Register" link: `RegistrationLinkPolicyInterface`, exposed to the templates as
+  `industry_theme_registration_link_visible()`. The default, `AlwaysVisibleRegistrationLink`, keeps the Sylius
+  behaviour. A shop whose registrations are closed — public demonstration, invitation-only store, reserved B2B
+  channel — aliases the interface on its own implementation instead of copying the template into a child theme.
+
+  This closes a gap opened in 0.3.1: the theme started overriding
+  `shared/layout/base/header/content/security/visitor/desktop/register.html.twig` for the `aria-required-parent`
+  fix, and on a themed channel that override wins over the application's own version. An application that hid the
+  link behind its own condition silently got the link back, pointing at a route answering 403.
+
 ## [0.3.1] - 2026-11-12
 
 ### Changed

@@ -13,3 +13,17 @@ imports:
 twig:
     paths:
         '%kernel.project_dir%/vendor/tmonier/sylius-industry-trade-theme/templates/hooks': TmonierSyliusIndustryTradeTheme
+
+# Point d'extension du lien « Inscription » (0.3.2). Sur un canal themé, le gabarit du thème l'emporte sur celui de
+# l'application : celle-ci ne peut plus y poser sa condition. L'alias ci-dessous rend la décision à l'application sans que
+# le thème connaisse la règle. Par défaut le lien s'affiche, comme dans Sylius ; une application dont les inscriptions sont
+# fermées alias RegistrationLinkPolicyInterface sur sa propre implémentation, dans son propre fichier de services.
+services:
+    Tmonier\SyliusIndustryTradeTheme\Shop\AlwaysVisibleRegistrationLink: ~
+
+    Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface:
+        alias: Tmonier\SyliusIndustryTradeTheme\Shop\AlwaysVisibleRegistrationLink
+
+    Tmonier\SyliusIndustryTradeTheme\Twig\RegistrationLinkExtension:
+        arguments: ['@Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface']
+        tags: ['twig.extension']
