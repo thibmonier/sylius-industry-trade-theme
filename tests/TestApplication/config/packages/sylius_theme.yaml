@@ -9,6 +9,10 @@ imports:
 twig:
     paths:
         '%kernel.project_dir%/../../../templates/hooks': TmonierSyliusIndustryTradeTheme
+    # Point d'extension du lien « Inscription » (0.3.2), monté comme le ferait une application hôte qui ferme ses
+    # inscriptions : elle alias l'interface sur sa propre règle et expose le global que le gabarit du thème lit.
+    globals:
+        industry_theme_registration_link_policy: '@Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface'
 
 sylius_theme:
     sources:
@@ -18,6 +22,12 @@ sylius_theme:
             scan_depth: 0
 
 services:
+    Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface:
+        alias: Tmonier\SyliusIndustryTradeTheme\Tests\Stub\ClosableRegistrationLinkPolicy
+
+    Tmonier\SyliusIndustryTradeTheme\Tests\Stub\ClosableRegistrationLinkPolicy:
+        arguments: ['@request_stack']
+
     Tmonier\SyliusIndustryTradeTheme\Tests\Stub\CompanyMenuEntryListener:
         arguments: ['@request_stack']
         tags:

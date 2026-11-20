@@ -188,7 +188,9 @@ final readonly class InvitationOnlyRegistration implements RegistrationLinkPolic
 }
 ```
 
-La décision est prise à chaque rendu : une règle qui dépend de la requête, du canal ou d'un rôle est donc consultée à chaque fois. Sans alias, le lien s'affiche, comme dans Sylius.
+Le gabarit lit le global Twig `industry_theme_registration_link_policy`, déclaré par le fichier de configuration du thème. La décision est prise à chaque rendu : une règle qui dépend de la requête, du canal ou d'un rôle est donc consultée à chaque fois.
+
+Si vous montez depuis une 0.3.x sans recopier `config/packages/tmonier_sylius_industry_trade_theme.yaml`, le global est absent : le gabarit le lit avec `|default(null)`, et le lien reste visible comme avant. Rien ne casse ; le point d'extension n'est simplement actif qu'après la copie.
 
 ### Revue de la dérive des gabarits
 

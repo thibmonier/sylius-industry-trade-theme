@@ -8,15 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- Extension point for the header "Register" link: `RegistrationLinkPolicyInterface`, exposed to the templates as
-  `industry_theme_registration_link_visible()`. The default, `AlwaysVisibleRegistrationLink`, keeps the Sylius
-  behaviour. A shop whose registrations are closed — public demonstration, invitation-only store, reserved B2B
-  channel — aliases the interface on its own implementation instead of copying the template into a child theme.
+- Extension point for the header "Register" link: `RegistrationLinkPolicyInterface`, exposed to the templates as the
+  Twig global `industry_theme_registration_link_policy`. The default, `AlwaysVisibleRegistrationLink`, keeps the Sylius
+  behaviour. A shop whose registrations are closed — public demonstration, invitation-only store, reserved B2B channel
+  — aliases the interface on its own implementation instead of copying the template into a child theme. The decision is
+  taken on every render, so a rule depending on the request, the channel or a role is consulted each time.
 
   This closes a gap opened in 0.3.1: the theme started overriding
-  `shared/layout/base/header/content/security/visitor/desktop/register.html.twig` for the `aria-required-parent`
-  fix, and on a themed channel that override wins over the application's own version. An application that hid the
-  link behind its own condition silently got the link back, pointing at a route answering 403.
+  `shared/layout/base/header/content/security/visitor/desktop/register.html.twig` for the `aria-required-parent` fix,
+  and on a themed channel that override wins over the application's own version. An application that hid the link
+  behind its own condition silently got the link back, pointing at a route answering 403.
+
+  Upgrading from 0.3.x needs no action: the template reads the global with `|default(null)`, so an installation that has
+  not refreshed its copy of `config/packages/tmonier_sylius_industry_trade_theme.yaml` keeps showing the link, exactly
+  as before. Refresh that copy to use the extension point.
+
+- `src/` is now analysed by PHPStan, ECS and Rector, alongside `tests/`. The theme shipped only templates and
+  configuration until now, so the three tools were scoped to `tests/` alone.
 
 ## [0.3.1] - 2026-11-12
 

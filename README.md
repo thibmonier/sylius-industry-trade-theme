@@ -188,7 +188,9 @@ final readonly class InvitationOnlyRegistration implements RegistrationLinkPolic
 }
 ```
 
-The decision is taken on every render, so a rule depending on the request, the channel or a role is consulted each time. Without the alias the link is shown, as in Sylius.
+The template reads the Twig global `industry_theme_registration_link_policy`, declared by the theme's configuration file. The decision is taken on every render, so a rule depending on the request, the channel or a role is consulted each time.
+
+If you upgrade from 0.3.x without refreshing `config/packages/tmonier_sylius_industry_trade_theme.yaml`, the global is absent: the template reads it with `|default(null)` and the link stays visible, exactly as before. Nothing breaks; the extension point simply becomes active once the file is copied.
 
 ### Reviewing template drift
 
