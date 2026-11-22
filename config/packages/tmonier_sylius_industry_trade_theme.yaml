@@ -10,6 +10,22 @@ imports:
     - { resource: '../twig_hooks/color_mode.yaml' }
 
 # Gabarits ajoutés par le thème : namespace toujours résolu, même sur un canal sans le thème.
+# `globals` : point d'extension du lien « Inscription » (0.3.2, voir ci-dessous).
 twig:
     paths:
         '%kernel.project_dir%/vendor/tmonier/sylius-industry-trade-theme/templates/hooks': TmonierSyliusIndustryTradeTheme
+    globals:
+        industry_theme_registration_link_policy: '@Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface'
+
+# Point d'extension du lien « Inscription » (0.3.2). Sur un canal themé, le gabarit du thème l'emporte sur celui de
+# l'application : celle-ci ne peut plus y poser sa condition. L'alias ci-dessous la lui rend, sans que le thème connaisse
+# la règle. Par défaut le lien s'affiche, comme dans Sylius ; une application dont les inscriptions sont fermées alias
+# RegistrationLinkPolicyInterface sur sa propre implémentation, dans son propre fichier de services.
+#
+# Le gabarit lit ce global avec `|default(null)` : une installation qui n'a pas remis à jour sa copie de ce fichier garde
+# donc le lien visible, au lieu de rendre une erreur. Rien n'est cassé par une copie oubliée.
+services:
+    Tmonier\SyliusIndustryTradeTheme\Shop\AlwaysVisibleRegistrationLink: ~
+
+    Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface:
+        alias: Tmonier\SyliusIndustryTradeTheme\Shop\AlwaysVisibleRegistrationLink

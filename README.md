@@ -163,6 +163,35 @@ with `templates/bundles/SyliusShopBundle/...` next to that `composer.json` (in t
 
 Hookables and their props stay the way to change what the theme does not override: add or configure them in your own `sylius_twig_hooks` file.
 
+### Closing the "Register" link
+
+The theme overrides the header "Register" link template (the 0.3.1 accessibility fix). On a themed channel its version wins over your application's: a condition you had placed in `templates/bundles/` is no longer read, and the link comes back. If your registrations are closed, it then points at a route answering 403.
+
+The theme hands that decision back to the application, without knowing your rule. Declare your implementation in your own services:
+
+```yaml
+# config/services.yaml
+services:
+    App\Shop\InvitationOnlyRegistration: ~
+
+    Tmonier\SyliusIndustryTradeTheme\Shop\RegistrationLinkPolicyInterface:
+        alias: App\Shop\InvitationOnlyRegistration
+```
+
+```php
+final readonly class InvitationOnlyRegistration implements RegistrationLinkPolicyInterface
+{
+    public function isVisible(): bool
+    {
+        return false; // or whatever decides it for you
+    }
+}
+```
+
+The template reads the Twig global `industry_theme_registration_link_policy`, declared by the theme's configuration file. The decision is taken on every render, so a rule depending on the request, the channel or a role is consulted each time.
+
+If you upgrade from 0.3.x without refreshing `config/packages/tmonier_sylius_industry_trade_theme.yaml`, the global is absent: the template reads it with `|default(null)` and the link stays visible, exactly as before. Nothing breaks; the extension point simply becomes active once the file is copied.
+
 ### Reviewing template drift
 
 Every template the theme overrides under `templates/bundles/<Bundle>/**` is copied from a Sylius template. The unit test `tests/Unit/TemplateDrift/ThemeTemplateDriftTest.php` compares the fingerprint of each original (normalized sha256, per Sylius minor version) with `tests/TemplateDrift/fingerprints.json`, recorded at the last review. It runs in the `unit` testsuite and in a weekly scheduled run (Monday). Overrides are discovered automatically.
