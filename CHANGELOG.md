@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-11-22
+
 ### Added
 
 - Extension point for the header "Register" link: `RegistrationLinkPolicyInterface`, exposed to the templates as the
@@ -84,7 +86,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - To get the toggle, copy `config/twig_hooks/color_mode.yaml`. Without it, the theme follows the system setting only.
 - With a strict Content-Security-Policy, allow the inline `<script data-industry-color-mode>` with a nonce or a hash (see the README).
 
-[Unreleased]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/thibmonier/sylius-industry-trade-theme/compare/v0.1.1...v0.2.0
