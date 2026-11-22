@@ -6,6 +6,7 @@ namespace Tmonier\SyliusIndustryTradeTheme\Tests\Stub;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
@@ -26,8 +27,15 @@ final class HidePricesVoter extends Voter
         return $attribute === self::ATTRIBUTE;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
-    {
+    /**
+     * Le 4e paramètre est obligatoire en Symfony 8 ; en 7.4 le parent ne le déclare qu'en commentaire, l'ajouter ici reste compatible.
+     */
+    protected function voteOnAttribute(
+        string $attribute,
+        mixed $subject,
+        TokenInterface $token,
+        ?Vote $vote = null,
+    ): bool {
         return ! $this->requestStack->getCurrentRequest()?->query
             ->has('hide_prices');
     }

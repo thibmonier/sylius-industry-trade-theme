@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+
+- The test stub `HidePricesVoter` declares the optional 4th parameter `?Vote $vote = null` of `Voter::voteOnAttribute()`, required by Symfony 8 (fatal error on class load otherwise) and still valid on Symfony 7.4.
+
 ## [0.3.1] - 2026-11-12
 
 ### Changed
